@@ -1,36 +1,167 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dextora AI — Central Corporate Hub
 
-## Getting Started
+> **Dextora** is an AI-powered EdTech company building precision learning platforms for academic curriculum and civil services excellence in India.
 
-First, run the development server:
+This repository contains the central corporate parent hub that unifies all Dextora products, including **Dextora Learn** (`https://dextora.org`) and **Dhyeya IAS Current Affairs by Dextora AI** (`https://upscnews.dextora.org`).
 
+---
+
+## 🚀 Technology Stack
+
+- **Framework**: [Next.js 15+ (App Router)](https://nextjs.org/) + React 19 + TypeScript
+- **Styling**: Tailwind CSS v4 + Custom Design Tokens (Warm cream `#F8F5EE` light base, refined dark mode, terracotta `#E05A38` and emerald accents)
+- **Icons & Animation**: Lucide React + Framer Motion
+- **Validation**: Zod schema validation (Forms & API route handlers)
+- **SEO & Structured Data**: JSON-LD schemas (`Organization`, `WebSite`, `Product`, `FAQPage`, `BlogPosting`)
+- **i18n Readiness**: English (`en`) active + Hindi (`hi`) bilingual dictionary & language toggle
+- **Analytics**: Provider-agnostic wrapper (GA4 / Plausible / PostHog ready)
+- **Email Service**: Stubbed provider interface with Resend API integration
+
+---
+
+## 📂 Site Structure
+
+| Route | Purpose |
+| :--- | :--- |
+| `/` | **Home**: Hero, Product Showcase, 4 Pillars, How it Works, Stats, Blog, Testimonials, FAQ, CTA |
+| `/products` | **All Products**: Overview, feature comparison, unified AI engine architecture |
+| `/products/[slug]` | **Product Detail**: Deep feature breakdown, target audience, stats, live launch link |
+| `/about` | **About Dextora**: Mission, founding story (Bloom's 2-Sigma Problem), values, leadership team |
+| `/vision` | **Vision**: 5-year technology roadmap, 3 tenets of cognitive EdTech, Bharat inclusion |
+| `/blog` | **Research & Blog**: Pedagogical AI dispatches, vision OCR breakdown, bilingual architecture |
+| `/blog/[slug]` | **Article Page**: Full article text, author bio, reading time, related articles |
+| `/careers` | **Careers**: Open positions, culture & perks, direct job application form |
+| `/contact` | **Contact**: Categorized inquiry form, Bengaluru HQ & Delhi operations hubs |
+| `/privacy` | **Privacy Policy**: DPDP Act compliance, student data isolation guarantee |
+| `/terms` | **Terms of Service**: Educational disclaimers and usage terms |
+| `/sitemap.xml` | **Dynamic XML Sitemap**: Generated automatically from product & blog registries |
+| `/robots.txt` | **Search Crawler Directives** |
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Prerequisites
+- Node.js 18.18+ or 20+ (Node v24 supported)
+- npm, pnpm, or yarn
+
+### 2. Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone <repo-url>
+cd maindextora
+
+# Install dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Variables
+Copy `.env.example` to `.env.local`:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Configure your variables:
+```env
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+RESEND_API_KEY=your_resend_api_key_here # Optional: logs in dev if empty
+EMAIL_FROM="Dextora Notifications <notifications@dextora.org>"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Running the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+### 5. Production Build & Verification
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 How to Add a New Product to the Registry
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The site is **100% data-driven**. You can add a new product or modify existing products in **one single file** without changing any page layouts:
 
-## Deploy on Vercel
+1. Open [`src/data/products.ts`](./src/data/products.ts).
+2. Add a new product object to the `products` array:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```typescript
+{
+  slug: "dextora-pulse",
+  name: "Dextora Pulse",
+  shortName: "Pulse",
+  tagline: "Adaptive Homework & Retention Tracker",
+  oneLiner: "Daily concept micro-assessments for CBSE schools.",
+  description: "AI diagnostic companion detecting learning gaps before term exams.",
+  longDescription: "Detailed multi-paragraph description of the platform...",
+  url: "https://pulse.dextora.org", // or "#coming-soon"
+  status: "live", // "live" | "beta" | "coming-soon"
+  statusBadge: "Live Platform",
+  features: [
+    "5-minute daily diagnostic drills",
+    "Instant conceptual remediation hints",
+    "Classroom comprehension heatmap for teachers"
+  ],
+  deepFeatures: [
+    {
+      title: "Micro-Paced Retention",
+      description: "Spaced repetition algorithms tuned to school syllabi.",
+      iconName: "BrainCircuit"
+    }
+  ],
+  audience: "K-12 Students & School Teachers",
+  targetUsers: ["Grade 6-10 CBSE Students", "Science & Math Educators"],
+  icon: "GraduationCap",
+  accentColor: "#059669",
+  accentBg: "bg-emerald-500/10 dark:bg-emerald-500/15",
+  accentBorder: "border-emerald-500/30 hover:border-emerald-500",
+  stats: [
+    { value: "20,000+", label: "Active Students" },
+    { value: "98%", label: "Curriculum Accuracy" }
+  ],
+  screenshots: [],
+  highlights: ["NCERT Aligned", "DPDP Compliant"],
+  bilingualSupport: true,
+  languages: ["English", "Hindi"],
+  launchYear: "2026"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. The new product will **automatically appear** in:
+   - The Sticky Navbar "Products" dropdown
+   - The Home Page Product Showcase
+   - The `/products` directory page
+   - A dedicated dynamic detail page at `/products/dextora-pulse`
+   - The Footer product links
+   - The dynamic `/sitemap.xml`
+   - The SEO `SoftwareApplication` JSON-LD schema
+
+---
+
+## 🔗 Cross-Site Consistency: "Part of Dextora" Bar
+
+To embed the top Dextora ecosystem bar on separate product subdomains (`dextora.org`, `upscnews.dextora.org`), import or replicate the config from [`src/data/site-config.ts`](./src/data/site-config.ts):
+
+```typescript
+import { sharedSubdomainBarConfig } from "@/data/site-config";
+```
+
+Or embed [`src/components/layout/DextoraBar.tsx`](./src/components/layout/DextoraBar.tsx) as a shared component.
+
+---
+
+## 🛡️ Form Validation & Spam Protection
+
+All user forms (Contact, Careers, Newsletter) include:
+- **Client & Server-side Zod validation**
+- **Invisible Honeypot (`_gotcha`) bot traps**
+- **Pluggable email dispatch** via [`src/lib/email-service.ts`](./src/lib/email-service.ts)
+
+---
+
+## 📄 License
+© 2026 Dextora AI Technologies Private Limited. All Rights Reserved.

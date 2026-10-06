@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none">
+  <!-- Dextora Flame & Neural Core Mark -->
+  <g transform="translate(4, 4)">
+    <rect width="56" height="56" rx="14" fill="#0E2922"/>
+    <!-- Outer geometric shield -->
+    <path d="M28 8L44 17V35C44 44.5 28 51 28 51C28 51 12 44.5 12 35V17L28 8Z" stroke="#E05A38" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.4"/>
+    <!-- Inner dynamic neural sparks -->
+    <path d="M28 14L37 21V33C37 39 28 44 28 44C28 44 19 39 19 33V21L28 14Z" fill="url(#dextora-glow)" stroke="#E05A38" stroke-width="2"/>
+    <circle cx="28" cy="28" r="4.5" fill="#F8F5EE"/>
+    <path d="M28 20V23M28 33V36M20 28H23M33 28H36" stroke="#F8F5EE" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Dextora Typography -->
+  <text x="76" y="42" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" letter-spacing="-0.5" fill="currentColor">
+    Dextora
+  </text>
+  <text x="214" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#E05A38">
+    AI
+  </text>
+
+  <defs>
+    <linearGradient id="dextora-glow" x1="19" y1="14" x2="37" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E05A38"/>
+      <stop offset="1" stop-color="#C84121"/>
+    </linearGradient>
+  </defs>
+</svg>
