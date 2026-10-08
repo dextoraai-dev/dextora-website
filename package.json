@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/genai": "^2.28.0",
     "clsx": "^2.1.1",
+    "dotenv": "^18.0.6",
     "framer-motion": "^14.0.0",
     "lucide-react": "^1.52.0",
     "next": "16.3.8",
@@ -25,7 +27,21 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "description": "> **Dextora** is an AI-powered EdTech company building precision learning platforms for academic curriculum and civil services excellence in India.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dextoraai-dev/dextora-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dextoraai-dev/dextora-website/issues"
+  },
+  "homepage": "https://github.com/dextoraai-dev/dextora-website#readme"
 }

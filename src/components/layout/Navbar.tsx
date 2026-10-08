@@ -68,11 +68,10 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${
-        isScrolled
+      className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled
           ? "bg-[var(--bg-base)]/90 dark:bg-[#0C0E12]/90 backdrop-blur-md shadow-sm border-b border-[var(--border-subtle)]"
           : "bg-[var(--bg-base)] dark:bg-[#0C0E12] border-b border-transparent"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -114,17 +113,15 @@ export function Navbar() {
                 onClick={() => setProductsOpen(!productsOpen)}
                 onMouseEnter={() => setProductsOpen(true)}
                 aria-expanded={productsOpen}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname.startsWith("/products")
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname.startsWith("/products")
                     ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
                     : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
+                  }`}
               >
                 <span>{t.nav.products}</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    productsOpen ? "rotate-180 text-[var(--brand-terracotta)]" : ""
-                  }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${productsOpen ? "rotate-180 text-[var(--brand-terracotta)]" : ""
+                    }`}
                 />
               </button>
 
@@ -208,51 +205,46 @@ export function Navbar() {
             {/* Standard Nav Links */}
             <Link
               href="/about"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === "/about"
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/about"
                   ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-              }`}
+                }`}
             >
               {t.nav.about}
             </Link>
             <Link
               href="/vision"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === "/vision"
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/vision"
                   ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-              }`}
+                }`}
             >
               {t.nav.vision}
             </Link>
             <Link
               href="/blog"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname.startsWith("/blog")
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname.startsWith("/blog")
                   ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-              }`}
+                }`}
             >
               {t.nav.blog}
             </Link>
             <Link
               href="/careers"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === "/careers"
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/careers"
                   ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-              }`}
+                }`}
             >
               {t.nav.careers}
             </Link>
             <Link
               href="/contact"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === "/contact"
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/contact"
                   ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-              }`}
+                }`}
             >
               {t.nav.contact}
             </Link>

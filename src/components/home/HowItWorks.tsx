@@ -80,11 +80,10 @@ export function HowItWorks() {
               <div
                 key={idx}
                 onClick={() => setActiveStep(idx)}
-                className={`cursor-pointer rounded-2xl p-8 border transition-all duration-300 relative flex flex-col justify-between ${
-                  isSelected
+                className={`cursor-pointer rounded-2xl p-8 border transition-all duration-300 relative flex flex-col justify-between ${isSelected
                     ? "bg-[var(--bg-surface)] dark:bg-[#141720] border-[var(--brand-terracotta)] shadow-xl ring-2 ring-[var(--brand-terracotta)]/20 -translate-y-1"
                     : "bg-[var(--bg-surface)] dark:bg-[#141720] border-[var(--border-subtle)] hover:border-[var(--border-strong)] hover:shadow"
-                }`}
+                  }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">

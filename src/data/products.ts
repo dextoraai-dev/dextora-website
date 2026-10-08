@@ -11,6 +11,11 @@ export interface ProductStat {
   label: string;
 }
 
+export interface ProductImage {
+  src: string;
+  alt: string;
+}
+
 export interface Product {
   slug: string;
   name: string;
@@ -22,6 +27,7 @@ export interface Product {
   url: string;
   status: ProductStatus;
   statusBadge: string;
+  image?: ProductImage;
   features: string[];
   deepFeatures: ProductFeature[];
   audience: string;
@@ -53,6 +59,10 @@ export const products: Product[] = [
     url: "https://dextora.org",
     status: "live",
     statusBadge: "Live Platform",
+    image: {
+      src: "/images/generated/product-dextora-learn.webp",
+      alt: "Dextora Learn personalized AI learning and concept mastery interface",
+    },
     features: [
       "Adaptive Chapter Pacing tailored to individual student speed",
       "Instant Socratic Hint Engine for step-by-step problem resolution",
@@ -125,6 +135,10 @@ export const products: Product[] = [
     url: "https://upscnews.dextora.org",
     status: "live",
     statusBadge: "Live Platform",
+    image: {
+      src: "/images/generated/product-dhyeya-ias.webp",
+      alt: "Dhyeya IAS AI current affairs and UPSC Mains evaluation interface",
+    },
     features: [
       "GS Syllabus-Mapped Daily News & Editorial Syntheses",
       "Instant Prelims MCQ Generation with deep contextual rationale",

@@ -62,10 +62,10 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: "/brand/dextora-og.png",
+        url: "/images/generated/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Dextora AI — Educational Intelligence Platform",
+        alt: "Dextora AI — Educational Intelligence Platform for India",
       },
     ],
   },
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — AI-Powered Learning for Every Learner in India`,
     description: siteConfig.description,
     creator: "@dextora_ai",
-    images: ["/brand/dextora-og.png"],
+    images: ["/images/generated/og-image.png"],
   },
   robots: {
     index: true,

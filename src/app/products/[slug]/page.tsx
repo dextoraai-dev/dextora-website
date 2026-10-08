@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { products, getProductBySlug } from "@/data/products";
@@ -49,6 +50,8 @@ export async function generateMetadata({
     };
   }
 
+  const ogImage = product.image ? product.image.src : "/images/generated/og-image.png";
+
   return {
     title: `${product.name} — ${product.tagline}`,
     description: product.description,
@@ -59,6 +62,20 @@ export async function generateMetadata({
       title: `${product.name} | Dextora AI`,
       description: product.description,
       url: `/products/${product.slug}`,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: product.image?.alt || `${product.name} by Dextora AI`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} | Dextora AI`,
+      description: product.description,
+      images: [ogImage],
     },
   };
 }
@@ -122,63 +139,90 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
           <span>Back to all products</span>
         </Link>
 
-        {/* Hero Banner */}
-        <div className="rounded-3xl bg-[var(--bg-surface)] dark:bg-[#141720] border border-[var(--border-subtle)] p-8 sm:p-12 lg:p-16 shadow-xl mb-16 relative overflow-hidden">
-          <div className="max-w-3xl space-y-6">
-            <div className="flex items-center gap-3">
-              {isLive ? (
-                <Badge variant="emerald">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1" />
-                  Live Platform
-                </Badge>
-              ) : (
-                <Badge variant="indigo">In Active Development</Badge>
-              )}
-              <span className="text-xs text-[var(--text-muted)] font-mono">
-                Launch Year: {product.launchYear}
-              </span>
-            </div>
+        {/* Hero Banner with Product Image */}
+        <div className="rounded-3xl bg-[var(--bg-surface)] dark:bg-[#141720] border border-[var(--border-subtle)] p-8 sm:p-10 lg:p-12 shadow-xl mb-16 relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7 space-y-6">
+              <div className="flex items-center gap-3">
+                {isLive ? (
+                  <Badge variant="emerald">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1" />
+                    Live Platform
+                  </Badge>
+                ) : (
+                  <Badge variant="indigo">In Active Development</Badge>
+                )}
+                <span className="text-xs text-[var(--text-muted)] font-mono">
+                  Launch Year: {product.launchYear}
+                </span>
+              </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[var(--text-primary)] tracking-tight">
-              {product.name}
-            </h1>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[var(--text-primary)] tracking-tight">
+                {product.name}
+              </h1>
 
-            <p className="text-xl sm:text-2xl text-[var(--brand-terracotta)] font-medium font-serif italic">
-              &quot;{product.tagline}&quot;
-            </p>
+              <p className="text-lg sm:text-xl text-[var(--brand-terracotta)] font-medium font-serif italic">
+                &quot;{product.tagline}&quot;
+              </p>
 
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
-              {product.longDescription}
-            </p>
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+                {product.longDescription}
+              </p>
 
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 pt-4">
-              {isLive ? (
-                <a
-                  href={product.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#0E2922] text-[#F8F5EE] hover:bg-[#18453A] font-bold text-base shadow-md transition-all hover:scale-105"
-                >
-                  <span>Launch {product.name}</span>
-                  <ExternalLink className="w-4 h-4 text-[#E05A38]" />
-                </a>
-              ) : (
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                {isLive ? (
+                  <a
+                    href={product.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#0E2922] text-[#F8F5EE] hover:bg-[#18453A] font-bold text-sm shadow-md transition-all hover:scale-105"
+                  >
+                    <span>Launch {product.name}</span>
+                    <ExternalLink className="w-4 h-4 text-[#E05A38]" />
+                  </a>
+                ) : (
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#0E2922] text-[#F8F5EE] hover:bg-[#18453A] font-bold text-sm shadow-md transition-all"
+                  >
+                    <span>Request Institutional Beta Access</span>
+                    <ArrowRight className="w-4 h-4 text-[#E05A38]" />
+                  </Link>
+                )}
+
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#0E2922] text-[#F8F5EE] hover:bg-[#18453A] font-bold text-base shadow-md transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[var(--bg-subtle)] hover:bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-primary)] font-semibold text-sm transition-colors"
                 >
-                  <span>Request Institutional Beta Access</span>
-                  <ArrowRight className="w-4 h-4 text-[#E05A38]" />
+                  <span>Inquire for Institution</span>
                 </Link>
-              )}
+              </div>
+            </div>
 
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-[var(--bg-subtle)] hover:bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-primary)] font-semibold text-sm transition-colors"
-              >
-                <span>Inquire for Institution</span>
-              </Link>
+            {/* Product Hero Image / Fallback */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-[var(--bg-subtle)] border border-[var(--border-strong)] shadow-lg">
+                {product.image ? (
+                  <Image
+                    src={product.image.src}
+                    alt={product.image.alt}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className={`w-full h-full ${product.accentBg} flex flex-col items-center justify-center text-center p-8 space-y-3`}>
+                    <div className="p-4 rounded-2xl bg-[var(--bg-surface)] dark:bg-[#141720] shadow-sm border border-[var(--border-subtle)]">
+                      <Sparkles className="w-8 h-8 text-[var(--brand-terracotta)]" />
+                    </div>
+                    <span className="text-sm font-semibold text-[var(--text-muted)]">
+                      Interface in Active Development
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

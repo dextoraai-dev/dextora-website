@@ -69,7 +69,10 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-h1, h2, h3, .font-serif-heading {
+h1,
+h2,
+h3,
+.font-serif-heading {
   font-family: var(--font-serif);
   letter-spacing: -0.02em;
 }

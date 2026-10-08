@@ -74,9 +74,8 @@ export function NewsletterForm({ variant = "inline", className }: NewsletterForm
           />
 
           <div
-            className={`flex ${
-              variant === "stacked" ? "flex-col" : "flex-col sm:flex-row"
-            } gap-2.5`}
+            className={`flex ${variant === "stacked" ? "flex-col" : "flex-col sm:flex-row"
+              } gap-2.5`}
           >
             <input
               type="email"

@@ -95,11 +95,10 @@ export function TestimonialsCarousel() {
               <button
                 key={t.id}
                 onClick={() => setCurrentIndex(idx)}
-                className={`px-3 py-1 text-xs rounded-full border transition-all ${
-                  currentIndex === idx
+                className={`px-3 py-1 text-xs rounded-full border transition-all ${currentIndex === idx
                     ? "bg-[#0E2922] text-[#F8F5EE] border-[#0E2922] font-semibold shadow-sm"
                     : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:bg-[var(--bg-subtle)]"
-                }`}
+                  }`}
               >
                 {t.product}
               </button>

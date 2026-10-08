@@ -11,6 +11,7 @@ export function generateOrganizationSchema() {
     legalName: siteConfig.legalName,
     url: siteConfig.url,
     logo: `${siteConfig.url}/brand/dextora-logo.svg`,
+    image: `${siteConfig.url}/images/generated/og-image.png`,
     description: siteConfig.description,
     foundingLocation: {
       "@type": "Place",
@@ -58,6 +59,9 @@ export function generateProductSchema(product: Product) {
     description: product.description,
     applicationCategory: "EducationalApplication",
     operatingSystem: "Web, Mobile (All modern browsers)",
+    image: product.image
+      ? `${siteConfig.url}${product.image.src}`
+      : `${siteConfig.url}/images/generated/og-image.png`,
     offers: {
       "@type": "Offer",
       price: "0",

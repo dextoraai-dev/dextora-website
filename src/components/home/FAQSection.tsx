@@ -54,11 +54,10 @@ export function FAQSection() {
             <button
               key={cat.key}
               onClick={() => setSelectedCategory(cat.key)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                selectedCategory === cat.key
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${selectedCategory === cat.key
                   ? "bg-[#0E2922] text-[#F8F5EE] shadow-sm"
                   : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-subtle)] hover:bg-[var(--bg-subtle)]"
-              }`}
+                }`}
             >
               {cat.label}
             </button>
@@ -86,9 +85,8 @@ export function FAQSection() {
                   </span>
                   <div className="p-1 rounded-full bg-[var(--bg-subtle)] text-[var(--text-secondary)] shrink-0">
                     <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-200 ${
-                        isOpen ? "rotate-180 text-[var(--brand-terracotta)]" : ""
-                      }`}
+                      className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180 text-[var(--brand-terracotta)]" : ""
+                        }`}
                     />
                   </div>
                 </button>

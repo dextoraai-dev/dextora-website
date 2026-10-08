@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/data/products";
 import { trackEvent } from "@/lib/analytics";
@@ -46,17 +47,41 @@ export function ProductCard({ product, layout = "grid" }: ProductCardProps) {
 
   return (
     <div
-      className={`group relative rounded-2xl bg-[var(--bg-surface)] dark:bg-[#141720] border ${product.accentBorder} p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
+      className={`group relative rounded-2xl bg-[var(--bg-surface)] dark:bg-[#141720] border ${product.accentBorder} p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
     >
-      {/* Top Header */}
+      {/* Top Section */}
       <div>
-        <div className="flex items-start justify-between gap-4 mb-5">
-          <div className="flex items-center gap-3.5">
-            <div className={`p-3 rounded-xl ${product.accentBg} shrink-0`}>
+        {/* Product Visual Image Preview / Graceful Fallback */}
+        <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-[var(--bg-subtle)] border border-[var(--border-subtle)] mb-5 group-hover:border-[var(--border-strong)] transition-all">
+          {product.image ? (
+            <Image
+              src={product.image.src}
+              alt={product.image.alt}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <div className={`w-full h-full ${product.accentBg} flex flex-col items-center justify-center text-center p-6 space-y-2`}>
+              <div className="p-3.5 rounded-2xl bg-[var(--bg-surface)] dark:bg-[#141720] shadow-sm border border-[var(--border-subtle)]">
+                {getProductIcon(product.icon)}
+              </div>
+              <span className="text-xs font-semibold text-[var(--text-muted)]">
+                Interface Preview in R&D
+              </span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        </div>
+
+        {/* Top Header */}
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-xl ${product.accentBg} shrink-0`}>
               {getProductIcon(product.icon)}
             </div>
             <div>
-              <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--brand-terracotta)] transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--brand-terracotta)] transition-colors">
                 {product.name}
               </h3>
               <p className="text-xs font-semibold text-[var(--brand-terracotta)]">
@@ -65,14 +90,14 @@ export function ProductCard({ product, layout = "grid" }: ProductCardProps) {
             </div>
           </div>
 
-          <div>
+          <div className="shrink-0">
             {isLive ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Live Platform
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live
               </span>
             ) : (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-800">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-800">
                 Coming Soon
               </span>
             )}
@@ -80,7 +105,7 @@ export function ProductCard({ product, layout = "grid" }: ProductCardProps) {
         </div>
 
         {/* Description */}
-        <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-6">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
           {product.description}
         </p>
 
