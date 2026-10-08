@@ -18,20 +18,28 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden hero-glow">
-      {/* Background Image with Responsive Object-Position */}
-      <div className="absolute inset-0 z-0 bg-[var(--bg-base)]">
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0 bg-[var(--bg-base)] transition-colors duration-300">
         <Image
           src="/images/generated/hero.webp"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[80%_center] sm:object-[75%_center] md:object-[70%_center] lg:object-right select-none pointer-events-none"
+          className="object-cover object-[82%_center] sm:object-[78%_center] md:object-[72%_center] lg:object-right select-none pointer-events-none transition-opacity duration-300 opacity-100 dark:opacity-85"
         />
 
-        {/* Subtle Gradient Overlays for Light & Dark themes guaranteeing WCAG AA contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#F8F5EE]/95 via-[#F8F5EE]/85 to-[#F8F5EE]/25 dark:from-[#0C0E12]/95 dark:via-[#0C0E12]/85 dark:to-[#0C0E12]/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-transparent to-transparent lg:hidden" />
+        {/* Ambient Warm Pedagogical Light Glow on Illustration (Light Mode) */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_75%_45%,rgba(217,83,47,0.06),transparent_70%)] dark:hidden pointer-events-none" />
+
+        {/* Horizontal Smooth Feathering Gradient: Solid behind left text column, transitioning softly into pure transparent on right illustration */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-base)] via-[var(--bg-base)]/95 via-30% sm:via-[var(--bg-base)]/75 sm:via-45% to-transparent to-75% transition-colors duration-300" />
+        
+        {/* Bottom smooth edge blend into next section */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)]/60 to-transparent transition-colors duration-300" />
+
+        {/* Mobile & Tablet vertical gradient protection for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)]/50 to-transparent lg:hidden transition-colors duration-300" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-16 sm:py-24 lg:py-32 w-full">
