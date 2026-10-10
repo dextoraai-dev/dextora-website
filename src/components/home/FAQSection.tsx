@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { faqs, FAQItem } from "@/data/faq";
+import { faqs } from "@/data/faq";
 import { generateFAQSchema } from "@/lib/seo";
 import { SectionHeading } from "@/components/shared/SectionHeading";
-import { ChevronDown, HelpCircle, MessageSquare } from "lucide-react";
+import { ChevronDown, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
 export function FAQSection() {

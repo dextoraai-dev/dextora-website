@@ -41,3 +41,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# remotion video studio
+/video/node_modules
+/video/out
+/video/.cache
+public/cinematic/*/raw.mp4
+public/cinematic/*/start.png
+public/cinematic/*/end.png
+

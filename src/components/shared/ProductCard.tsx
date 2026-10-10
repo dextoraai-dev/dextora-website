@@ -21,7 +21,7 @@ interface ProductCardProps {
   layout?: "grid" | "featured";
 }
 
-export function ProductCard({ product, layout = "grid" }: ProductCardProps) {
+export function ProductCard({ product, layout: _layout = "grid" }: ProductCardProps) {
   const getProductIcon = (iconName: string) => {
     switch (iconName) {
       case "GraduationCap":

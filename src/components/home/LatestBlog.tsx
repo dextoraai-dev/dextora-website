@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getLatestBlogPosts } from "@/data/blog";
 import { formatDate } from "@/lib/utils";
 import { SectionHeading } from "@/components/shared/SectionHeading";
-import { ArrowRight, Clock, User, Sparkles } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 
 export function LatestBlog() {
   const posts = getLatestBlogPosts(3);

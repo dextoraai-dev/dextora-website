@@ -7,9 +7,7 @@ import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
 import {
-  Sparkles,
   ArrowRight,
-  CheckCircle2,
   ExternalLink,
   Send,
 } from "lucide-react";
@@ -181,7 +179,7 @@ export function Footer() {
                 <Link href="/careers" className="hover:text-white transition-colors flex items-center gap-1.5">
                   <span>Careers</span>
                   <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-900/80 text-emerald-300 font-semibold">
-                    We're hiring
+                    We&apos;re hiring
                   </span>
                 </Link>
               </li>

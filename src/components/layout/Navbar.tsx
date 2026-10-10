@@ -27,11 +27,12 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close menus on route change
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setProductsOpen(false);
     setMobileMenuOpen(false);
-  }, [pathname]);
+  }
 
   // Scroll detection for navbar shadow/border
   useEffect(() => {
@@ -137,6 +138,7 @@ export function Navbar() {
                     </span>
                     <Link
                       href="/products"
+                      onClick={() => setProductsOpen(false)}
                       className="text-xs font-medium text-[var(--brand-terracotta)] hover:underline flex items-center gap-1"
                     >
                       View all <ArrowRight className="w-3 h-3" />
@@ -157,6 +159,7 @@ export function Navbar() {
                             <div className="flex items-center justify-between gap-2">
                               <Link
                                 href={`/products/${p.slug}`}
+                                onClick={() => setProductsOpen(false)}
                                 className="font-semibold text-sm text-[var(--text-primary)] group-hover:text-[var(--brand-terracotta)] transition-colors truncate"
                               >
                                 {p.name}
@@ -177,6 +180,7 @@ export function Navbar() {
                             <div className="mt-1.5 flex items-center gap-3 text-[11px]">
                               <Link
                                 href={`/products/${p.slug}`}
+                                onClick={() => setProductsOpen(false)}
                                 className="text-[var(--text-muted)] hover:text-[var(--brand-terracotta)] font-medium"
                               >
                                 Overview
@@ -291,6 +295,7 @@ export function Navbar() {
                 <Link
                   key={p.slug}
                   href={`/products/${p.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-between p-2 rounded-lg hover:bg-[var(--bg-subtle)]"
                 >
                   <div className="flex items-center gap-2.5">
@@ -313,36 +318,42 @@ export function Navbar() {
           <div className="border-t border-[var(--border-subtle)] pt-3 space-y-1">
             <Link
               href="/products"
+              onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               All Products Directory
             </Link>
             <Link
               href="/about"
+              onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               {t.nav.about}
             </Link>
             <Link
               href="/vision"
+              onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               {t.nav.vision}
             </Link>
             <Link
               href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               {t.nav.blog}
             </Link>
             <Link
               href="/careers"
+              onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               {t.nav.careers}
             </Link>
             <Link
               href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               {t.nav.contact}
@@ -352,6 +363,7 @@ export function Navbar() {
           <div className="pt-2">
             <Link
               href="/products"
+              onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#0E2922] text-[#F8F5EE] text-sm font-semibold shadow"
             >
               <span>{t.nav.exploreProducts}</span>

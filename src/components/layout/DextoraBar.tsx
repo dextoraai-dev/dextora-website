@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { sharedSubdomainBarConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import { Sparkles, ExternalLink } from "lucide-react";

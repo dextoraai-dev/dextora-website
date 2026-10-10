@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { ArrowRight, Sparkles, ShieldCheck, GraduationCap } from "lucide-react";
+import { ArrowRight, Sparkles, GraduationCap } from "lucide-react";
 
 export function CTASection() {
   const { t } = useI18n();

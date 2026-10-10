@@ -163,5 +163,52 @@ All user forms (Contact, Careers, Newsletter) include:
 
 ---
 
+## 🎨 3D Visual Explainers & Remotion Video Studio
+
+Dextora explains pedagogical concepts through interactive procedural 3D visuals and code-generated Remotion videos, avoiding walls of text.
+
+### 1. Procedural 3D Objects (`src/components/3d/objects/`)
+- **`KnowledgeBook.tsx`**: Layered pages fanning open and releasing floating glowing chapter tokens (Dextora Learn &bull; Emerald `#059669`).
+- **`NewsStack.tsx`**: Translucent news slates peeling off into question bubbles and score telemetry (Dhyeya IAS &bull; Amber `#D97706`).
+- **`AnswerSheet.tsx`**: Handwritten paper sheet scanned by a sweeping laser plane with rubric highlights and score badges (Mains Evaluation &bull; Terracotta `#E05A38`).
+- **`CampusGrid.tsx`**: Modular architectural campus blocks assembling dynamically with live telemetry pulses (Dextora Campus &bull; Indigo `#6366F1`).
+- **`DataFlowNetwork.tsx`**: Cognitive nucleus with satellite nodes and traveling data light pulses (Shared AI Engine).
+
+*All 3D objects feature PBR materials, dark/light theme awareness, gentle idle float, progress scrubbing (`progress: 0..1`), and full WebGL resource disposal on unmount.*
+
+### 2. Scroll-Driven 3D Explainers (`src/components/explainers/`)
+- **`ScrollExplainer.tsx`**: Sticky interactive pedagogical explainer cross-fading through learning stages alongside synchronized 3D object state animations.
+- **`Product3DGallery.tsx`**: Keyboard-accessible (`←`/`→`), interactive 3D model viewer with screen-reader DOM descriptions and animation scrubbers.
+
+### 3. Remotion Video Studio (`/video`)
+An isolated Remotion studio generating high-definition, silent kinetic typography and 3D videos into `public/videos/`.
+
+#### Running the Video Studio:
+```bash
+# Open Remotion Studio Preview
+cd video
+npm run preview
+
+# Render all video compositions to public/videos/
+npm run render:all
+```
+
+#### Re-generating Optimized Videos via FFmpeg:
+```bash
+node scripts/build-optimized-videos.mjs
+```
+
+#### Outputs generated:
+- `.mp4` (1080p H.264, WebM fallback VP9, and 720p mobile variants)
+- `.jpg` high-quality poster stills
+- `.vtt` WebVTT accessibility subtitle tracks
+
+### 4. Accessible Video Components (`src/components/shared/`)
+- **`VideoPlayer.tsx`**: Supports ambient Hero background mode and full accessible interactive player with keyboard controls, caption toggles, fullscreen, and `prefers-reduced-motion` compliance.
+- **`VideoModal.tsx`**: "Watch the Story" modal dialog on the home page.
+- **`VideoObject` JSON-LD**: Generated in `src/lib/seo.ts` for search engine rich snippets.
+
+---
+
 ## 📄 License
 © 2026 Dextora AI Technologies Private Limited. All Rights Reserved.

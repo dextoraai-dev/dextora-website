@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/shared/ProductCard";
+import { Product3DGallery } from "@/components/explainers/Product3DGallery";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Badge } from "@/components/shared/Badge";
 import {
@@ -45,6 +46,11 @@ export default function ProductsPage() {
           {products.map((product) => (
             <ProductCard key={product.slug} product={product} />
           ))}
+        </div>
+
+        {/* Interactive 3D Pedagogical Gallery */}
+        <div className="mt-20">
+          <Product3DGallery />
         </div>
 
         {/* Comparison Matrix / Architecture Highlights */}

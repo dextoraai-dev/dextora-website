@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useCallback, useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark";
 
@@ -14,55 +14,78 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = "dextora_theme_preference";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+let currentTheme: Theme = "light";
+const listeners = new Set<() => void>();
 
-  useEffect(() => {
-    setMounted(true);
-    try {
-      const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme;
-      if (saved === "light" || saved === "dark") {
-        setThemeState(saved);
-        applyTheme(saved);
-      } else {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const initial = prefersDark ? "dark" : "light";
-        setThemeState(initial);
-        applyTheme(initial);
-      }
-    } catch {
-      applyTheme("light");
-    }
-  }, []);
+function notify() {
+  listeners.forEach((listener) => listener());
+}
 
-  const applyTheme = (t: Theme) => {
-    if (typeof document !== "undefined") {
-      const root = document.documentElement;
-      if (t === "dark") {
-        root.classList.add("dark");
-        root.style.colorScheme = "dark";
-      } else {
-        root.classList.remove("dark");
-        root.style.colorScheme = "light";
-      }
+function applyThemeToDOM(t: Theme) {
+  if (typeof document !== "undefined") {
+    const root = document.documentElement;
+    if (t === "dark") {
+      root.classList.add("dark");
+      root.style.colorScheme = "dark";
+    } else {
+      root.classList.remove("dark");
+      root.style.colorScheme = "light";
     }
+  }
+}
+
+function subscribeTheme(callback: () => void) {
+  listeners.add(callback);
+  return () => {
+    listeners.delete(callback);
   };
+}
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    applyTheme(newTheme);
+function getThemeSnapshot(): Theme {
+  if (typeof window === "undefined") return "light";
+  try {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme;
+    if (saved === "light" || saved === "dark") {
+      currentTheme = saved;
+      applyThemeToDOM(saved);
+      return saved;
+    }
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initial = prefersDark ? "dark" : "light";
+    currentTheme = initial;
+    applyThemeToDOM(initial);
+    return initial;
+  } catch {
+    applyThemeToDOM("light");
+  }
+  return currentTheme;
+}
+
+function getThemeServerSnapshot(): Theme {
+  return "light";
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const theme = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    getThemeServerSnapshot
+  );
+
+  const setTheme = useCallback((newTheme: Theme) => {
+    currentTheme = newTheme;
+    applyThemeToDOM(newTheme);
     try {
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
     } catch {
       // Storage unavailable
     }
-  };
+    notify();
+  }, []);
 
-  const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
-    setTheme(next);
-  };
+  const toggleTheme = useCallback(() => {
+    setTheme(currentTheme === "light" ? "dark" : "light");
+  }, [setTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>

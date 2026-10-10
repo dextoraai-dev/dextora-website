@@ -42,6 +42,11 @@ export interface Product {
   bilingualSupport: boolean;
   languages: string[];
   launchYear: string;
+  nameHi?: string;
+  taglineHi?: string;
+  oneLinerHi?: string;
+  featuresHi?: string[];
+  statusBadgeHi?: string;
 }
 
 // Single Source of Truth for all Dextora Family Products
@@ -121,6 +126,15 @@ export const products: Product[] = [
     bilingualSupport: true,
     languages: ["English", "Hindi"],
     launchYear: "2024",
+    nameHi: "डेक्सटोरा लर्न",
+    taglineHi: "हर अध्याय सीखें, अपनी गति से।",
+    oneLinerHi: "स्कूली पाठ्यक्रम के लिए व्यक्तिगत, अध्याय-वार AI अध्ययन प्रणाली।",
+    featuresHi: [
+      "व्यक्तिगत छात्र की गति के अनुकूल अनुकूली अध्याय गति",
+      "चरण-दर-चरण समस्या समाधान के लिए त्वरित सुकराती संकेत",
+      "सटीक ज्ञान अंतराल विश्लेषण के साथ निरंतर निदानात्मक परीक्षण",
+    ],
+    statusBadgeHi: "लाइव प्लेटफ़ॉर्म",
   },
   {
     slug: "dhyeya-ias",
@@ -197,6 +211,15 @@ export const products: Product[] = [
     bilingualSupport: true,
     languages: ["Hindi", "English"],
     launchYear: "2024",
+    nameHi: "ध्येय IAS समसामयिकी",
+    taglineHi: "UPSC और UPPCS के लिए AI-संचालित समसामयिकी।",
+    oneLinerHi: "परीक्षा-उन्मुख समाचार, त्वरित MCQs और हिंदी व अंग्रेजी में AI मुख्य परीक्षा उत्तर मूल्यांकन।",
+    featuresHi: [
+      "GS पाठ्यक्रम से मैप किए गए दैनिक समाचार और संपादकीय सार",
+      "विस्तृत व्याख्या के साथ त्वरित प्रीलिम्स MCQ अभ्यास",
+      "रूब्रिक-आधारित स्कोरिंग के साथ AI मेन्स उत्तर पुस्तिका मूल्यांकन",
+    ],
+    statusBadgeHi: "लाइव प्लेटफ़ॉर्म",
   },
   {
     slug: "dextora-campus",
@@ -260,6 +283,15 @@ export const products: Product[] = [
     bilingualSupport: true,
     languages: ["English", "Hindi", "Regional Languages (Roadmap)"],
     launchYear: "2026",
+    nameHi: "डेक्सटोरा कैंपस",
+    taglineHi: "AI-संवर्धित कक्षाओं के लिए संचालन प्रणाली।",
+    oneLinerHi: "स्कूलों, कॉलेजों और कोचिंग संस्थानों के लिए संस्थागत AI अवसंरचना।",
+    featuresHi: [
+      "ब्लूम्स टैक्सोनॉमी पर आधारित स्वचालित परीक्षा एवं वर्कशीट लेखक",
+      "पाठ योजना और अंतर-स्तरीय शिक्षण के लिए शिक्षक कोपायलट",
+      "संस्थागत समूह प्रदर्शन विश्लेषण और सक्रिय शैक्षणिक चेतावनियाँ",
+    ],
+    statusBadgeHi: "विकासाधीन",
   },
 ];
 

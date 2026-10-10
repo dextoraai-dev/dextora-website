@@ -105,6 +105,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${newsreader.variable} ${plusJakartaSans.variable}`}
     >

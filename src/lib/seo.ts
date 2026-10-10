@@ -117,3 +117,44 @@ export function generateBlogPostingSchema(post: BlogPost) {
     },
   };
 }
+
+export interface VideoMetadata {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate: string;
+  duration: string; // ISO 8601 duration, e.g. "PT35S"
+  contentUrl: string;
+  embedUrl?: string;
+}
+
+export function generateVideoSchema(video: VideoMetadata) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: video.name,
+    description: video.description,
+    thumbnailUrl: video.thumbnailUrl.startsWith("http")
+      ? video.thumbnailUrl
+      : `${siteConfig.url}${video.thumbnailUrl}`,
+    uploadDate: video.uploadDate,
+    duration: video.duration,
+    contentUrl: video.contentUrl.startsWith("http")
+      ? video.contentUrl
+      : `${siteConfig.url}${video.contentUrl}`,
+    embedUrl: video.embedUrl
+      ? video.embedUrl.startsWith("http")
+        ? video.embedUrl
+        : `${siteConfig.url}${video.embedUrl}`
+      : undefined,
+    publisher: {
+      "@type": "EducationalOrganization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.url}/brand/dextora-logo.svg`,
+      },
+    },
+  };
+}
+

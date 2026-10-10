@@ -4,7 +4,14 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { products, getProductBySlug } from "@/data/products";
-import { generateProductSchema } from "@/lib/seo";
+import {
+  dhyeyaIasExplainer,
+  dextoraLearnExplainer,
+  dextoraCampusExplainer,
+} from "@/data/explainers";
+import { ScrollExplainer } from "@/components/explainers/ScrollExplainer";
+import { VideoPlayer } from "@/components/shared/VideoPlayer";
+import { generateProductSchema, generateVideoSchema } from "@/lib/seo";
 import { Badge } from "@/components/shared/Badge";
 import {
   GraduationCap,
@@ -242,6 +249,23 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
           ))}
         </div>
 
+        {/* Interactive 3D Pedagogical Explainer */}
+        {product.slug === "dhyeya-ias" && (
+          <div className="mb-20">
+            <ScrollExplainer data={dhyeyaIasExplainer} />
+          </div>
+        )}
+        {product.slug === "dextora-learn" && (
+          <div className="mb-20">
+            <ScrollExplainer data={dextoraLearnExplainer} />
+          </div>
+        )}
+        {product.slug === "dextora-campus" && (
+          <div className="mb-20">
+            <ScrollExplainer data={dextoraCampusExplainer} />
+          </div>
+        )}
+
         {/* Deep Capabilities Grid */}
         <div className="mb-16">
           <div className="max-w-2xl mb-10">
@@ -270,6 +294,50 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Product Explainer Video Section */}
+        <div className="mb-16 p-8 sm:p-12 rounded-3xl bg-[var(--bg-surface)] dark:bg-[#141720] border border-[var(--border-subtle)] shadow-xl">
+          <div className="max-w-2xl mb-8">
+            <Badge variant="terracotta" className="mb-2">
+              Video Walkthrough
+            </Badge>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
+              Watch {product.name} in Action
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)] mt-2">
+              A high-definition visual breakdown of how {product.name} personalizes and elevates learning outcomes.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <VideoPlayer
+              srcName={
+                product.slug === "dhyeya-ias"
+                  ? "dhyeya-ias-explainer"
+                  : product.slug === "dextora-learn"
+                  ? "dextora-learn-explainer"
+                  : "dextora-explainer"
+              }
+              title={`${product.name} Explainer Video`}
+              poster={`/videos/${
+                product.slug === "dhyeya-ias"
+                  ? "dhyeya-ias-explainer-poster.jpg"
+                  : product.slug === "dextora-learn"
+                  ? "dextora-learn-explainer-poster.jpg"
+                  : "dextora-explainer-poster.jpg"
+              }`}
+              captionSrc={`/videos/${
+                product.slug === "dhyeya-ias"
+                  ? "dhyeya-ias-explainer.vtt"
+                  : product.slug === "dextora-learn"
+                  ? "dextora-learn-explainer.vtt"
+                  : "dextora-explainer.vtt"
+              }`}
+              mode="interactive"
+              aspectRatio="16/9"
+            />
           </div>
         </div>
 

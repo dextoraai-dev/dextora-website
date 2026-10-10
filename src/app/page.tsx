@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
+import { CinematicProducts } from "@/components/home/CinematicProducts";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { WhyDextora } from "@/components/home/WhyDextora";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -24,6 +25,9 @@ export default function HomePage() {
     <div className="w-full">
       {/* 2. Hero Section */}
       <Hero />
+
+      {/* 2.5. Cinematic Product Journey Scroll Stage */}
+      <CinematicProducts />
 
       {/* 3. Product Showcase */}
       <ProductShowcase />
