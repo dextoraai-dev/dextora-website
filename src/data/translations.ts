@@ -35,6 +35,12 @@ export interface TranslationDictionary {
     live: string;
     comingSoon: string;
     audienceLabel: string;
+    deepDive: string;
+    chapterEyebrows: {
+      "dextora-learn": string;
+      "dhyeya-ias": string;
+      "dextora-campus": string;
+    };
   };
   whyDextora: {
     badge: string;
@@ -108,6 +114,12 @@ export const translations: Record<Locale, TranslationDictionary> = {
       live: "Live Platform",
       comingSoon: "Coming Soon",
       audienceLabel: "Target Audience",
+      deepDive: "Deep Dive",
+      chapterEyebrows: {
+        "dextora-learn": "01 · LEARN EVERY CHAPTER",
+        "dhyeya-ias": "02 · SYNTHESIZE CURRENT AFFAIRS",
+        "dextora-campus": "03 · OPERATE THE CAMPUS",
+      },
     },
     whyDextora: {
       badge: "The Dextora Standard",
@@ -183,6 +195,12 @@ export const translations: Record<Locale, TranslationDictionary> = {
       live: "लाइव प्लेटफ़ॉर्म",
       comingSoon: "शीघ्र उपलब्ध",
       audienceLabel: "लक्षित शिक्षार्थी",
+      deepDive: "विस्तार से",
+      chapterEyebrows: {
+        "dextora-learn": "01 · हर अध्याय सीखें",
+        "dhyeya-ias": "02 · समसामयिकी विश्लेषण",
+        "dextora-campus": "03 · संस्थागत संचालन",
+      },
     },
     whyDextora: {
       badge: "डेक्सटोरा मानक",

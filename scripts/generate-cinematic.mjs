@@ -17,7 +17,7 @@ const DIORAMA_STYLE =
     "PBR materials, pastel palette of warm cream, soft sage and one accent colour, " +
     "tiny glass bubbles and a thin copper ring floating around it, seamless pale " +
     "cream-to-blush gradient background, soft studio lighting, subject centred and " +
-    "small in frame with lots of empty space, 16:9, ultra-detailed. No text, no " +
+    "filling about 90 percent of the frame, 16:9, ultra-detailed. No text, no " +
     "logos, no watermarks, no people.";
 
 const SCENE_STYLE =

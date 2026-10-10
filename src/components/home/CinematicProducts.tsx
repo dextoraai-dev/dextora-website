@@ -12,14 +12,8 @@ import Link from "next/link";
 import { products, Product } from "@/data/products";
 import { useI18n } from "@/lib/i18n";
 import { FrameSequenceCanvas } from "./FrameSequenceCanvas";
-import {
-  ArrowRight,
-  ExternalLink,
-  CheckCircle2,
-  Sparkles,
-  ChevronRight,
-  RotateCw,
-} from "lucide-react";
+import { JourneyText } from "./JourneyText";
+import { Sparkles, ArrowRight, ChevronRight, CheckCircle2 } from "lucide-react";
 
 // Safe client-side reduced-motion listener
 function subscribeReducedMotion(callback: () => void) {
@@ -42,21 +36,119 @@ function getReducedMotionServerSnapshot() {
 
 const CHAPTER_SLUGS = ["dextora-learn", "dhyeya-ias", "dextora-campus"];
 
-const CHAPTER_EYEBROWS: Record<string, { en: string; hi: string }> = {
-  "dextora-learn": {
-    en: "01 · LEARN EVERY CHAPTER",
-    hi: "01 · हर अध्याय सीखें",
-  },
-  "dhyeya-ias": {
-    en: "02 · SYNTHESIZE CURRENT AFFAIRS",
-    hi: "02 · समसामयिकी विश्लेषण",
-  },
-  "dextora-campus": {
-    en: "03 · OPERATE THE CAMPUS",
-    hi: "03 · संस्थागत संचालन",
-  },
+// ============================================================================
+// SINGLE STATE MACHINE CONSTANTS & TYPES
+// ============================================================================
+export type JourneyPhase = "rest" | "dive" | "hold" | "exit";
+
+export interface JourneyState {
+  chapter: number; // 0 | 1 | 2
+  phase: JourneyPhase;
+  t: number; // 0..1 progress within current phase
+  chapterProgress: number; // 0..1 within current chapter
+  sequenceProgress: number; // 0..1 for FrameSequenceCanvas
+  globalProgress: number; // 0..1
+}
+
+export const PHASE_BOUNDARIES = {
+  rest: [0.0, 0.22] as const,
+  dive: [0.22, 0.72] as const,
+  hold: [0.72, 0.90] as const,
+  exit: [0.90, 1.00] as const,
 };
 
+/**
+ * Pure state machine function computing current chapter, phase, and sub-progress
+ * from a single smoothed scroll progress value.
+ */
+export function computeJourneyState(
+  globalProgress: number,
+  totalChapters: number
+): JourneyState {
+  const clamped = Math.max(0, Math.min(0.999999, globalProgress));
+  const chapterSpan = 1 / totalChapters;
+  const chapter = Math.min(
+    totalChapters - 1,
+    Math.max(0, Math.floor(clamped / chapterSpan))
+  );
+  const chapterProgress = (clamped - chapter * chapterSpan) / chapterSpan;
+
+  let phase: JourneyPhase = "rest";
+  let t = 0;
+  let sequenceProgress = 0;
+
+  if (chapterProgress < PHASE_BOUNDARIES.dive[0]) {
+    phase = "rest";
+    const [start, end] = PHASE_BOUNDARIES.rest;
+    t = Math.max(0, Math.min(1, (chapterProgress - start) / (end - start)));
+    sequenceProgress = 0;
+  } else if (chapterProgress < PHASE_BOUNDARIES.hold[0]) {
+    phase = "dive";
+    const [start, end] = PHASE_BOUNDARIES.dive;
+    t = Math.max(0, Math.min(1, (chapterProgress - start) / (end - start)));
+    sequenceProgress = t;
+  } else if (chapterProgress < PHASE_BOUNDARIES.exit[0]) {
+    phase = "hold";
+    const [start, end] = PHASE_BOUNDARIES.hold;
+    t = Math.max(0, Math.min(1, (chapterProgress - start) / (end - start)));
+    sequenceProgress = 1;
+  } else {
+    phase = "exit";
+    const [start, end] = PHASE_BOUNDARIES.exit;
+    t = Math.max(0, Math.min(1, (chapterProgress - start) / (end - start)));
+    sequenceProgress = 1;
+  }
+
+  return {
+    chapter,
+    phase,
+    t,
+    chapterProgress,
+    sequenceProgress,
+    globalProgress: clamped,
+  };
+}
+
+/**
+ * Computes exact text visibility, opacity, and non-continuous translateY.
+ * Fade in over first 25% of the phase, hold in middle, fade out over last 25%.
+ * Hidden in "dive" and "exit".
+ */
+export function computeTextAnimation(state: JourneyState) {
+  const { phase, t } = state;
+  if (phase === "rest" || phase === "hold") {
+    let opacity = 0;
+    let translateY = 0;
+    if (t <= 0.25) {
+      const p = t / 0.25;
+      opacity = p;
+      translateY = (1 - p) * 12;
+    } else if (t >= 0.75) {
+      const p = (t - 0.75) / 0.25;
+      opacity = 1 - p;
+      translateY = -p * 12;
+    } else {
+      opacity = 1;
+      translateY = 0;
+    }
+
+    return {
+      visible: opacity > 0.005,
+      opacity,
+      translateY,
+      phase,
+    };
+  }
+
+  return {
+    visible: false,
+    opacity: 0,
+    translateY: 0,
+    phase: null as "rest" | "hold" | null,
+  };
+}
+
+// Background decorative elements
 interface CloudBlob {
   x: string;
   y: string;
@@ -138,14 +230,13 @@ export function CinematicProducts() {
   ).filter(Boolean);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeChapterIdx, setActiveChapterIdx] = useState(0);
   const [smoothedProgress, setSmoothedProgress] = useState(0);
   const smoothedProgressRef = useRef(0);
   const targetProgressRef = useRef(0);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const rafId = useRef<number | null>(null);
 
-  // IntersectionObserver to pause rendering when off-screen
+  // IntersectionObserver to pause RAF when off-screen
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -192,7 +283,7 @@ export function CinematicProducts() {
       return;
     }
 
-    const LERP_FACTOR = 0.14; // Smooth, jitter-free progression
+    const LERP_FACTOR = 0.14;
 
     const animateLoop = () => {
       const targetP = targetProgressRef.current;
@@ -203,13 +294,6 @@ export function CinematicProducts() {
         const nextP = currentP + diffP * LERP_FACTOR;
         smoothedProgressRef.current = nextP;
         setSmoothedProgress(nextP);
-
-        // Update active chapter index
-        const numChapters = chapters.length;
-        const chapterSpan = 1 / numChapters;
-        const rawIdx = Math.floor(nextP / chapterSpan);
-        const activeIdx = Math.max(0, Math.min(numChapters - 1, rawIdx));
-        setActiveChapterIdx(activeIdx);
       }
 
       rafId.current = requestAnimationFrame(animateLoop);
@@ -219,7 +303,7 @@ export function CinematicProducts() {
     return () => {
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [chapters.length, isIntersecting, prefersReducedMotion]);
+  }, [isIntersecting, prefersReducedMotion]);
 
   // Smooth scroll to chapter
   const scrollToChapter = (idx: number) => {
@@ -229,7 +313,7 @@ export function CinematicProducts() {
     const totalScrollable = rect.height - window.innerHeight;
     const chapterSpan = 1 / chapters.length;
 
-    const targetProgress = idx * chapterSpan + 0.005;
+    const targetProgress = idx * chapterSpan + 0.01;
     const targetScrollY = scrollTop + rect.top + targetProgress * totalScrollable;
 
     window.scrollTo({
@@ -238,63 +322,10 @@ export function CinematicProducts() {
     });
   };
 
-  // Chapter state math for Chapter idx
-  const getChapterState = (idx: number) => {
-    const chapterSpan = 1 / chapters.length;
-    const chapterStart = idx * chapterSpan;
-    const p = Math.max(0, Math.min(1, (smoothedProgress - chapterStart) / chapterSpan));
-
-    // Visibility window
-    const distFromCenter = Math.abs(smoothedProgress - (chapterStart + chapterSpan / 2));
-    const isVisible = distFromCenter < chapterSpan * 0.65;
-
-    // Flow:
-    // p 0.00-0.15: Hold frame 1 (the diorama) with left text visible
-    // p 0.15-0.80: Play frame sequence 0 -> 1 (the dive)
-    // p 0.80-0.92: Hold final frame with copy fading in
-    // p 0.92-1.00: Crossfade to next chapter
-    let sequenceProgress = 0;
-    let canvasOpacity = 1.0;
-    let textOpacity = 0;
-    let textTranslateY = 0;
-
-    if (p <= 0.15) {
-      sequenceProgress = 0;
-      canvasOpacity = 1.0;
-      textOpacity = 1.0;
-      textTranslateY = 0;
-    } else if (p <= 0.8) {
-      sequenceProgress = (p - 0.15) / 0.65;
-      canvasOpacity = 1.0;
-      // Text fades out during the dive
-      const diveProgress = (p - 0.15) / 0.65;
-      textOpacity = Math.max(0, 1.0 - diveProgress * 2.5);
-      textTranslateY = -diveProgress * 15;
-    } else if (p <= 0.92) {
-      sequenceProgress = 1.0;
-      canvasOpacity = 1.0;
-      // Text fades back in with final resolution
-      const holdProgress = (p - 0.8) / 0.12;
-      textOpacity = Math.min(1, holdProgress * 2.0);
-      textTranslateY = (1 - Math.min(1, holdProgress * 2.0)) * 18;
-    } else {
-      // Crossfade to next chapter
-      sequenceProgress = 1.0;
-      const crossfade = (p - 0.92) / 0.08;
-      canvasOpacity = Math.max(0, 1.0 - crossfade);
-      textOpacity = Math.max(0, 1.0 - crossfade * 2.0);
-      textTranslateY = -crossfade * 12;
-    }
-
-    return {
-      p,
-      isVisible,
-      sequenceProgress,
-      canvasOpacity,
-      textOpacity,
-      textTranslateY,
-    };
-  };
+  // Derive Single Source of Truth JourneyState
+  const journeyState = computeJourneyState(smoothedProgress, chapters.length);
+  const textAnim = computeTextAnimation(journeyState);
+  const activeProduct = chapters[journeyState.chapter];
 
   // -------------------------------------------------------------
   // ACCESSIBLE FALLBACK FOR PREFERS-REDUCED-MOTION (Stacked Cards)
@@ -328,8 +359,9 @@ export function CinematicProducts() {
               const dioramaSrc = `/cinematic/${product.slug}/diorama.png`;
               const sceneSrc = `/cinematic/${product.slug}/scene.png`;
               const eyebrow =
-                CHAPTER_EYEBROWS[product.slug]?.[isHi ? "hi" : "en"] ||
-                `0${idx + 1} · ${product.shortName.toUpperCase()}`;
+                t.products.chapterEyebrows?.[
+                  product.slug as keyof typeof t.products.chapterEyebrows
+                ] || `0${idx + 1} · ${product.shortName.toUpperCase()}`;
 
               return (
                 <div
@@ -345,13 +377,15 @@ export function CinematicProducts() {
                         {eyebrow}
                       </span>
                       <span className="text-xs font-semibold text-[var(--text-muted)] uppercase">
-                        {product.statusBadge}
+                        {product.status === "live"
+                          ? t.products.live
+                          : t.products.comingSoon}
                       </span>
                     </div>
 
-                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[var(--text-primary)]">
+                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[var(--text-primary)]">
                       {name}
-                    </h3>
+                    </h2>
 
                     <p className="text-sm sm:text-base font-medium text-[var(--text-secondary)]">
                       {tagline}
@@ -401,7 +435,7 @@ export function CinematicProducts() {
                         href={`/products/${product.slug}`}
                         className="inline-flex items-center gap-1.5 px-5 py-3 rounded-full bg-[var(--bg-subtle)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs sm:text-sm font-semibold text-[var(--text-primary)] transition-colors"
                       >
-                        <span>Deep Dive</span>
+                        <span>{t.products.deepDive}</span>
                         <ChevronRight className="w-4 h-4" />
                       </Link>
                     </div>
@@ -437,27 +471,25 @@ export function CinematicProducts() {
   }
 
   // -------------------------------------------------------------
-  // FULL-BLEED RETINA CANVAS PINNED STAGE (400vh per chapter)
+  // FULL-BLEED RETINA CANVAS PINNED STAGE (350vh per chapter)
   // -------------------------------------------------------------
-  const activeProduct = chapters[activeChapterIdx] || chapters[0];
-
   return (
     <section
       ref={containerRef}
       className="relative w-full bg-[var(--bg-base)] transition-colors"
-      style={{ height: `${chapters.length * 400}vh` }}
+      style={{ height: `${chapters.length * 350}vh` }}
       aria-label="Cinematic Product Journey"
     >
       {/* Sticky Full-Viewport Stage: 100vw x 100dvh, z-10 beneath Navbar z-40 */}
-      <div className="sticky top-0 w-screen h-[100dvh] overflow-hidden flex items-center justify-center bg-[#FAF7F0] dark:bg-[#0C0E12]">
-        {/* Layer 1: Ambient Background Color Gradient */}
+      <div className="sticky top-0 w-full h-[100dvh] overflow-hidden flex items-center justify-center bg-[#FAF7F0] dark:bg-[#0C0E12]">
+        {/* Layer 1: Ambient Background Color Gradient & Cloud Parallax */}
         <div className="absolute inset-0 z-0 overflow-hidden select-none pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-br from-[#FAF7F0] via-[#F6ECE2] to-[#ECE1D5] dark:from-[#0C0E12] dark:via-[#11141B] dark:to-[#171B24] transition-colors duration-500" />
 
           {/* Parallax Cloud Blobs */}
           {CLOUD_BLOBS.map((blob, cIdx) => {
-            const parallaxX = (smoothedProgress - 0.5) * blob.speed * 400;
-            const parallaxY = (smoothedProgress - 0.5) * blob.speed * 250;
+            const parallaxX = (smoothedProgress - 0.5) * blob.speed * 350;
+            const parallaxY = (smoothedProgress - 0.5) * blob.speed * 200;
             return (
               <div
                 key={cIdx}
@@ -468,38 +500,57 @@ export function CinematicProducts() {
                   width: blob.w,
                   height: blob.h,
                   backgroundColor: blob.colorLight,
-                  transform: `translate(${parallaxX}px, ${parallaxY}px)`,
+                  transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
                 }}
               />
             );
           })}
         </div>
 
-        {/* Layer 2: FULL-BLEED RETINA WEBP IMAGE SEQUENCE CANVAS */}
+        {/* Layer 2: FULL-BLEED RETINA WEBP IMAGE SEQUENCE CANVASES */}
         <div className="absolute inset-0 z-[2] w-full h-full overflow-hidden select-none pointer-events-none">
           {chapters.map((product, idx) => {
-            const state = getChapterState(idx);
-            const isActive = idx === activeChapterIdx;
-            const isNext = idx === activeChapterIdx + 1;
-            const priority = isActive ? "high" : isNext ? "normal" : "low";
+            const isCurrent = idx === journeyState.chapter;
+            const isNext = idx === journeyState.chapter + 1;
+            const isPrevious = idx === journeyState.chapter - 1;
 
-            if (!state.isVisible && !isActive && !isNext) return null;
+            let canvasOpacity = 0;
+            let sequenceProg = 0;
+            let isActive = false;
+
+            if (isCurrent) {
+              isActive = true;
+              if (journeyState.phase === "exit") {
+                canvasOpacity = Math.max(0, 1.0 - journeyState.t);
+                sequenceProg = 1.0;
+              } else {
+                canvasOpacity = 1.0;
+                sequenceProg = journeyState.sequenceProgress;
+              }
+            } else if (isNext && journeyState.phase === "exit") {
+              isActive = true;
+              canvasOpacity = Math.min(1.0, journeyState.t);
+              sequenceProg = 0;
+            }
+
+            if (!isActive && !isCurrent && !isNext && !isPrevious) return null;
 
             return (
               <div
                 key={product.slug}
-                className="absolute inset-0 w-full h-full transition-opacity duration-200 ease-out"
+                className="absolute inset-0 w-full h-full"
                 style={{
-                  opacity: state.canvasOpacity,
-                  zIndex: isActive ? 5 : 2,
+                  opacity: canvasOpacity,
+                  zIndex: isCurrent ? 5 : 2,
+                  pointerEvents: "none",
                 }}
                 aria-hidden="true"
               >
                 <FrameSequenceCanvas
                   slug={product.slug}
-                  progress={state.sequenceProgress}
-                  active={state.isVisible || isActive}
-                  preloadPriority={priority}
+                  progress={sequenceProg}
+                  active={isActive || isCurrent}
+                  preloadPriority={isCurrent ? "high" : isNext ? "normal" : "low"}
                   className="w-full h-full"
                 />
               </div>
@@ -507,17 +558,80 @@ export function CinematicProducts() {
           })}
         </div>
 
-        {/* Layer 3: Soft Gradient Scrim behind text for WCAG AA contrast */}
-        <div className="absolute inset-0 z-[3] bg-gradient-to-r from-[var(--bg-base)] via-[var(--bg-base)]/95 via-35% sm:via-[var(--bg-base)]/85 sm:via-45% to-transparent to-75% dark:from-[#0C0E12] dark:via-[#0C0E12]/95 dark:via-35% dark:sm:via-[#0C0E12]/85 dark:sm:via-50% dark:to-transparent dark:to-80% pointer-events-none transition-colors duration-300" />
+        {/* Layer 3: Left-Edge Adaptive Contrast Scrims (No washed-out overlays) */}
+        {/* Photoreal Scrim (For Hold and Dive phases) */}
+        <div
+          className={`absolute inset-0 z-[3] pointer-events-none transition-opacity duration-300 ${
+            journeyState.phase === "hold" || journeyState.phase === "dive"
+              ? "opacity-100"
+              : "opacity-0"
+          }`}
+          style={{
+            background:
+              "linear-gradient(to right, rgba(14, 16, 20, 0.88) 0%, rgba(14, 16, 20, 0.65) 38%, rgba(14, 16, 20, 0.15) 55%, transparent 72%)",
+          }}
+        />
 
-        {/* Top/bottom soft feathering gradients */}
-        <div className="absolute inset-x-0 top-0 h-28 z-[3] bg-gradient-to-b from-[var(--bg-base)]/90 dark:from-[#0C0E12]/90 to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-28 z-[3] bg-gradient-to-t from-[var(--bg-base)]/90 dark:from-[#0C0E12]/90 to-transparent pointer-events-none" />
+        {/* Diorama Scrim (For Rest phase) */}
+        <div
+          className={`absolute inset-0 z-[3] pointer-events-none transition-opacity duration-300 ${
+            journeyState.phase === "rest" ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div
+            className="w-full h-full dark:hidden"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(250, 247, 240, 0.94) 0%, rgba(250, 247, 240, 0.78) 38%, rgba(250, 247, 240, 0.20) 58%, transparent 72%)",
+            }}
+          />
+          <div
+            className="w-full h-full hidden dark:block"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(12, 14, 18, 0.92) 0%, rgba(12, 14, 18, 0.72) 38%, rgba(12, 14, 18, 0.20) 58%, transparent 72%)",
+            }}
+          />
+        </div>
+
+        {/* Mobile Bottom Scrim Protection */}
+        <div className="md:hidden absolute inset-0 z-[3] pointer-events-none">
+          {journeyState.phase === "hold" || journeyState.phase === "dive" ? (
+            <div
+              className="w-full h-full"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(10, 12, 16, 0.95) 0%, rgba(10, 12, 16, 0.80) 45%, transparent 85%)",
+              }}
+            />
+          ) : (
+            <>
+              <div
+                className="w-full h-full dark:hidden"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(250, 247, 240, 0.96) 0%, rgba(250, 247, 240, 0.85) 45%, transparent 85%)",
+                }}
+              />
+              <div
+                className="w-full h-full hidden dark:block"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(12, 14, 18, 0.95) 0%, rgba(12, 14, 18, 0.80) 45%, transparent 85%)",
+                }}
+              />
+            </>
+          )}
+        </div>
+
+        {/* Top/bottom edge feathering gradients */}
+        <div className="absolute inset-x-0 top-0 h-24 z-[3] bg-gradient-to-b from-[var(--bg-base)]/80 dark:from-[#0C0E12]/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 z-[3] bg-gradient-to-t from-[var(--bg-base)]/80 dark:from-[#0C0E12]/80 to-transparent pointer-events-none" />
 
         {/* Layer 4: Parallax Glass Bubbles */}
         <div className="absolute inset-0 z-[4] pointer-events-none select-none overflow-hidden">
           {GLASS_BUBBLES.map((b, bIdx) => {
-            const parallaxY = (smoothedProgress - 0.5) * b.speed * 3.5;
+            const parallaxY = (smoothedProgress - 0.5) * b.speed * 3;
             return (
               <div
                 key={bIdx}
@@ -527,7 +641,7 @@ export function CinematicProducts() {
                   top: b.y,
                   width: `${b.size}px`,
                   height: `${b.size}px`,
-                  transform: `translateY(${parallaxY}px)`,
+                  transform: `translate3d(0, ${parallaxY}px, 0)`,
                   background:
                     "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.75), rgba(255,255,255,0.18) 65%, rgba(255,255,255,0.06))",
                   opacity: b.opacity,
@@ -539,169 +653,74 @@ export function CinematicProducts() {
           })}
         </div>
 
-        {/* Layer 5: Left Third Copy & Right Chapter Index */}
-        <div className="relative z-[10] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between pointer-events-none">
-          {/* Left Third: Active Chapter Story Copy */}
-          <div className="max-w-xl w-full py-12 pointer-events-auto text-left">
-            {chapters.map((product, idx) => {
-              const state = getChapterState(idx);
-              if (!state.isVisible || state.textOpacity <= 0.01) return null;
-
-              const name = (isHi && product.nameHi) || product.name;
-              const tagline = (isHi && product.taglineHi) || product.tagline;
-              const oneLiner = (isHi && product.oneLinerHi) || product.oneLiner;
-              const featuresList =
-                (isHi && product.featuresHi) || product.features.slice(0, 3);
-              const eyebrow =
-                CHAPTER_EYEBROWS[product.slug]?.[isHi ? "hi" : "en"] ||
-                `0${idx + 1} · ${product.shortName.toUpperCase()}`;
-
-              return (
+        {/* Layer 5: Fixed Position Single Text Block Wrapper */}
+        <div className="absolute inset-0 z-20 pointer-events-none flex items-center max-md:items-end">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 max-md:pb-12">
+            <div className="max-w-[520px] w-full pointer-events-auto">
+              {textAnim.visible && activeProduct && (
                 <div
-                  key={product.slug}
-                  className="space-y-6 transition-all duration-200 ease-out"
+                  key={activeProduct.slug}
                   style={{
-                    opacity: state.textOpacity,
-                    transform: `translateY(${state.textTranslateY}px)`,
+                    opacity: textAnim.opacity,
+                    transform: `translate3d(0, ${textAnim.translateY}px, 0)`,
                   }}
+                  className="transition-none pointer-events-auto"
                 >
-                  {/* Eyebrow: "01 · LEARN EVERY CHAPTER" */}
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold text-white shadow-sm"
-                      style={{ backgroundColor: product.accentColor }}
-                    >
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>{eyebrow}</span>
-                    </span>
-
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[var(--bg-surface)] dark:bg-[#1A1F2C] border border-[var(--border-subtle)] text-[var(--text-secondary)]">
-                      {product.status === "live"
-                        ? isHi
-                          ? "लाइव"
-                          : "Live"
-                        : isHi
-                        ? "शीघ्र"
-                        : "Coming Soon"}
-                    </span>
-                  </div>
-
-                  {/* Serif Headline */}
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[var(--text-primary)] tracking-tight leading-[1.1]">
-                    {name}
-                  </h2>
-
-                  {/* 2-Line Description */}
-                  <p className="text-base sm:text-lg text-[var(--text-secondary)] font-medium leading-snug">
-                    {tagline}
-                  </p>
-
-                  <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
-                    {oneLiner}
-                  </p>
-
-                  {/* 3 Tag Chips as Small Rounded Outline Pills */}
-                  <div className="flex flex-wrap items-center gap-2 pt-1">
-                    {featuresList.map((feature: string, fIdx: number) => (
-                      <span
-                        key={fIdx}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium border border-[var(--border-strong)]/60 bg-[var(--bg-surface)]/80 dark:bg-[#141720]/80 backdrop-blur-sm text-[var(--text-secondary)] shadow-xs"
-                      >
-                        <CheckCircle2
-                          className="w-3.5 h-3.5 shrink-0"
-                          style={{ color: product.accentColor }}
-                        />
-                        <span>{feature}</span>
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Dark Pill CTA with Arrow + Deep Dive Secondary Link */}
-                  <div className="pt-3 flex flex-wrap items-center gap-3.5">
-                    {product.status === "live" ? (
-                      <a
-                        href={product.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#0E2922] text-[#F8F5EE] hover:bg-[#18453A] font-semibold text-sm shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
-                      >
-                        <span>{t.products.launchProduct}</span>
-                        <ArrowRight className="w-4 h-4 text-[#E05A38]" />
-                      </a>
-                    ) : (
-                      <Link
-                        href={`/products/${product.slug}`}
-                        className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#0E2922] text-[#F8F5EE] hover:bg-[#18453A] font-semibold text-sm shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
-                      >
-                        <span>{t.products.exploreDetails}</span>
-                        <ArrowRight className="w-4 h-4 text-[#E05A38]" />
-                      </Link>
-                    )}
-
-                    <Link
-                      href={`/products/${product.slug}`}
-                      className="inline-flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-full bg-[var(--bg-surface)] hover:bg-[var(--bg-subtle)] border border-[var(--border-strong)] text-[var(--text-primary)] font-semibold text-sm transition-all duration-200 hover:shadow-sm cursor-pointer"
-                    >
-                      <span>Deep Dive</span>
-                      <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" />
-                    </Link>
-                  </div>
+                  <JourneyText
+                    product={activeProduct}
+                    index={journeyState.chapter}
+                    phase={textAnim.phase!}
+                    locale={locale}
+                    t={t}
+                  />
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Right Edge: Vertical Numbered Chapter Index */}
-          <div className="hidden md:flex flex-col items-end gap-5 pointer-events-auto select-none pl-6">
-            <div className="p-3.5 rounded-2xl bg-[var(--bg-surface)]/90 dark:bg-[#141720]/90 backdrop-blur-md border border-[var(--border-subtle)] shadow-xl space-y-3.5">
-              <span className="text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-wider block px-1">
-                Chapters
-              </span>
-
-              <div className="flex flex-col gap-2">
-                {chapters.map((product, idx) => {
-                  const isCurrent = idx === activeChapterIdx;
-
-                  return (
-                    <button
-                      key={product.slug}
-                      type="button"
-                      onClick={() => scrollToChapter(idx)}
-                      aria-label={`Scroll to Chapter 0${idx + 1}: ${product.name}`}
-                      className={`group flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-300 text-left ${
-                        isCurrent
-                          ? "bg-[var(--bg-subtle)] text-[var(--text-primary)] opacity-100 shadow-sm font-bold"
-                          : "text-[var(--text-secondary)] opacity-40 hover:opacity-80 hover:bg-[var(--bg-subtle)]/50"
-                      }`}
-                    >
-                      {/* Active Indicator Bar */}
-                      <span
-                        className={`w-1.5 h-4 rounded-full transition-all duration-300 shrink-0 ${
-                          isCurrent ? "scale-100" : "opacity-0 scale-50"
-                        }`}
-                        style={{
-                          backgroundColor: product.accentColor,
-                          boxShadow: isCurrent
-                            ? `0 0 8px ${product.accentColor}99`
-                            : undefined,
-                        }}
-                      />
-
-                      <span className="font-mono text-[11px]">0{idx + 1}</span>
-                      <span className="truncate max-w-[135px]">{product.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Scroll prompt */}
-              <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)] px-1">
-                <span>Scroll story</span>
-                <RotateCw className="w-3 h-3 animate-spin text-[var(--brand-terracotta)] duration-1000" />
-              </div>
+              )}
             </div>
           </div>
         </div>
+
+        {/* Layer 6: Compact Right-Edge Chapter Dot Indicator */}
+        <nav
+          aria-label="Chapter navigation"
+          className="hidden md:flex flex-col items-center gap-3.5 absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 z-30 pointer-events-auto select-none"
+        >
+          {chapters.map((product, idx) => {
+            const isCurrent = idx === journeyState.chapter;
+            const name = (isHi && product.nameHi) || product.name;
+
+            return (
+              <button
+                key={product.slug}
+                type="button"
+                onClick={() => scrollToChapter(idx)}
+                aria-label={`Jump to Chapter 0${idx + 1}: ${name}`}
+                aria-current={isCurrent ? "step" : undefined}
+                className="group relative flex items-center justify-center p-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-terracotta)] rounded-full transition-transform"
+              >
+                {/* Hover / Focus Tooltip on Left */}
+                <div className="pointer-events-none absolute right-full mr-3.5 px-3 py-1.5 rounded-lg bg-[#0E1014]/95 text-white text-xs font-medium tracking-wide whitespace-nowrap opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 transition-all duration-200 shadow-xl border border-white/10 flex items-center gap-2 z-40">
+                  <span className="font-mono text-[10px] text-[var(--brand-terracotta)] font-bold">
+                    0{idx + 1}
+                  </span>
+                  <span>{name}</span>
+                </div>
+
+                {/* Dot / Pill Indicator */}
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    isCurrent
+                      ? "w-2.5 h-7 shadow-md"
+                      : "w-2.5 h-2.5 bg-white/45 dark:bg-white/30 group-hover:bg-white/90 group-hover:scale-125"
+                  }`}
+                  style={{
+                    backgroundColor: isCurrent ? product.accentColor : undefined,
+                    boxShadow: isCurrent ? `0 0 10px ${product.accentColor}99` : undefined,
+                  }}
+                />
+              </button>
+            );
+          })}
+        </nav>
       </div>
     </section>
   );
