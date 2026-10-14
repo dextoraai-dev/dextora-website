@@ -11,6 +11,7 @@ import {
   GraduationCap,
   ShieldAlert,
   Building2,
+  Kanban,
   ChevronDown,
   Menu,
   X,
@@ -60,6 +61,8 @@ export function Navbar() {
         return <GraduationCap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       case "ShieldAlert":
         return <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400" />;
+      case "Kanban":
+        return <Kanban className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       case "Building2":
         return <Building2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />;
       default:

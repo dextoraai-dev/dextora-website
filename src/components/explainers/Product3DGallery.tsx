@@ -9,7 +9,7 @@ import {
   KnowledgeBook,
   NewsStack,
   AnswerSheet,
-  CampusGrid,
+  CrmPipeline,
   DataFlowNetwork,
 } from "@/components/3d/objects";
 import {
@@ -17,7 +17,7 @@ import {
   BookOpen,
   Newspaper,
   FileCheck2,
-  Building,
+  Kanban,
   Cpu,
   type LucideIcon,
 } from "lucide-react";
@@ -85,19 +85,19 @@ export function Product3DGallery() {
       component: (p, c) => <AnswerSheet progress={p} color={c} />,
     },
     {
-      id: "campus-grid",
+      id: "crm-pipeline",
       name: {
-        en: "Modular Campus Grid",
-        hi: "मॉड्यूलर कैंपस ग्रिड",
+        en: "Visual Sales Pipeline & WhatsApp Hub",
+        hi: "विज़ुअल सेल्स पाइपलाइन और व्हाट्सएप हब",
       },
-      product: "Dextora Campus",
+      product: "Dextora CRM",
       description: {
-        en: "Isometric architectural blocks assembling dynamically with live data telemetry pulses connecting classrooms and exam blueprints.",
-        hi: "कक्षाओं और परीक्षा ब्लूप्रिंट को जोड़ने वाले लाइव डेटा पल्स के साथ मॉड्यूलर संस्थागत ब्लॉक।",
+        en: "Dynamic Kanban pipeline stages and omnichannel WhatsApp streams synchronizing high-intent leads with real-time revenue velocity telemetry.",
+        hi: "उच्च-इरादे वाली लीड्स को रीयल-टाइम राजस्व गति टेलीमेट्री के साथ समन्वयित करने वाले गतिशील कानबन पाइपलाइन चरण।",
       },
-      accentColor: "#6366F1",
-      icon: Building,
-      component: (p, c) => <CampusGrid progress={p} color={c} />,
+      accentColor: "#00bb7f",
+      icon: Kanban,
+      component: (p, c) => <CrmPipeline progress={p} color={c} />,
     },
     {
       id: "data-network",

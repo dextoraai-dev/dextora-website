@@ -178,10 +178,10 @@ export const DextoraExplainer: React.FC = () => {
                 desc: "Editorial synthesis, MCQs & Mains OCR grading",
               },
               {
-                title: "Dextora Campus",
-                tag: "Institutional OS",
-                color: "#6366F1",
-                desc: "Automated exam authoring & cohort telemetry",
+                title: "Dextora CRM",
+                tag: "Sales & WhatsApp",
+                color: "#00bb7f",
+                desc: "Official WhatsApp Cloud API & AI sales pipeline",
               },
             ].map((prod, idx) => (
               <div

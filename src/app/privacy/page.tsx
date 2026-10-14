@@ -34,7 +34,7 @@ export default function PrivacyPage() {
               {siteConfig.legalName} (&quot;Dextora&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) values your trust and is
               dedicated to protecting the personal data of all students, civil services aspirants,
               educators, and institutions using our platform family (including Dextora Learn, Dhyeya IAS
-              Current Affairs, and Dextora Campus).
+              Current Affairs, and Dextora CRM).
             </p>
           </section>
 

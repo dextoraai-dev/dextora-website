@@ -10,6 +10,7 @@ const ContactSchema = z.object({
   organization: z.string().optional(),
   inquiryType: z.enum([
     "general",
+    "dextora-crm",
     "institutional-partnership",
     "dextora-learn",
     "dhyeya-ias",

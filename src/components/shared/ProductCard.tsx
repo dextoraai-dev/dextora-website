@@ -9,6 +9,7 @@ import {
   GraduationCap,
   ShieldAlert,
   Building2,
+  Kanban,
   Sparkles,
   ExternalLink,
   ArrowRight,
@@ -28,6 +29,8 @@ export function ProductCard({ product, layout: _layout = "grid" }: ProductCardPr
         return <GraduationCap className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />;
       case "ShieldAlert":
         return <ShieldAlert className="w-6 h-6 text-amber-600 dark:text-amber-400" />;
+      case "Kanban":
+        return <Kanban className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />;
       case "Building2":
         return <Building2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />;
       default:

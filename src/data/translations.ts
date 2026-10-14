@@ -39,7 +39,7 @@ export interface TranslationDictionary {
     chapterEyebrows: {
       "dextora-learn": string;
       "dhyeya-ias": string;
-      "dextora-campus": string;
+      "dextora-crm": string;
     };
   };
   whyDextora: {
@@ -118,7 +118,7 @@ export const translations: Record<Locale, TranslationDictionary> = {
       chapterEyebrows: {
         "dextora-learn": "01 · LEARN EVERY CHAPTER",
         "dhyeya-ias": "02 · SYNTHESIZE CURRENT AFFAIRS",
-        "dextora-campus": "03 · OPERATE THE CAMPUS",
+        "dextora-crm": "03 · SCALE SALES & CONVERSIONS",
       },
     },
     whyDextora: {
@@ -199,7 +199,7 @@ export const translations: Record<Locale, TranslationDictionary> = {
       chapterEyebrows: {
         "dextora-learn": "01 · हर अध्याय सीखें",
         "dhyeya-ias": "02 · समसामयिकी विश्लेषण",
-        "dextora-campus": "03 · संस्थागत संचालन",
+        "dextora-crm": "03 · सेल्स पाइपलाइन ऑटोमेशन",
       },
     },
     whyDextora: {

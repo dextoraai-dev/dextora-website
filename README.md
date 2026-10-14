@@ -171,7 +171,7 @@ Dextora explains pedagogical concepts through interactive procedural 3D visuals 
 - **`KnowledgeBook.tsx`**: Layered pages fanning open and releasing floating glowing chapter tokens (Dextora Learn &bull; Emerald `#059669`).
 - **`NewsStack.tsx`**: Translucent news slates peeling off into question bubbles and score telemetry (Dhyeya IAS &bull; Amber `#D97706`).
 - **`AnswerSheet.tsx`**: Handwritten paper sheet scanned by a sweeping laser plane with rubric highlights and score badges (Mains Evaluation &bull; Terracotta `#E05A38`).
-- **`CampusGrid.tsx`**: Modular architectural campus blocks assembling dynamically with live telemetry pulses (Dextora Campus &bull; Indigo `#6366F1`).
+- **`CrmPipeline.tsx`**: Procedural 4-stage Kanban pipeline with floating deal cards and Official WhatsApp API beacon hub (Dextora CRM &bull; Emerald `#00bb7f`).
 - **`DataFlowNetwork.tsx`**: Cognitive nucleus with satellite nodes and traveling data light pulses (Shared AI Engine).
 
 *All 3D objects feature PBR materials, dark/light theme awareness, gentle idle float, progress scrubbing (`progress: 0..1`), and full WebGL resource disposal on unmount.*

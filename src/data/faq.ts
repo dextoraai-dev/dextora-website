@@ -11,7 +11,7 @@ export const faqs: FAQItem[] = [
     category: "general",
     question: "What is Dextora and what products are in its family?",
     answer:
-      "Dextora is an AI-powered EdTech company headquartered in India. We develop specialized learning platforms built on pedagogical AI. Currently, our active product family includes 'Dextora Learn' (chapter-wise personalized learning for academic excellence) and 'Dhyeya IAS Current Affairs' (specialized UPSC/UPPCS current affairs, MCQs, and AI Mains answer evaluation in Hindi & English). More products like 'Dextora Campus' are on our immediate roadmap.",
+      "Dextora is an AI company headquartered in India. We develop specialized platforms built on domain AI. Currently, our active product family includes 'Dextora Learn' (chapter-wise personalized learning for academic excellence), 'Dhyeya IAS Current Affairs' (specialized UPSC/UPPCS current affairs, MCQs, and AI Mains answer evaluation in Hindi & English), and 'Dextora CRM' (Official WhatsApp Cloud API & AI sales pipeline automation).",
   },
   {
     id: "how-is-dextora-different",
@@ -51,8 +51,8 @@ export const faqs: FAQItem[] = [
   {
     id: "institution-partnerships",
     category: "general",
-    question: "Can schools, universities, or coaching institutes partner with Dextora?",
+    question: "Can businesses, institutions, or coaching networks integrate with Dextora?",
     answer:
-      "Yes! We partner with leading schools, civil service coaching institutions, and state education boards. Through 'Dextora Campus' and custom institutional integrations, faculties can deploy our AI evaluation and test generation engines. Reach out via our Contact page for partnership demos.",
+      "Yes! We partner with enterprises, high-growth businesses, civil service coaching networks, and educational institutions. Through 'Dextora CRM' (Official WhatsApp API and sales pipeline automation) and custom platform integrations, organizations can deploy our AI solutions seamlessly. Reach out via our Contact page or explore Dextora CRM directly.",
   },
 ];

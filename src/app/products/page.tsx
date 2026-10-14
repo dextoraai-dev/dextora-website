@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: "Products & AI Platform Family",
   description:
-    "Explore Dextora's specialized AI educational platforms: Dextora Learn for academic curriculum and Dhyeya IAS Current Affairs for civil services exams.",
+    "Explore Dextora's specialized AI platforms: Dextora Learn for academic curriculum, Dhyeya IAS Current Affairs for civil services exams, and Dextora CRM for sales pipeline & WhatsApp automation.",
   alternates: {
     canonical: "/products",
   },

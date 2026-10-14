@@ -10,7 +10,7 @@ import {
   KnowledgeBook,
   NewsStack,
   AnswerSheet,
-  CampusGrid,
+  CrmPipeline,
   DataFlowNetwork,
 } from "@/components/3d/objects";
 import { ExplainerData, ExplainerObjectType } from "@/data/explainers";
@@ -44,8 +44,8 @@ export function ScrollExplainer({ data, className = "" }: ScrollExplainerProps) 
         return <NewsStack progress={p} color={activeStep.accentColor} />;
       case "answersheet":
         return <AnswerSheet progress={p} color={activeStep.accentColor} />;
-      case "campus":
-        return <CampusGrid progress={p} color={activeStep.accentColor} />;
+      case "crm":
+        return <CrmPipeline progress={p} color={activeStep.accentColor} />;
       case "network":
         return <DataFlowNetwork progress={p} color={activeStep.accentColor} />;
       default:

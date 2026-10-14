@@ -20,7 +20,7 @@ export function ContactForm() {
     email: "",
     phone: "",
     organization: "",
-    inquiryType: "institutional-partnership",
+    inquiryType: "dextora-crm",
     message: "",
     _gotcha: "",
   });
@@ -59,7 +59,7 @@ export function ContactForm() {
           email: "",
           phone: "",
           organization: "",
-          inquiryType: "institutional-partnership",
+          inquiryType: "dextora-crm",
           message: "",
           _gotcha: "",
         });
@@ -191,8 +191,8 @@ export function ContactForm() {
           onChange={handleChange}
           className="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)] dark:bg-[#141720] border border-[var(--border-subtle)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-terracotta)] cursor-pointer"
         >
-          <option value="institutional-partnership">
-            Institutional Partnership & Campus AI Sandbox
+          <option value="dextora-crm">
+            Dextora CRM (WhatsApp Cloud API & Sales Pipeline)
           </option>
           <option value="dextora-learn">Dextora Learn (Academic Inquiries)</option>
           <option value="dhyeya-ias">Dhyeya IAS (UPSC / Civil Services Collaboration)</option>

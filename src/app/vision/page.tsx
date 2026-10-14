@@ -43,13 +43,13 @@ export default function VisionPage() {
       phase: "Phase 2: 2026",
       status: "In Active Deployment",
       badgeVariant: "terracotta" as const,
-      title: "Institutional Campus OS & Multimodal Voice Tutoring",
+      title: "AI CRM Pipeline Automation & Multimodal Intelligence",
       description:
-        "Deploying Dextora Campus for schools and coaching institutes to automate balanced exam paper generation, classroom performance telemetry, and interactive voice tutoring.",
+        "Deploying Dextora CRM with Official WhatsApp Cloud API integration, predictive lead scoring, and automated deal pipeline workflows for high-growth businesses and organizations.",
       milestones: [
-        "Dextora Campus OS beta release",
-        "Low-latency conversational voice AI in Hindi/Hinglish",
-        "Automated Bloom's taxonomy question paper blueprinter",
+        "Dextora CRM live release with Meta Verified Cloud API",
+        "Visual drag-and-drop Kanban pipeline and auto-followup workflows",
+        "Omnichannel lead sync across WhatsApp, Facebook, and Instagram",
       ],
     },
     {

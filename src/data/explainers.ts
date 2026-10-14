@@ -2,7 +2,7 @@ export type ExplainerObjectType =
   | "book"
   | "news"
   | "answersheet"
-  | "campus"
+  | "crm"
   | "network";
 
 export interface ExplainerStep {
@@ -348,110 +348,110 @@ export const dextoraLearnExplainer: ExplainerData = {
   ],
 };
 
-export const dextoraCampusExplainer: ExplainerData = {
-  id: "dextora-campus-explainer",
+export const dextoraCrmExplainer: ExplainerData = {
+  id: "dextora-crm-explainer",
   badge: {
-    en: "Institutional OS",
-    hi: "संस्थागत ऑपरेटिंग सिस्टम",
+    en: "AI Sales Operating System",
+    hi: "एआई सेल्स ऑपरेटिंग सिस्टम",
   },
   title: {
-    en: "The Operating System for AI Classrooms",
-    hi: "एआई-संवर्धित कक्षाओं के लिए ऑपरेटिंग सिस्टम",
+    en: "Turning Conversations Into Customer Acquisitions",
+    hi: "वार्तालाप को ग्राहक अधिग्रहण में परिवर्तित करें",
   },
   subtitle: {
-    en: "How Dextora Campus automates examination authoring and student telemetry.",
-    hi: "डेक्सटोरा कैंपस कैसे परीक्षा निर्माण और छात्र विश्लेषण को स्वचालित करता है।",
+    en: "How Dextora CRM automates Official WhatsApp broadcasts, lead scoring, and sales pipelines.",
+    hi: "डेक्सटोरा सीआरएम कैसे आधिकारिक व्हाट्सएप ब्रॉडकास्ट, लीड स्कोरिंग और सेल्स पाइपलाइन को स्वचालित करता है।",
   },
   steps: [
     {
       stepNumber: "01",
-      badge: { en: "Blueprint Authoring", hi: "परीक्षा ब्लूप्रिंट निर्माण" },
+      badge: { en: "Visual Kanban Pipeline", hi: "विज़ुअल कानबन पाइपलाइन" },
       title: {
-        en: "Automated Question Paper Authoring",
-        hi: "स्वचालित प्रश्न पत्र निर्माण",
+        en: "Drag-and-Drop Deal Pipeline & Stage Tracking",
+        hi: "ड्रैग-एंड-ड्रॉप डील पाइपलाइन और चरण ट्रैकिंग",
       },
       subtitle: {
-        en: "CBSE & State board standard papers in 60s",
-        hi: "60 सेकंड में सीबीएसई व राज्य बोर्ड स्तरीय प्रश्न पत्र",
+        en: "Custom funnels with automated stage velocity and PDF invoices",
+        hi: "स्वचालित चरण गति और पीडीएफ चालान के साथ कस्टम फनल",
       },
       description: {
-        en: "Faculty configure difficulty curves, Bloom's taxonomy tags, and chapter weightage. Campus generates balanced, verified question papers with complete marking schemes.",
-        hi: "शिक्षक कठिनाई स्तर, ब्लूम्स टैक्सोनॉमी और अध्याय भारांक तय करते हैं। कैंपस पूर्ण अंकन योजना के साथ संतुलित प्रश्न पत्र तैयार करता है।",
+        en: "Build multi-stage sales funnels tailored to your exact business model. Move deals with drag-and-drop ease, trigger automated proposal PDFs, and forecast closing revenue with weighted deal probabilities.",
+        hi: "अपने विशिष्ट व्यवसाय मॉडल के अनुरूप बहु-चरणीय बिक्री फ़नल बनाएं। ड्रैग-एंड-ड्रॉप की आसानी से सौदों को आगे बढ़ाएं और रीयल-टाइम में राजस्व का पूर्वानुमान लगाएं।",
       },
       highlights: {
         en: [
-          "Saves 15+ hours per teacher each exam cycle",
-          "Complete marking key and answer rationales included",
-          "Export to print-ready PDF and editable Word formats",
+          "Drag-and-drop Kanban interface with customizable deal stages",
+          "Automated PDF proposal and invoice generation on stage movement",
+          "Real-time weighted ARR revenue forecasting and velocity analytics",
         ],
         hi: [
-          "प्रति परीक्षा चक्र में शिक्षक के 15+ घंटे की बचत",
-          "पूर्ण उत्तर कुंजी और विस्तृत तर्क शामिल",
-          "प्रिंट-योग्य पीडीएफ और वर्ड प्रारूप में निर्यात",
+          "कस्टमाइज़ करने योग्य डील चरणों के साथ ड्रैग-एंड-ड्रॉप कानबन इंटरफ़ेस",
+          "डील चरण बदलने पर स्वचालित पीडीएफ प्रस्ताव व चालान निर्माण",
+          "रीयल-टाइम भारित राजस्व पूर्वानुमान और बिक्री गति विश्लेषण",
         ],
       },
-      objectType: "campus",
-      accentColor: "#6366F1",
+      objectType: "crm",
+      accentColor: "#00bb7f",
     },
     {
       stepNumber: "02",
-      badge: { en: "Cohort Telemetry", hi: "समूह विश्लेषण" },
+      badge: { en: "Official WhatsApp Cloud API", hi: "आधिकारिक व्हाट्सएप क्लाउड एपीआई" },
       title: {
-        en: "Real-Time Classroom Telemetry",
-        hi: "कक्षा की वास्तविक समय टेलीमेट्री",
+        en: "Bulk Broadcasts & 24/7 AI Chatbot Workflows",
+        hi: "बल्क ब्रॉडकास्ट और 24/7 एआई चैटबॉट वर्कफ़्लो",
       },
       subtitle: {
-        en: "Early detection of at-risk students",
-        hi: "कमजोर प्रदर्शन करने वाले छात्रों की समय पूर्व पहचान",
+        en: "Green-tick verified messaging with 98% open rates and zero ban risk",
+        hi: "98% ओपन रेट और शून्य बैन जोखिम के साथ ग्रीन-टिक संदेश",
       },
       description: {
-        en: "Classroom-level diagnostic dashboards aggregate homework and quiz data to identify common misconceptions across sections before high-stakes exams.",
-        hi: "कक्षा स्तरीय डैशबोर्ड गृहकार्य और क्विज़ डेटा को एकत्रित कर परीक्षा से पूर्व सामूहिक कमियों को स्पष्ट करता है।",
+        en: "Deploy the Official Meta WhatsApp Cloud API to broadcast product launches and promotional catalogs to 100k+ subscribers in one click. 24/7 AI chatbots qualify leads, answer FAQs, and book consultations while your team sleeps.",
+        hi: "आधिकारिक मेटा व्हाट्सएप क्लाउड एपीआई के माध्यम से एक क्लिक में 1 लाख से अधिक ग्राहकों को प्रचार अभियान भेजें। 24/7 एआई चैटबॉट लीड्स को स्वचालित रूप से योग्य बनाता है।",
       },
       highlights: {
         en: [
-          "Aggregated concept mastery across all school sections",
-          "Proactive alerts for students falling behind",
-          "Actionable recommendations for revision classes",
+          "Official Meta green-tick badge assistance for maximum brand credibility",
+          "98.8% average message open rate with zero phone number ban risk",
+          "Multi-agent shared team inbox with round-robin lead assignment",
         ],
         hi: [
-          "विद्यालय के सभी वर्गों में समग्र अवधारणा निपुणता",
-          "पिछड़ रहे छात्रों के लिए समय पर चेतावनी",
-          "पुनरावृत्ति कक्षाओं के लिए व्यावहारिक सुझाव",
+          "ब्रांड विश्वसनीयता के लिए आधिकारिक मेटा ग्रीन-टिक बैज सहायता",
+          "शून्य नंबर बैन जोखिम के साथ 98.8% औसत संदेश ओपन दर",
+          "राउंड-रॉबिन लीड असाइनमेंट के साथ मल्टी-एजेंट साझा टीम इनबॉक्स",
         ],
       },
       objectType: "network",
-      accentColor: "#818CF8",
+      accentColor: "#3080ff",
     },
     {
       stepNumber: "03",
-      badge: { en: "Institutional Sandbox", hi: "सुरक्षित एआई वातावरण" },
+      badge: { en: "AI Predictive Scoring", hi: "एआई प्रेडिक्टिव स्कोरिंग" },
       title: {
-        en: "Secure & Compliant AI Sandbox",
-        hi: "सुरक्षित और अनुपालनयुक्त एआई सैंडबॉक्स",
+        en: "Meta Ads Auto-Sync & Sub-5s Lead Capture",
+        hi: "मेटा विज्ञापन ऑटो-सिंक और 5s से कम में लीड कैप्चर",
       },
       subtitle: {
-        en: "Zero student data leakage or model training",
-        hi: "छात्र डेटा की पूर्ण सुरक्षा और गोपनीयता",
+        en: "Instant Facebook, Instagram, and LinkedIn ad sync with AI intent grading",
+        hi: "फेसबुक, इंस्टाग्राम और लिंक्डइन विज्ञापनों का तत्काल सिंक व एआई ग्रेडिंग",
       },
       description: {
-        en: "Enterprise-grade data protection aligned with Indian data protection laws and NEP 2020 competency frameworks.",
-        hi: "भारतीय डेटा संरक्षण कानूनों और नई राष्ट्रीय शिक्षा नीति 2020 के अनुरूप उद्यम-स्तरीय डेटा सुरक्षा।",
+        en: "When prospects click Facebook or Instagram Click-to-WhatsApp ads, Dextora instantly catches the webhook payload, grades buyer intent from 1 to 100, and triggers an automated personalized greeting within 5 seconds.",
+        hi: "जब ग्राहक फेसबुक या इंस्टाग्राम विज्ञापनों पर क्लिक करते हैं, तो डेक्सटोरा 5 सेकंड के भीतर लीड विवरण कैप्चर करता है, इरादा स्कोर तय करता है और तुरंत अभिवादन भेजता है।",
       },
       highlights: {
         en: [
-          "Full student privacy with zero LLM retraining on user data",
-          "Role-based access control for Principals, HODs, and Teachers",
-          "Seamless integration with existing school ERP/LMS systems",
+          "Instant webhook sync for Facebook Lead Ads and Instagram DMs",
+          "Predictive AI intent score (1-100) based on page activity & budget",
+          "Bank-grade SOC2 Type II encryption and GDPR compliance",
         ],
         hi: [
-          "छात्रों की पूर्ण गोपनीयता और डेटा सुरक्षा",
-          "प्रधानाचार्य, विभागाध्यक्ष व शिक्षकों के लिए भूमिका-आधारित पहुंच",
-          "मौजूदा स्कूल ईआरपी/एलएमएस प्रणालियों के साथ सहज एकीकरण",
+          "फेसबुक लीड विज्ञापनों और इंस्टाग्राम संदेशों के लिए तत्काल वेबहुक सिंक",
+          "वेबसाइट गतिविधि व बजट के आधार पर प्रेडिक्टिव एआई स्कोर (1-100)",
+          "बैंक-स्तरीय SOC2 टाइप II एन्क्रिप्शन और सख्त डेटा गोपनीयता",
         ],
       },
-      objectType: "campus",
-      accentColor: "#6366F1",
+      objectType: "crm",
+      accentColor: "#00bb7f",
     },
   ],
 };

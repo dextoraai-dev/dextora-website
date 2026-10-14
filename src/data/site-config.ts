@@ -91,6 +91,7 @@ export const sharedSubdomainBarConfig: SubdomainBarConfig = {
   siblingProducts: [
     { name: "Dextora Learn", url: "https://dextora.org", badge: "K-12" },
     { name: "Dhyeya IAS", url: "https://upscnews.dextora.org", badge: "UPSC" },
+    { name: "Dextora CRM", url: "https://crm-iota-sandy-13.vercel.app/", badge: "CRM" },
     { name: "Dextora Hub", url: siteConfig.url },
   ],
 };

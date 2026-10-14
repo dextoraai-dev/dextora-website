@@ -61,18 +61,18 @@ const SCENES = [
             "the aspirant reading. Continuous, elegant, no cuts.",
     },
     {
-        slug: "dextora-campus",
+        slug: "dextora-crm",
         accent: "emerald green",
         diorama:
-            "a miniature modular campus building with arched windows, tiny trees, a " +
-            "small courtyard and glowing windows",
+            "a miniature modular glass sales command center with kanban pipeline towers, " +
+            "active whatsapp chats glowing hologram and trader desks",
         scene:
-            "a sunny modern university courtyard with a few students walking and " +
-            "chatting, greenery, warm afternoon light, architectural glass building",
+            "a modern high-growth tech sales office with executives tracking visual pipelines, " +
+            "closing enterprise deals and unified conversation streams",
         motion:
             "Smooth cinematic push-in: the camera glides down toward the miniature " +
-            "campus and it transforms into a real, lifelike campus courtyard with " +
-            "students. Continuous, elegant, no cuts.",
+            "sales pipeline and it transforms into a real, lifelike executive deal closing floor. " +
+            "Continuous, elegant, no cuts.",
     },
 ];
 

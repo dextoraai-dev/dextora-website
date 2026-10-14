@@ -34,7 +34,7 @@ function getReducedMotionServerSnapshot() {
   return false;
 }
 
-const CHAPTER_SLUGS = ["dextora-learn", "dhyeya-ias", "dextora-campus"];
+const CHAPTER_SLUGS = ["dextora-learn", "dhyeya-ias", "dextora-crm"];
 
 // ============================================================================
 // SINGLE STATE MACHINE CONSTANTS & TYPES

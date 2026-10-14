@@ -7,7 +7,7 @@ import { products, getProductBySlug } from "@/data/products";
 import {
   dhyeyaIasExplainer,
   dextoraLearnExplainer,
-  dextoraCampusExplainer,
+  dextoraCrmExplainer,
 } from "@/data/explainers";
 import { ScrollExplainer } from "@/components/explainers/ScrollExplainer";
 import { VideoPlayer } from "@/components/shared/VideoPlayer";
@@ -33,6 +33,10 @@ import {
   BarChart3,
   Lock,
   ArrowLeft,
+  Kanban,
+  MessageSquareQuote,
+  Target,
+  MessagesSquare,
 } from "lucide-react";
 
 interface ProductDetailProps {
@@ -121,6 +125,14 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
         return <BarChart3 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />;
       case "Lock":
         return <Lock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />;
+      case "MessageSquareQuote":
+        return <MessageSquareQuote className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+      case "Kanban":
+        return <Kanban className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+      case "Target":
+        return <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+      case "MessagesSquare":
+        return <MessagesSquare className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       default:
         return <Sparkles className="w-5 h-5 text-[var(--brand-terracotta)]" />;
     }
@@ -260,9 +272,9 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
             <ScrollExplainer data={dextoraLearnExplainer} />
           </div>
         )}
-        {product.slug === "dextora-campus" && (
+        {product.slug === "dextora-crm" && (
           <div className="mb-20">
-            <ScrollExplainer data={dextoraCampusExplainer} />
+            <ScrollExplainer data={dextoraCrmExplainer} />
           </div>
         )}
 
