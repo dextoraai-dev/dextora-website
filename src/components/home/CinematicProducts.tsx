@@ -198,23 +198,7 @@ const CLOUD_BLOBS: CloudBlob[] = [
   },
 ];
 
-interface BubbleConfig {
-  x: string;
-  y: string;
-  size: number;
-  speed: number;
-  opacity: number;
-}
 
-const GLASS_BUBBLES: BubbleConfig[] = [
-  { x: "18%", y: "22%", size: 68, speed: 65, opacity: 0.75 },
-  { x: "82%", y: "28%", size: 52, speed: -75, opacity: 0.8 },
-  { x: "28%", y: "78%", size: 84, speed: 55, opacity: 0.7 },
-  { x: "76%", y: "72%", size: 60, speed: -50, opacity: 0.75 },
-  { x: "55%", y: "15%", size: 40, speed: 90, opacity: 0.65 },
-  { x: "88%", y: "50%", size: 46, speed: -60, opacity: 0.7 },
-  { x: "12%", y: "55%", size: 58, speed: 80, opacity: 0.65 },
-];
 
 export function CinematicProducts() {
   const { locale, t } = useI18n();
@@ -628,30 +612,6 @@ export function CinematicProducts() {
         <div className="absolute inset-x-0 top-0 h-24 z-[3] bg-gradient-to-b from-[var(--bg-base)]/80 dark:from-[#0C0E12]/80 to-transparent pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 h-24 z-[3] bg-gradient-to-t from-[var(--bg-base)]/80 dark:from-[#0C0E12]/80 to-transparent pointer-events-none" />
 
-        {/* Layer 4: Parallax Glass Bubbles */}
-        <div className="absolute inset-0 z-[4] pointer-events-none select-none overflow-hidden">
-          {GLASS_BUBBLES.map((b, bIdx) => {
-            const parallaxY = (smoothedProgress - 0.5) * b.speed * 3;
-            return (
-              <div
-                key={bIdx}
-                className="absolute rounded-full border border-white/60 dark:border-white/15 shadow-md backdrop-blur-md transition-transform duration-300 ease-out"
-                style={{
-                  left: b.x,
-                  top: b.y,
-                  width: `${b.size}px`,
-                  height: `${b.size}px`,
-                  transform: `translate3d(0, ${parallaxY}px, 0)`,
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.75), rgba(255,255,255,0.18) 65%, rgba(255,255,255,0.06))",
-                  opacity: b.opacity,
-                }}
-              >
-                <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-white/85 blur-[0.5px]" />
-              </div>
-            );
-          })}
-        </div>
 
         {/* Layer 5: Fixed Position Single Text Block Wrapper */}
         <div className="absolute inset-0 z-20 pointer-events-none flex items-center max-md:items-end">
