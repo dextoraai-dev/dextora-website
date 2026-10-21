@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
+import { DextoraEduHeroWorld } from "@/components/home/DextoraEduHeroWorld";
 import { CinematicProducts } from "@/components/home/CinematicProducts";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { WhyDextora } from "@/components/home/WhyDextora";
@@ -23,13 +24,16 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="w-full">
-      {/* 2. Hero Section */}
+      {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2.5. Cinematic Product Journey Scroll Stage */}
+      {/* 2. Dextora Edu Cinematic Scroll World (Student Day Journey) */}
+      <DextoraEduHeroWorld />
+
+      {/* 3. Cinematic Product Journey Scroll Stage (Learn, Dhyeya IAS, CRM) */}
       <CinematicProducts />
 
-      {/* 3. Product Showcase */}
+      {/* 4. Product Showcase */}
       <ProductShowcase />
 
       {/* 4. Why Dextora Pillars */}

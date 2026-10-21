@@ -8,7 +8,12 @@ interface FrameSequenceCanvasProps {
   active: boolean;
   preloadPriority?: "high" | "normal" | "low";
   className?: string;
+  style?: React.CSSProperties;
 }
+
+// Module-level persistent cache across mounts & tab switches
+const globalImageCache = new Map<string, (HTMLImageElement | null)[]>();
+const globalLoadedIndices = new Map<string, Set<number>>();
 
 export function FrameSequenceCanvas({
   slug,
@@ -16,15 +21,15 @@ export function FrameSequenceCanvas({
   active,
   preloadPriority = "normal",
   className = "",
+  style,
 }: FrameSequenceCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
-  const loadedIndicesRef = useRef<Set<number>>(new Set());
   const [totalFrames, setTotalFrames] = useState(120);
   const [variant, setVariant] = useState<"desktop" | "mobile">("desktop");
   const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
+  const cacheKey = `${slug}-${variant}`;
   const frameIndexRef = useRef(0);
   const targetFrameIndexRef = useRef(0);
   const rafId = useRef<number | null>(null);
@@ -63,12 +68,23 @@ export function FrameSequenceCanvas({
     };
   }, [slug, variant]);
 
-  // Helper to load and decode a single frame
+  // Helper to load and decode a single frame with persistent caching
   const loadFrame = useCallback(
     async (frameNum: number): Promise<HTMLImageElement | null> => {
       const idx = frameNum - 1;
-      if (imagesRef.current[idx]) {
-        return imagesRef.current[idx];
+      let cachedArray = globalImageCache.get(cacheKey);
+      if (!cachedArray) {
+        cachedArray = new Array(totalFrames).fill(null);
+        globalImageCache.set(cacheKey, cachedArray);
+      }
+      let loadedSet = globalLoadedIndices.get(cacheKey);
+      if (!loadedSet) {
+        loadedSet = new Set<number>();
+        globalLoadedIndices.set(cacheKey, loadedSet);
+      }
+
+      if (cachedArray[idx]) {
+        return cachedArray[idx];
       }
 
       const pad = String(frameNum).padStart(4, "0");
@@ -86,39 +102,48 @@ export function FrameSequenceCanvas({
           });
         }
         if (isMountedRef.current) {
-          imagesRef.current[idx] = img;
-          loadedIndicesRef.current.add(idx);
+          cachedArray[idx] = img;
+          loadedSet.add(idx);
           if (idx === 0) setFirstFrameLoaded(true);
         }
         return img;
       } catch {
-        // Silently skip if aborted or network error
         return null;
       }
     },
-    [slug, variant]
+    [cacheKey, slug, variant, totalFrames]
   );
 
-  // Progressive loading strategy:
-  // Phase 1: Frame 1 immediately (instant first paint)
-  // Phase 2: Stride 8 keyframes
-  // Phase 3: Fill in the remaining frames
+  // Progressive loading strategy with persistent cache preservation
   useEffect(() => {
     if (!active && preloadPriority === "low") return;
 
     let cancelled = false;
-    imagesRef.current = new Array(totalFrames).fill(null);
-    loadedIndicesRef.current.clear();
+    let loadedSet = globalLoadedIndices.get(cacheKey);
+    if (!loadedSet) {
+      loadedSet = new Set<number>();
+      globalLoadedIndices.set(cacheKey, loadedSet);
+    }
+
+    // Check if frame 0 is already loaded from cache
+    const cachedArray = globalImageCache.get(cacheKey);
+    if (cachedArray && cachedArray[0]) {
+      setFirstFrameLoaded(true);
+    }
 
     const startPreload = async () => {
       // 1. Load First Frame
-      await loadFrame(1);
+      if (!loadedSet?.has(0)) {
+        await loadFrame(1);
+      }
       if (cancelled) return;
 
-      // 2. Load Every 8th Keyframe
+      // 2. Load Every 6th Keyframe for faster jump-scrub coverage
       const keyframes: number[] = [];
-      for (let f = 9; f <= totalFrames; f += 8) {
-        keyframes.push(f);
+      for (let f = 7; f <= totalFrames; f += 6) {
+        if (!loadedSet?.has(f - 1)) {
+          keyframes.push(f);
+        }
       }
       for (const f of keyframes) {
         if (cancelled) return;
@@ -128,7 +153,7 @@ export function FrameSequenceCanvas({
       // 3. Load remaining frames sequentially
       for (let f = 2; f <= totalFrames; f++) {
         if (cancelled) return;
-        if (!loadedIndicesRef.current.has(f - 1)) {
+        if (!loadedSet?.has(f - 1)) {
           await loadFrame(f);
         }
       }
@@ -141,24 +166,30 @@ export function FrameSequenceCanvas({
     return () => {
       cancelled = true;
     };
-  }, [slug, variant, totalFrames, active, preloadPriority, loadFrame]);
+  }, [cacheKey, totalFrames, active, preloadPriority, loadFrame]);
 
   // Find nearest loaded frame index
-  const getNearestLoadedIndex = (targetIdx: number): number => {
-    if (loadedIndicesRef.current.has(targetIdx)) return targetIdx;
-    let minDiff = Infinity;
-    let bestIdx = 0;
-    for (const idx of loadedIndicesRef.current) {
-      const diff = Math.abs(idx - targetIdx);
-      if (diff < minDiff) {
-        minDiff = diff;
-        bestIdx = idx;
-      }
-    }
-    return bestIdx;
-  };
+  const getNearestLoadedIndex = useCallback(
+    (targetIdx: number): number => {
+      const loadedSet = globalLoadedIndices.get(cacheKey);
+      if (!loadedSet || loadedSet.size === 0) return 0;
+      if (loadedSet.has(targetIdx)) return targetIdx;
 
-  // Draw frame with cover math onto Retina canvas
+      let minDiff = Infinity;
+      let bestIdx = 0;
+      for (const idx of loadedSet) {
+        const diff = Math.abs(idx - targetIdx);
+        if (diff < minDiff) {
+          minDiff = diff;
+          bestIdx = idx;
+        }
+      }
+      return bestIdx;
+    },
+    [cacheKey]
+  );
+
+  // Draw frame with cover math onto Retina canvas with sub-frame interpolation
   const drawFrame = useCallback(
     (canvas: HTMLCanvasElement, floatIdx: number) => {
       const ctx = canvas.getContext("2d", { alpha: false });
@@ -170,15 +201,18 @@ export function FrameSequenceCanvas({
       const f2 = Math.min(total - 1, Math.ceil(clampedIdx));
       const alpha = clampedIdx - f1;
 
+      const cachedArray = globalImageCache.get(cacheKey);
+      if (!cachedArray) return;
+
       const idx1 = getNearestLoadedIndex(f1);
-      const img1 = imagesRef.current[idx1];
+      const img1 = cachedArray[idx1];
 
       if (!img1) return;
 
       const cw = canvas.width;
       const ch = canvas.height;
-      const iw = img1.naturalWidth || (variant === "desktop" ? 1920 : 960);
-      const ih = img1.naturalHeight || (variant === "desktop" ? 1080 : 540);
+      const iw = img1.naturalWidth || (variant === "desktop" ? 1600 : 854);
+      const ih = img1.naturalHeight || (variant === "desktop" ? 900 : 480);
 
       // "Cover" math: fills the entire viewport without distortion
       const scale = Math.max(cw / iw, ch / ih);
@@ -197,14 +231,14 @@ export function FrameSequenceCanvas({
       // Draw ceiling frame with sub-frame crossfade for ultra-smooth non-stepped motion
       if (f2 !== f1 && alpha > 0.001) {
         const idx2 = getNearestLoadedIndex(f2);
-        const img2 = imagesRef.current[idx2];
+        const img2 = cachedArray[idx2];
         if (img2 && img2 !== img1) {
           ctx.globalAlpha = alpha;
           ctx.drawImage(img2, dx, dy, dw, dh);
         }
       }
     },
-    [totalFrames, variant]
+    [cacheKey, totalFrames, variant, getNearestLoadedIndex]
   );
 
   // Resize canvas with devicePixelRatio
@@ -238,7 +272,7 @@ export function FrameSequenceCanvas({
     targetFrameIndexRef.current = clampedP * (totalFrames - 1);
   }, [progress, totalFrames]);
 
-  // Animation loop with frameIndex interpolation
+  // Direct, low-latency animation loop that syncs with RAF
   useEffect(() => {
     if (!active) {
       if (rafId.current) cancelAnimationFrame(rafId.current);
@@ -251,8 +285,9 @@ export function FrameSequenceCanvas({
       const current = frameIndexRef.current;
       const diff = target - current;
 
-      if (Math.abs(diff) > 0.005) {
-        const next = current + diff * 0.14; // Lerp smoothing
+      // Snappy, responsive interpolation (0.42 factor) to eliminate double-lerp lag
+      if (Math.abs(diff) > 0.002) {
+        const next = Math.abs(diff) < 0.01 ? target : current + diff * 0.42;
         frameIndexRef.current = next;
 
         if (canvas) {
@@ -277,7 +312,10 @@ export function FrameSequenceCanvas({
   }, [firstFrameLoaded, drawFrame]);
 
   return (
-    <div className={`absolute inset-0 w-full h-full overflow-hidden ${className}`}>
+    <div
+      className={`absolute inset-0 w-full h-full overflow-hidden ${className}`}
+      style={style}
+    >
       {/* Fallback image if frames fail */}
       {hasError && (
         <img
