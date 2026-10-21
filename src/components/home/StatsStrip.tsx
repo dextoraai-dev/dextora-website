@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import CountUpNumber from "../shared/CountUpNumber";
 import { siteConfig } from "@/data/site-config";
 import { Users, FileQuestion, FileCheck, CheckCircle } from "lucide-react";
 
@@ -26,7 +27,7 @@ export function StatsStrip() {
                     <Icon className="w-4 h-4" />
                   </div>
                   <span className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-[#F8F5EE]">
-                    {stat.value}
+                    <CountUpNumber end={parseFloat(stat.value.replace(/[^0-9.]/g, ""))} decimals={stat.value.includes(".") ? 1 : 0} className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-[#F8F5EE]" />
                   </span>
                 </div>
                 <p className="text-xs text-[#A3B8B2] font-medium max-w-[200px]">
