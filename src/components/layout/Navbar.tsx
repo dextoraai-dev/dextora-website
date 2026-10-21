@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { products } from "@/data/products";
 import { useI18n } from "@/lib/i18n";
 import { ThemeToggle } from "./ThemeToggle";
-import { LanguageToggle } from "./LanguageToggle";
 import {
   GraduationCap,
   ShieldAlert,
@@ -259,7 +258,6 @@ export function Navbar() {
 
           {/* Right Action Icons & Primary CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <LanguageToggle />
             <ThemeToggle />
             <Link
               href="/products"
@@ -272,7 +270,6 @@ export function Navbar() {
 
           {/* Mobile Menu Button & Toggles */}
           <div className="flex items-center gap-2 lg:hidden">
-            <LanguageToggle />
             <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

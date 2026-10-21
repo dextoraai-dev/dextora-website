@@ -29,17 +29,7 @@ function subscribeLocale(callback: () => void) {
 }
 
 function getLocaleSnapshot(): Locale {
-  if (typeof window === "undefined") return "en";
-  try {
-    const saved = localStorage.getItem(LOCALE_STORAGE_KEY) as Locale;
-    if (saved === "en" || saved === "hi") {
-      currentLocale = saved;
-      return saved;
-    }
-  } catch {
-    // Storage unavailable
-  }
-  return currentLocale;
+  return "en";
 }
 
 function getLocaleServerSnapshot(): Locale {
