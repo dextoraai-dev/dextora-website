@@ -1,8 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
-import { DextoraEduHeroWorld } from "@/components/home/DextoraEduHeroWorld";
-import { CinematicProducts } from "@/components/home/CinematicProducts";
+import { MasterCinematicWorld } from "@/components/home/MasterCinematicWorld";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { WhyDextora } from "@/components/home/WhyDextora";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -27,13 +26,10 @@ export default function HomePage() {
       {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Dextora Edu Cinematic Scroll World (Student Day Journey) */}
-      <DextoraEduHeroWorld />
+      {/* 2. Unified Master Continuous Cinematic Flight World (Edu Student Journey + Product Ecosystem) */}
+      <MasterCinematicWorld />
 
-      {/* 3. Cinematic Product Journey Scroll Stage (Learn, Dhyeya IAS, CRM) */}
-      <CinematicProducts />
-
-      {/* 4. Product Showcase */}
+      {/* 3. Product Showcase */}
       <ProductShowcase />
 
       {/* 4. Why Dextora Pillars */}
