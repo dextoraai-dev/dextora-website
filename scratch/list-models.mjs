@@ -1,0 +1,1 @@
+import dotenv from "dotenv"; dotenv.config({ path: ".env.local" }); const key = process.env.GEMINI_API_KEY; const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=" + key); const data = await r.json(); data.models.forEach(m => console.log(m.name, "|", m.displayName, "|", (m.supportedGenerationMethods||[]).join(",")));

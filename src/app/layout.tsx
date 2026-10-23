@@ -8,6 +8,7 @@ import { I18nProvider } from "@/lib/i18n";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { DextoraBar } from "@/components/layout/DextoraBar";
+import { EduTutorChatbot } from "@/components/shared/EduTutorChatbot";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -135,6 +136,8 @@ export default function RootLayout({
             </main>
             {/* Footer */}
             <Footer />
+            {/* Interactive Dextora AI Education Tutor Chatbot */}
+            <EduTutorChatbot />
           </I18nProvider>
         </ThemeProvider>
       </body>

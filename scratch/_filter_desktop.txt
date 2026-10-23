@@ -1,0 +1,17 @@
+[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s0];
+[1:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s1];
+[2:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s2];
+[3:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s3];
+[4:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s4];
+[5:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s5];
+[6:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s6];
+[7:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s7];
+[8:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24,format=yuv420p[s8];
+[s0][s1]xfade=transition=fade:duration=0.5:offset=4.5000[x1];
+[x1][s2]xfade=transition=fade:duration=0.5:offset=7.0000[x2];
+[x2][s3]xfade=transition=fade:duration=0.5:offset=11.5000[x3];
+[x3][s4]xfade=transition=fade:duration=0.5:offset=14.0000[x4];
+[x4][s5]xfade=transition=fade:duration=0.5:offset=19.0000[x5];
+[x5][s6]xfade=transition=fade:duration=0.5:offset=21.5000[x6];
+[x6][s7]xfade=transition=fade:duration=0.5:offset=25.5000[x7];
+[x7][s8]xfade=transition=fade:duration=0.5:offset=28.0000[vout]

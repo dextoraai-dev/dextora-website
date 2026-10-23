@@ -8,17 +8,16 @@ export interface ExperienceSection {
   id: string;
   label: string;
   labelHi: string;
-  // Exterior: isometric still + fly-in dive clip
-  still: string;
-  stillMobile: string;
+  // Exterior video & mobile clip
   clip: string;
   clipMobile: string;
   // Interior: photoreal scrub clip played during "hold" phase
-  // If present, the dive clip transitions into this interior clip
   interiorClip?: string;
   interiorClipMobile?: string;
-  // Optional fallback still for interior (shown when interiorClip not yet loaded)
-  interiorStill?: string;
+  // Continuous timeline positions (in seconds)
+  startTime: number;
+  holdTime: number;
+  endTime: number;
   accent: string;
   scroll?: number;
   linger?: number;
@@ -46,6 +45,11 @@ export interface ExperienceConfig {
   diveScroll: number;
   connScroll: number;
   crossfade: number;
+  continuousVideo: string;
+  continuousVideoMobile: string;
+  continuousLoopVideo: string;
+  continuousLoopVideoMobile: string;
+  totalDuration: number;
   sections: ExperienceSection[];
   connectors: string[];
   connectorsMobile: string[];
@@ -59,16 +63,22 @@ export const experienceData: ExperienceConfig = {
   diveScroll: 1.4,
   connScroll: 0.9,
   crossfade: 0.12,
+  continuousVideo: "/experience/vid/continuous-loop.mp4",
+  continuousVideoMobile: "/experience/vid/continuous-loop-m.mp4",
+  continuousLoopVideo: "/experience/vid/continuous-loop.mp4",
+  continuousLoopVideoMobile: "/experience/vid/continuous-loop-m.mp4",
+  totalDuration: 54.0,
   sections: [
     // ── 0 · Hub Intro ────────────────────────────────────────────────────
     {
       id: "hub",
       label: "Dextora Hub",
       labelHi: "डेक्सटोरा हब",
-      still: "/experience/hub.webp",
-      stillMobile: "/experience/hub-m.webp",
       clip: "/experience/vid/hub.mp4",
       clipMobile: "/experience/vid/hub-m.mp4",
+      startTime: 0,
+      holdTime: 3.0,
+      endTime: 6.0,
       accent: "#E05A38",
       scroll: 1.5,
       linger: 0.35,
@@ -88,15 +98,13 @@ export const experienceData: ExperienceConfig = {
       id: "learn",
       label: "Dextora Learn",
       labelHi: "डेक्सटोरा लर्न",
-      // Exterior: isometric clay still + existing dive clip
-      still: "/experience/learn.webp",
-      stillMobile: "/experience/learn-m.webp",
       clip: "/experience/vid/learn.mp4",
       clipMobile: "/experience/vid/learn-m.mp4",
-      // Interior: photoreal scene scrub clip
       interiorClip: "/cinematic/dextora-learn/scrub.mp4",
       interiorClipMobile: "/cinematic/dextora-learn/scrub-mobile.mp4",
-      interiorStill: "/cinematic/dextora-learn/scene.png",
+      startTime: 12.0,
+      holdTime: 15.0,
+      endTime: 18.0,
       accent: "#059669",
       scroll: 2.2,
       linger: 0.4,
@@ -121,13 +129,13 @@ export const experienceData: ExperienceConfig = {
       id: "dhyeya",
       label: "Dhyeya IAS",
       labelHi: "ध्येय IAS",
-      still: "/experience/dhyeya.webp",
-      stillMobile: "/experience/dhyeya-m.webp",
       clip: "/experience/vid/dhyeya.mp4",
       clipMobile: "/experience/vid/dhyeya-m.mp4",
       interiorClip: "/cinematic/dhyeya-ias/scrub.mp4",
       interiorClipMobile: "/cinematic/dhyeya-ias/scrub-mobile.mp4",
-      interiorStill: "/cinematic/dhyeya-ias/scene.png",
+      startTime: 24.0,
+      holdTime: 27.0,
+      endTime: 30.0,
       accent: "#D97706",
       scroll: 2.2,
       linger: 0.4,
@@ -151,36 +159,36 @@ export const experienceData: ExperienceConfig = {
       },
     },
 
-    // ── 3 · Dextora CRM ──────────────────────────────────────────────────
+    // ── 3 · AI Tutor Chatbot Demo ─────────────────────────────────────────────
     {
       id: "crm",
-      label: "Dextora CRM",
-      labelHi: "डेक्सटोरा CRM",
-      still: "/experience/crm.webp",
-      stillMobile: "/experience/crm-m.webp",
+      label: "AI Tutor",
+      labelHi: "AI ट्यूटर",
       clip: "/experience/vid/crm.mp4",
       clipMobile: "/experience/vid/crm-m.mp4",
       interiorClip: "/cinematic/dextora-crm/scrub.mp4",
       interiorClipMobile: "/cinematic/dextora-crm/scrub-mobile.mp4",
-      interiorStill: "/cinematic/dextora-crm/scene.png",
+      startTime: 36.0,
+      holdTime: 39.0,
+      endTime: 42.0,
       accent: "#2563EB",
       scroll: 2.2,
       linger: 0.35,
       productSlug: "dextora-crm",
-      eyebrow: "04 · Institutional Growth",
-      eyebrowHi: "०४ · संस्थागत विकास",
-      title: "Turning Conversations Into Acquisitions",
-      titleHi: "संवाद को वास्तविक ग्राहकों में बदलें",
-      body: "All-in-one sales control room featuring Official WhatsApp Cloud API broadcasts, visual deal pipelines, sub-5-second lead sync, and predictive lead scoring.",
+      eyebrow: "04 · AI Tutor Chatbot",
+      eyebrowHi: "०४ · AI ट्यूटर चैटबॉट",
+      title: "Your Personal AI Tutor, Available 24/7",
+      titleHi: "आपका निजी AI ट्यूटर, हमेशा उपलब्ध",
+      body: "Ask any question, get instant step-by-step explanations with diagrams, personalized to your pace — just like a one-on-one tutor sitting beside you.",
       bodyHi:
-        "आधिकारिक व्हाट्सएप क्लाउड एपीआई प्रसारण, दृश्यमान बिक्री पाइपलाइन, ५ सेकंड से तेज लीड सिंक और प्रेडिक्टिव स्कोरिंग के साथ सम्पूर्ण समाधान।",
-      tags: ["WhatsApp Cloud API", "Visual Pipeline", "Sub-5s Lead Sync"],
-      tagsHi: ["व्हाट्सएप क्लाउड एपीआई", "विजुअल पाइपलाइन", "त्वरित लीड सिंक"],
+        "कोई भी सवाल पूछें, तुरंत चरण-दर-चरण उत्तर पाएं — बिल्कुल वैसे जैसे एक व्यक्तिगत शिक्षक आपके साथ बैठा हो।",
+      tags: ["Instant Explanations", "Step-by-Step Guidance", "Personalized Pace"],
+      tagsHi: ["त्वरित व्याख्या", "चरण-दर-चरण मार्गदर्शन", "व्यक्तिगत गति"],
       cta: {
         primary: {
-          label: "Launch Platform",
-          labelHi: "प्लेटफ़ॉर्म खोलें",
-          href: "https://crm-iota-sandy-13.vercel.app/",
+          label: "Try AI Tutor",
+          labelHi: "AI ट्यूटर आज़माएं",
+          href: "https://dextora.org",
         },
         secondary: { label: "Deep Dive", labelHi: "विस्तार से जानें", href: "/products/dextora-crm" },
       },
@@ -191,10 +199,11 @@ export const experienceData: ExperienceConfig = {
       id: "finale",
       label: "Convergence",
       labelHi: "संगम",
-      still: "/experience/finale.webp",
-      stillMobile: "/experience/finale-m.webp",
       clip: "/experience/vid/finale.mp4",
       clipMobile: "/experience/vid/finale-m.mp4",
+      startTime: 48.0,
+      holdTime: 51.0,
+      endTime: 54.0,
       accent: "#E05A38",
       scroll: 1.8,
       linger: 0.45,
