@@ -8,7 +8,7 @@ import { ChevronDown, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
 export function FAQSection() {
-  const [openIds, setOpenIds] = useState<string[]>([faqs[0].id, faqs[1].id]);
+  const [openIds, setOpenIds] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const toggleFAQ = (id: string) => {
@@ -55,8 +55,8 @@ export function FAQSection() {
               key={cat.key}
               onClick={() => setSelectedCategory(cat.key)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${selectedCategory === cat.key
-                  ? "bg-[#0E2922] text-[#F8F5EE] shadow-sm"
-                  : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-subtle)] hover:bg-[var(--bg-subtle)]"
+                ? "bg-[#0E2922] text-[#F8F5EE] shadow-sm"
+                : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-subtle)] hover:bg-[var(--bg-subtle)]"
                 }`}
             >
               {cat.label}
