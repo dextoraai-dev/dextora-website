@@ -15,6 +15,7 @@ import {
 } from "@/components/3d/objects";
 import { ExplainerData, ExplainerObjectType } from "@/data/explainers";
 import { CheckCircle2, ChevronRight, Sparkles } from "lucide-react";
+import { FadeInUp } from "@/components/shared/ScrollAnimation";
 
 interface ScrollExplainerProps {
   data: ExplainerData;
@@ -60,23 +61,27 @@ export function ScrollExplainer({ data, className = "" }: ScrollExplainerProps) 
       aria-label={activeStep.title[isHi ? "hi" : "en"]}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          badge={data.badge[isHi ? "hi" : "en"]}
-          badgeVariant="terracotta"
-          title={data.title[isHi ? "hi" : "en"]}
-          subtitle={data.subtitle[isHi ? "hi" : "en"]}
-        />
+        <FadeInUp>
+          <SectionHeading
+            badge={data.badge[isHi ? "hi" : "en"]}
+            badgeVariant="terracotta"
+            title={data.title[isHi ? "hi" : "en"]}
+            subtitle={data.subtitle[isHi ? "hi" : "en"]}
+          />
+        </FadeInUp>
 
         {/* Step Selector Tabs for Easy Interactive Scrubbing */}
-        <div className="mt-10 flex items-center justify-center gap-2 sm:gap-4 overflow-x-auto pb-2 scrollbar-none">
+        <FadeInUp delay={0.15} className="mt-10 flex items-center justify-center gap-2 sm:gap-4 overflow-x-auto pb-2 scrollbar-none">
           {data.steps.map((st, idx) => {
             const isCurrent = activeStepIdx === idx;
             return (
-              <button
+              <motion.button
                 key={idx}
                 type="button"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => handleStepSelect(idx)}
-                className={`group flex items-center gap-2.5 px-4 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 border ${
+                className={`group flex items-center gap-2.5 px-4 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 border cursor-pointer ${
                   isCurrent
                     ? "bg-[var(--bg-surface)] dark:bg-[#141720] text-[var(--text-primary)] border-[var(--brand-terracotta)] shadow-md ring-2 ring-[var(--brand-terracotta)]/20"
                     : "bg-[var(--bg-subtle)] text-[var(--text-muted)] border-transparent hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)]"
@@ -93,10 +98,10 @@ export function ScrollExplainer({ data, className = "" }: ScrollExplainerProps) 
                   {st.stepNumber}
                 </span>
                 <span>{st.badge[isHi ? "hi" : "en"]}</span>
-              </button>
+              </motion.button>
             );
           })}
-        </div>
+        </FadeInUp>
 
         {/* Main Interactive Stage */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
