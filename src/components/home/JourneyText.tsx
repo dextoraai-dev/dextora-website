@@ -43,7 +43,7 @@ export function JourneyText({
 
   // Continuous narrative phases based on chapterProgress
   // Phase 1 (0.00 - 0.35): Aerial Approach & Vision
-  // Phase 2 (0.35 - 0.75): Core Pedagogical Architecture & Immersion
+  // Phase 2 (0.35 - 0.75): Core Learning Architecture & Immersion
   // Phase 3 (0.75 - 1.00): Arrival, Performance Payoff & Launch Actions
   const isApproach = chapterProgress < 0.35;
   const isImmersion = chapterProgress >= 0.35 && chapterProgress < 0.75;
@@ -129,7 +129,7 @@ export function JourneyText({
             </div>
           </div>
 
-          {/* Core Pedagogical Breakthroughs (Active during immersion & arrival) */}
+          {/* Core Learning Breakthroughs (Active during immersion & arrival) */}
           <div
             className={`transition-all duration-500 ease-out ${!isApproach
               ? "opacity-100 translate-y-0"

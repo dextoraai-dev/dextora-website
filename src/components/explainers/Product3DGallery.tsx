@@ -138,7 +138,7 @@ export function Product3DGallery() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          badge={isHi ? "3D इंटरैक्टिव गैलरी" : "Pedagogical 3D Gallery"}
+          badge={isHi ? "3D इंटरैक्टिव गैलरी" : "Learning 3D Gallery"}
           badgeVariant="terracotta"
           title={
             isHi
@@ -165,11 +165,10 @@ export function Product3DGallery() {
                   setSelectedIdx(idx);
                   setProgress(0.5);
                 }}
-                className={`flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
-                  isSelected
+                className={`flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${isSelected
                     ? "bg-[var(--bg-surface)] dark:bg-[#141720] text-[var(--text-primary)] border-[var(--brand-terracotta)] shadow-md ring-2 ring-[var(--brand-terracotta)]/20"
                     : "bg-[var(--bg-subtle)] text-[var(--text-muted)] border-transparent hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)]"
-                }`}
+                  }`}
                 aria-pressed={isSelected}
               >
                 <Icon

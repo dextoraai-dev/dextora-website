@@ -15,7 +15,7 @@ const posters = [
   {
     name: "hero-loop-poster.jpg",
     title: "Dextora Knowledge Core",
-    subtitle: "Real-Time Pedagogical 3D Visuals",
+    subtitle: "Real-Time Learning 3D Visuals",
     badge: "3D AMBIENT LOOP",
     bgGradient: ["#0B0E14", "#1A3F35", "#E05A38"],
     accent: "#E05A38",

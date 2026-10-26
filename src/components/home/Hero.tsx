@@ -30,7 +30,7 @@ export function Hero() {
           className="object-cover object-[82%_center] sm:object-[78%_center] md:object-[72%_center] lg:object-right select-none pointer-events-none transition-opacity duration-300 opacity-100 dark:opacity-85"
         />
 
-        {/* Ambient Warm Pedagogical Light Glow on Illustration (Light Mode) */}
+        {/* Ambient Warm Learning Light Glow on Illustration (Light Mode) */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_75%_45%,rgba(217,83,47,0.06),transparent_70%)] dark:hidden pointer-events-none" />
 
         {/* Horizontal Smooth Feathering Gradient */}

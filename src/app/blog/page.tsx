@@ -10,7 +10,7 @@ import { ArrowRight, Clock, BookOpen, Sparkles } from "lucide-react";
 export const metadata: Metadata = {
   title: "Blog & Research Dispatches — Dextora AI",
   description:
-    "Explore the latest research, engineering deep dives, and pedagogical analyses on Socratic AI, UPSC evaluation, and bilingual learning in India.",
+    "Explore the latest research, engineering deep dives, and Learning analyses on Socratic AI, UPSC evaluation, and bilingual learning in India.",
   alternates: {
     canonical: "/blog",
   },
@@ -30,7 +30,7 @@ export default function BlogPage() {
             Dextora Dispatches & Insights
           </h1>
           <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
-            Perspectives on pedagogical AI architecture, UPSC evaluation benchmarks, Indic language
+            Perspectives on Learning AI architecture, UPSC evaluation benchmarks, Indic language
             NLP, and cognitive learning models.
           </p>
         </div>

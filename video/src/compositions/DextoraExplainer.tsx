@@ -7,7 +7,7 @@ export const DextoraExplainer: React.FC = () => {
 
   // Scene 1: 0 - 270 (The Challenge)
   // Scene 2: 270 - 570 (The Product Suite)
-  // Scene 3: 570 - 870 (Pedagogical AI Engine)
+  // Scene 3: 570 - 870 (Learning AI Engine)
   // Scene 4: 870 - 1050 (Brand Resolution)
 
   const scene1Opacity = interpolate(frame, [0, 20, 240, 270], [0, 1, 1, 0], {
@@ -154,7 +154,7 @@ export const DextoraExplainer: React.FC = () => {
               marginBottom: 48,
             }}
           >
-            Purpose-Built Pedagogical Platforms
+            Purpose-Built Learning Platforms
           </h2>
 
           <div
@@ -250,7 +250,7 @@ export const DextoraExplainer: React.FC = () => {
               border: "1px solid rgba(224, 90, 56, 0.3)",
             }}
           >
-            Pedagogical AI Principles
+            Learning AI Principles
           </div>
           <h2 style={{ fontSize: 56, fontWeight: 700, marginBottom: 36 }}>
             Rigorous Pedagogy. Native Bilingual Parity.

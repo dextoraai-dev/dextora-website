@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = {
   title: "About Dextora — Mission, Pedagogy, & Team",
   description:
-    "Learn about Dextora's mission to transform Indian education through Socratic AI, our founding story, leadership team, and pedagogical values.",
+    "Learn about Dextora's mission to transform Indian education through Socratic AI, our founding story, leadership team, and Learning values.",
   alternates: {
     canonical: "/about",
   },
@@ -57,7 +57,7 @@ export default function AboutPage() {
         <div className="text-center max-w-3xl mx-auto space-y-6 mb-20">
           <Badge variant="terracotta">Our Purpose</Badge>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[var(--text-primary)] leading-tight">
-            Democratizing Pedagogical Excellence for Every Indian Learner
+            Democratizing Learning Excellence for Every Indian Learner
           </h1>
           <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
             Dextora was founded on a simple observation: while generic AI models produce fast answers,

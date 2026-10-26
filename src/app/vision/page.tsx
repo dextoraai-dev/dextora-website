@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = {
   title: "Vision & AI Philosophy — Dextora AI",
   description:
-    "Explore Dextora's 5-year pedagogical AI roadmap, regional language inclusion philosophy, and the future of cognitive learning in India.",
+    "Explore Dextora's 5-year Learning AI roadmap, regional language inclusion philosophy, and the future of cognitive learning in India.",
   alternates: {
     canonical: "/vision",
   },
@@ -62,7 +62,7 @@ export default function VisionPage() {
       milestones: [
         "Universal Indic LLM for state curriculum boards",
         "Cross-subject concept transfer diagnostics",
-        "Open pedagogical benchmarks for Indian EdTech",
+        "Open Learning benchmarks for Indian EdTech",
       ],
     },
   ];
@@ -85,7 +85,7 @@ export default function VisionPage() {
         {/* Core Philosophy Manifesto */}
         <div className="p-8 sm:p-14 rounded-3xl bg-[var(--bg-surface)] dark:bg-[#141720] border border-[var(--border-subtle)] shadow-xl mb-24">
           <div className="max-w-3xl space-y-6">
-            <Badge variant="emerald">Pedagogical Philosophy</Badge>
+            <Badge variant="emerald">Learning Philosophy</Badge>
             <h2 className="text-3xl font-serif font-bold text-[var(--text-primary)]">
               The Three Tenets of Cognitive EdTech
             </h2>
@@ -163,7 +163,7 @@ export default function VisionPage() {
           </h2>
           <p className="text-sm text-[#A3B8B2] max-w-xl mx-auto">
             Whether you are an academic researcher, school director, or civil services mentor, we
-            welcome collaborations that push pedagogical boundaries.
+            welcome collaborations that push Learning boundaries.
           </p>
           <div className="flex justify-center gap-4">
             <Link

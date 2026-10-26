@@ -6,12 +6,12 @@ import { siteConfig } from "@/data/site-config";
 export const metadata: Metadata = {
   title: "Experience Dextora — Continuous Fly-Through Cinematic World",
   description:
-    "Take a seamless 3D scroll-scrubbed camera flight through Dextora's pedagogical AI ecosystem — from K-12 chapter mastery to UPSC Mains evaluation and intelligent CRM workflows.",
+    "Take a seamless 3D scroll-scrubbed camera flight through Dextora's Learning AI ecosystem — from K-12 chapter mastery to UPSC Mains evaluation and intelligent CRM workflows.",
   alternates: {
     canonical: `${siteConfig.url}/experience`,
   },
   openGraph: {
-    title: "Experience Dextora — The Cinematic World of Pedagogical AI",
+    title: "Experience Dextora — The Cinematic World of Learning AI",
     description:
       "A seamless scroll-driven journey through India's leading AI EdTech hub. Explore Dextora Learn, Dhyeya IAS, and Dextora CRM in one continuous flight.",
     url: `${siteConfig.url}/experience`,

@@ -142,7 +142,7 @@ export const DextoraLearnExplainer: React.FC = () => {
               margin: "0 auto",
             }}
           >
-            Guides students with subtle pedagogical nudges to build lasting problem-solving intuition and long-term memory.
+            Guides students with subtle Learning nudges to build lasting problem-solving intuition and long-term memory.
           </p>
         </div>
       )}

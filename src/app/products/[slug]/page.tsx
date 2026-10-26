@@ -261,7 +261,7 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
           ))}
         </div>
 
-        {/* Interactive 3D Pedagogical Explainer */}
+        {/* Interactive 3D Learning Explainer */}
         {product.slug === "dhyeya-ias" && (
           <div className="mb-20">
             <ScrollExplainer data={dhyeyaIasExplainer} />
@@ -285,7 +285,7 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
               Feature Deep Dive
             </Badge>
             <h2 className="text-3xl font-bold text-[var(--text-primary)]">
-              Core Capabilities & Pedagogical Architecture
+              Core Capabilities & Learning Architecture
             </h2>
           </div>
 
@@ -329,24 +329,22 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
                 product.slug === "dhyeya-ias"
                   ? "dhyeya-ias-explainer"
                   : product.slug === "dextora-learn"
-                  ? "dextora-learn-explainer"
-                  : "dextora-explainer"
+                    ? "dextora-learn-explainer"
+                    : "dextora-explainer"
               }
               title={`${product.name} Explainer Video`}
-              poster={`/videos/${
-                product.slug === "dhyeya-ias"
+              poster={`/videos/${product.slug === "dhyeya-ias"
                   ? "dhyeya-ias-explainer-poster.jpg"
                   : product.slug === "dextora-learn"
-                  ? "dextora-learn-explainer-poster.jpg"
-                  : "dextora-explainer-poster.jpg"
-              }`}
-              captionSrc={`/videos/${
-                product.slug === "dhyeya-ias"
+                    ? "dextora-learn-explainer-poster.jpg"
+                    : "dextora-explainer-poster.jpg"
+                }`}
+              captionSrc={`/videos/${product.slug === "dhyeya-ias"
                   ? "dhyeya-ias-explainer.vtt"
                   : product.slug === "dextora-learn"
-                  ? "dextora-learn-explainer.vtt"
-                  : "dextora-explainer.vtt"
-              }`}
+                    ? "dextora-learn-explainer.vtt"
+                    : "dextora-explainer.vtt"
+                }`}
               mode="interactive"
               aspectRatio="16/9"
             />

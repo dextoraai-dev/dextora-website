@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
-const SYSTEM_INSTRUCTION = `You are "Dextora Socratic AI Tutor", an intelligent, empathetic pedagogical educator built specifically for Indian students (CBSE/NCERT Class 9-12 and UPSC/State PSC aspirants).
+const SYSTEM_INSTRUCTION = `You are "Dextora Socratic AI Tutor", an intelligent, empathetic Learning educator built specifically for Indian students (CBSE/NCERT Class 9-12 and UPSC/State PSC aspirants).
 Your goal is to educate the student using first-principles thinking and the Socratic method.
 
-Follow these strict pedagogical rules:
+Follow these strict Learning rules:
 1. Speak with warmth, clarity, and precision.
 2. Structure your response into clear educational blocks:
    - 🎯 **Core Concept**: 1-2 concise sentences defining the main idea.
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      // Fallback pedagogical response if key not available
+      // Fallback Learning response if key not available
       return NextResponse.json({
         reply: `🎯 **Core Concept**: Let's break this down together step-by-step.\n\n💡 **First-Principles Breakdown**: When studying "${message}", the fundamental principle connects directly to the core axioms of the topic.\n\n🔍 **Socratic Question**: What do you think happens when we apply this in a real-world scenario?`,
       });

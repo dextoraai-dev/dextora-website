@@ -33,7 +33,7 @@ export const scenes = [
     id: "scene_02",
     name: "02 · Doubts — Snap & Solve Under 3 Seconds",
     prompt:
-      "Photorealistic cinematic macro-editorial photograph of a modern smartphone resting gently angled over a printed Indian science textbook, the phone's high-resolution screen displaying a crisp, illuminated AI interface showing an instant step-by-step solution to a complex formula, believable phone reflections, natural desk lighting, open notebook with student's handwritten equations nearby, soft depth of field focusing on the phone screen and problem, sophisticated pedagogical technology feel, electric blue #3B82F6 and cyan interface highlights, authentic Indian study desk background with dark charcoal vignette #0C0E12, shot on 50mm macro lens, 3:2 landscape. No floating holograms, no fake neon sci-fi graphics, no illegible gibberish text, no logos, no watermarks.",
+      "Photorealistic cinematic macro-editorial photograph of a modern smartphone resting gently angled over a printed Indian science textbook, the phone's high-resolution screen displaying a crisp, illuminated AI interface showing an instant step-by-step solution to a complex formula, believable phone reflections, natural desk lighting, open notebook with student's handwritten equations nearby, soft depth of field focusing on the phone screen and problem, sophisticated Learning technology feel, electric blue #3B82F6 and cyan interface highlights, authentic Indian study desk background with dark charcoal vignette #0C0E12, shot on 50mm macro lens, 3:2 landscape. No floating holograms, no fake neon sci-fi graphics, no illegible gibberish text, no logos, no watermarks.",
     divePan: "x='iw/2-(iw/zoom/2)-15*(1-1/zoom)':y='ih/2-(ih/zoom/2)+10*(1-1/zoom)'",
   },
   {

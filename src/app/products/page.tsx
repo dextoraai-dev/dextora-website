@@ -36,7 +36,7 @@ export default function ProductsPage() {
             The Dextora AI Product Family
           </h1>
           <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
-            A unified suite of pedagogical engines engineered for specific academic milestones, from
+            A unified suite of Learning engines engineered for specific academic milestones, from
             foundation board exams to the nation&apos;s toughest competitive civil services tests.
           </p>
         </div>
@@ -48,7 +48,7 @@ export default function ProductsPage() {
           ))}
         </div>
 
-        {/* Interactive 3D Pedagogical Gallery */}
+        {/* Interactive 3D Learning Gallery */}
         <div className="mt-20">
           <Product3DGallery />
         </div>
@@ -63,7 +63,7 @@ export default function ProductsPage() {
               Shared AI Engine & Infrastructure
             </h2>
             <p className="text-sm text-[var(--text-secondary)] mt-2">
-              Every Dextora product inherits our core pedagogical guarantees: zero hallucination guardrails,
+              Every Dextora product inherits our core Learning guarantees: zero hallucination guardrails,
               sub-500ms inference, and authentic bilingual Hindi/English terminology.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function ProductsPage() {
                 Bilingual Parity Engine
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                Equal pedagogical fidelity in both Hindi and English, ensuring no medium of study is
+                Equal Learning fidelity in both Hindi and English, ensuring no medium of study is
                 disadvantaged.
               </p>
             </div>

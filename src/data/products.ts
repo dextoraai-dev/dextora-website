@@ -60,7 +60,7 @@ export const products: Product[] = [
     description:
       "AI-powered learning platform designed for deep academic mastery across school and collegiate curricula. Delivers adaptive chapter pacing, instant concept breakdowns, and precision diagnostic quizzes.",
     longDescription:
-      "Dextora Learn redefines academic preparation by turning static textbooks into interactive, multi-modal learning journeys. Powered by custom pedagogically aligned LLMs, Dextora Learn diagnoses knowledge gaps at the atomic concept level, guides students with Socratic hints, and personalises practice sets to guarantee retention.",
+      "Dextora Learn redefines academic preparation by turning static textbooks into interactive, multi-modal learning journeys. Powered by custom Learningly aligned LLMs, Dextora Learn diagnoses knowledge gaps at the atomic concept level, guides students with Socratic hints, and personalises practice sets to guarantee retention.",
     url: "https://dextora.org",
     status: "live",
     statusBadge: "Live Platform",

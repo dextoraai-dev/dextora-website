@@ -27,7 +27,7 @@ export interface ExplainerData {
 export const homeHowItWorksExplainer: ExplainerData = {
   id: "home-how-it-works",
   badge: {
-    en: "Pedagogical Architecture",
+    en: "Learning Architecture",
     hi: "शैक्षणिक आर्किटेक्चर",
   },
   title: {

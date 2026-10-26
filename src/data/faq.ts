@@ -18,7 +18,7 @@ export const faqs: FAQItem[] = [
     category: "pedagogy",
     question: "How does Dextora's AI differ from generic chatbots like ChatGPT?",
     answer:
-      "Generic chatbots provide direct, often unverified answers without pedagogical guardrails. Dextora's AI engines are fine-tuned on verified Indian curriculum frameworks (NCERT, CBSE, UPSC CSE GS syllabi) and utilize Socratic prompting. Instead of simply generating answers, our models guide students to think critically, evaluate handwritten answers according to standard exam rubrics, and deliver targeted practice sets.",
+      "Generic chatbots provide direct, often unverified answers without Learning guardrails. Dextora's AI engines are fine-tuned on verified Indian curriculum frameworks (NCERT, CBSE, UPSC CSE GS syllabi) and utilize Socratic prompting. Instead of simply generating answers, our models guide students to think critically, evaluate handwritten answers according to standard exam rubrics, and deliver targeted practice sets.",
   },
   {
     id: "bilingual-support",

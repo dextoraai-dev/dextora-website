@@ -28,7 +28,7 @@ This repository contains the central corporate parent hub that unifies all Dexto
 | `/products/[slug]` | **Product Detail**: Deep feature breakdown, target audience, stats, live launch link |
 | `/about` | **About Dextora**: Mission, founding story (Bloom's 2-Sigma Problem), values, leadership team |
 | `/vision` | **Vision**: 5-year technology roadmap, 3 tenets of cognitive EdTech, Bharat inclusion |
-| `/blog` | **Research & Blog**: Pedagogical AI dispatches, vision OCR breakdown, bilingual architecture |
+| `/blog` | **Research & Blog**: Learning AI dispatches, vision OCR breakdown, bilingual architecture |
 | `/blog/[slug]` | **Article Page**: Full article text, author bio, reading time, related articles |
 | `/careers` | **Careers**: Open positions, culture & perks, direct job application form |
 | `/contact` | **Contact**: Categorized inquiry form, Bengaluru HQ & Delhi operations hubs |
@@ -165,7 +165,7 @@ All user forms (Contact, Careers, Newsletter) include:
 
 ## 🎨 3D Visual Explainers & Remotion Video Studio
 
-Dextora explains pedagogical concepts through interactive procedural 3D visuals and code-generated Remotion videos, avoiding walls of text.
+Dextora explains Learning concepts through interactive procedural 3D visuals and code-generated Remotion videos, avoiding walls of text.
 
 ### 1. Procedural 3D Objects (`src/components/3d/objects/`)
 - **`KnowledgeBook.tsx`**: Layered pages fanning open and releasing floating glowing chapter tokens (Dextora Learn &bull; Emerald `#059669`).
@@ -177,7 +177,7 @@ Dextora explains pedagogical concepts through interactive procedural 3D visuals 
 *All 3D objects feature PBR materials, dark/light theme awareness, gentle idle float, progress scrubbing (`progress: 0..1`), and full WebGL resource disposal on unmount.*
 
 ### 2. Scroll-Driven 3D Explainers (`src/components/explainers/`)
-- **`ScrollExplainer.tsx`**: Sticky interactive pedagogical explainer cross-fading through learning stages alongside synchronized 3D object state animations.
+- **`ScrollExplainer.tsx`**: Sticky interactive Learning explainer cross-fading through learning stages alongside synchronized 3D object state animations.
 - **`Product3DGallery.tsx`**: Keyboard-accessible (`←`/`→`), interactive 3D model viewer with screen-reader DOM descriptions and animation scrubbers.
 
 ### 3. Remotion Video Studio (`/video`)

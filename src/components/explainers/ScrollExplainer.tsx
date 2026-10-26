@@ -81,19 +81,17 @@ export function ScrollExplainer({ data, className = "" }: ScrollExplainerProps) 
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleStepSelect(idx)}
-                className={`group flex items-center gap-2.5 px-4 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 border cursor-pointer ${
-                  isCurrent
+                className={`group flex items-center gap-2.5 px-4 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 border cursor-pointer ${isCurrent
                     ? "bg-[var(--bg-surface)] dark:bg-[#141720] text-[var(--text-primary)] border-[var(--brand-terracotta)] shadow-md ring-2 ring-[var(--brand-terracotta)]/20"
                     : "bg-[var(--bg-subtle)] text-[var(--text-muted)] border-transparent hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)]"
-                }`}
+                  }`}
                 aria-pressed={isCurrent}
               >
                 <span
-                  className={`font-mono text-xs px-2 py-0.5 rounded-md font-bold transition-colors ${
-                    isCurrent
+                  className={`font-mono text-xs px-2 py-0.5 rounded-md font-bold transition-colors ${isCurrent
                       ? "bg-[var(--brand-terracotta)] text-white"
                       : "bg-[var(--bg-surface)] text-[var(--text-muted)] group-hover:text-[var(--text-primary)]"
-                  }`}
+                    }`}
                 >
                   {st.stepNumber}
                 </span>
@@ -105,7 +103,7 @@ export function ScrollExplainer({ data, className = "" }: ScrollExplainerProps) 
 
         {/* Main Interactive Stage */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column: Pedagogical Details */}
+          {/* Left Column: Learning Details */}
           <div className="lg:col-span-6 space-y-6">
             <AnimatePresence mode="wait">
               <motion.div

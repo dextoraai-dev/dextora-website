@@ -271,7 +271,7 @@ export function CareerApplicationForm({
       {/* Cover Note */}
       <div className="space-y-1.5">
         <label className="text-xs font-semibold text-[var(--text-primary)]">
-          Why do you want to build pedagogical AI with Dextora? *
+          Why do you want to build Learning AI with Dextora? *
         </label>
         <textarea
           required

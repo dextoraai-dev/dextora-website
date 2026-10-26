@@ -141,7 +141,7 @@ export const translations: Record<Locale, TranslationDictionary> = {
     },
     cta: {
       badge: "Join the Movement",
-      title: "Ready to Experience Pedagogical AI?",
+      title: "Ready to Experience Learning AI?",
       subtitle:
         "Explore our live products or subscribe to our research briefings on the future of Indian education.",
       emailPlaceholder: "Enter your email address...",

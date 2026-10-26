@@ -19,10 +19,10 @@ export const jobPositions: JobPosition[] = [
     type: "Full-Time",
     experience: "3-6 years",
     description:
-      "Join our core AI team to fine-tune open-weight models for Socratic pedagogical guidance, Devanagari handwriting recognition, and automated rubric scoring.",
+      "Join our core AI team to fine-tune open-weight models for Socratic Learning guidance, Devanagari handwriting recognition, and automated rubric scoring.",
     responsibilities: [
       "Design and fine-tune domain-specific LLMs on Indian curricula (NCERT, UPSC).",
-      "Develop evaluation pipelines for hallucination mitigation and pedagogical fidelity.",
+      "Develop evaluation pipelines for hallucination mitigation and Learning fidelity.",
       "Optimize inference latency and token economics for high-volume student queries.",
       "Collaborate with curriculum experts to encode cognitive scaffolding into models.",
     ],

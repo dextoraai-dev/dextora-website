@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-bold text-[var(--text-primary)]">
               2. Information We Collect
             </h2>
-            <p>We collect only the information necessary to provide pedagogical AI evaluations:</p>
+            <p>We collect only the information necessary to provide Learning AI evaluations:</p>
             <ul className="list-disc pl-5 space-y-1">
               <li>
                 <strong>Account Information:</strong> Name, email address, phone number, and optional

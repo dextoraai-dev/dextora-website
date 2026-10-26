@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Careers — Build Pedagogical AI at Dextora",
+  title: "Careers — Build Learning AI at Dextora",
   description:
     "Join Dextora AI to build transformative educational intelligence. Explore open roles in AI research, full-stack engineering, product design, and UPSC curriculum.",
   alternates: {

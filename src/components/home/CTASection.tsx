@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { FadeInUp, ScaleIn } from "@/components/shared/ScrollAnimation";
@@ -16,6 +17,17 @@ export function CTASection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScaleIn>
           <div className="relative rounded-3xl bg-[#0E2922] text-[#F8F5EE] border border-[#1A3F35] p-8 sm:p-14 lg:p-16 overflow-hidden shadow-2xl">
+            {/* Grounded Campus Architectural Background Image */}
+            <div className="absolute inset-0 pointer-events-none select-none z-0">
+              <Image
+                src="/images/contact/campus-bg.jpg"
+                alt="Educational Campus Background"
+                fill
+                className="object-cover object-center opacity-15 mix-blend-luminosity"
+              />
+              <div className="absolute inset-0 bg-[#0E2922]/80 backdrop-blur-[1px]" />
+            </div>
+
             {/* Pulsating Animated Background Ambient Gradients */}
             <motion.div
               animate={{
@@ -92,7 +104,7 @@ export function CTASection() {
                   <span>Dextora AI Research Dispatch</span>
                 </h3>
                 <p className="text-xs text-[#A3B8B2] leading-relaxed">
-                  Receive monthly papers on pedagogical prompt architectures, state exam data trends,
+                  Receive monthly papers on Learning prompt architectures, state exam data trends,
                   and early previews of new product releases.
                 </p>
 

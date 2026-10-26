@@ -19,7 +19,7 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: "why-generic-llms-fail-indian-edtech",
-    title: "Why Generic LLMs Fail Indian Classrooms — And How We Built Pedagogical AI",
+    title: "Why Generic LLMs Fail Indian Classrooms — And How We Built Learning AI",
     excerpt:
       "Direct answers cultivate cognitive dependency. Here is why domain-fine-tuned Socratic AI models are the only sustainable path for Indian education.",
     content: [
@@ -31,7 +31,7 @@ export const blogPosts: BlogPost[] = [
       "3. Bilingual Parity: Concepts are natively explained with culturally resonant analogies and authentic Hindi vocabulary alongside English.",
       "As we scale across India, our goal remains clear: to give every learner a personalized tutor that builds critical thinking rather than mere memorization.",
     ],
-    coverImage: "/images/blog/pedagogical-ai.webp",
+    coverImage: "/images/blog/Learning-ai.webp",
     category: "AI & Pedagogy",
     author: {
       name: "Dr. Ananya Sharma",
@@ -40,7 +40,7 @@ export const blogPosts: BlogPost[] = [
     },
     publishedAt: "2026-09-18",
     readTime: "5 min read",
-    tags: ["Pedagogical AI", "Socratic Method", "NCERT", "EdTech Architecture"],
+    tags: ["Learning AI", "Socratic Method", "NCERT", "EdTech Architecture"],
     featured: true,
   },
   {

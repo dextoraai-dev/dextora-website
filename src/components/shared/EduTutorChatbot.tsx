@@ -43,7 +43,7 @@ export function EduTutorChatbot() {
       id: "welcome",
       role: "assistant",
       content:
-        "Namaste! I am your **Dextora AI Pedagogical Tutor** 🎓\n\nI specialize in **CBSE / NCERT** curriculum and **UPSC / Civil Services** preparation. Instead of rote memorization, I break down complex concepts into first principles and ask Socratic questions.\n\nTap a sample question below or type anything you are studying!",
+        "Namaste! I am your **Dextora AI Learning Tutor** 🎓\n\nI specialize in **CBSE / NCERT** curriculum and **UPSC / Civil Services** preparation. Instead of rote memorization, I break down complex concepts into first principles and ask Socratic questions.\n\nTap a sample question below or type anything you are studying!",
       timestamp: "Just now",
     },
   ]);
@@ -214,11 +214,10 @@ export function EduTutorChatbot() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 leading-relaxed whitespace-pre-line text-[13px] ${
-                    m.role === "user"
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 leading-relaxed whitespace-pre-line text-[13px] ${m.role === "user"
                       ? "bg-[#E05A38] text-white rounded-br-xs shadow-sm"
                       : "bg-white dark:bg-[#1A1E26] text-gray-800 dark:text-gray-200 border border-black/5 dark:border-white/5 rounded-bl-xs shadow-xs"
-                  }`}
+                    }`}
                 >
                   {m.content}
                 </div>
@@ -239,7 +238,7 @@ export function EduTutorChatbot() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#E05A38] animate-bounce"></span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#E05A38] animate-bounce [animation-delay:0.2s]"></span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#E05A38] animate-bounce [animation-delay:0.4s]"></span>
-                  <span className="text-xs ml-1 font-medium">Tutor is formulating pedagogical hint...</span>
+                  <span className="text-xs ml-1 font-medium">Tutor is formulating Learning hint...</span>
                 </div>
               </div>
             )}

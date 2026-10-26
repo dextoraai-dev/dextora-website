@@ -64,7 +64,7 @@ export default function TermsPage() {
             </h2>
             <p>
               All trademarks, curriculum tagging taxonomies, user interface designs, and proprietary
-              pedagogical algorithms are the exclusive property of {siteConfig.legalName}.
+              Learning algorithms are the exclusive property of {siteConfig.legalName}.
             </p>
           </section>
 
