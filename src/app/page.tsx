@@ -1,6 +1,5 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Hero } from "@/components/home/Hero";
 import { MasterCinematicWorld } from "@/components/home/MasterCinematicWorld";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { WhyDextora } from "@/components/home/WhyDextora";
@@ -23,34 +22,31 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="w-full">
-      {/* 1. Hero Section */}
-      <Hero />
-
-      {/* 2. Unified Master Continuous Cinematic Flight World (Edu Student Journey + Product Ecosystem) */}
+      {/* 1. Unified Master Continuous Cinematic Flight World (Edu Student Journey + Product Ecosystem) */}
       <MasterCinematicWorld />
 
-      {/* 3. Product Showcase */}
+      {/* 2. Product Showcase */}
       <ProductShowcase />
 
-      {/* 4. Why Dextora Pillars */}
+      {/* 3. Why Dextora Pillars */}
       <WhyDextora />
 
-      {/* 5. How It Works - 3-Step Cognitive Loop */}
+      {/* 4. How It Works - 3-Step Cognitive Loop */}
       <HowItWorks />
 
-      {/* 6. Stats Strip */}
+      {/* 5. Stats Strip */}
       <StatsStrip />
 
-      {/* 7. Latest From the Blog */}
+      {/* 6. Latest From the Blog */}
       <LatestBlog />
 
-      {/* 8. Testimonials Carousel */}
+      {/* 7. Testimonials Carousel */}
       <TestimonialsCarousel />
 
-      {/* 9. FAQ Accordion + FAQ JSON-LD */}
+      {/* 8. FAQ Accordion + FAQ JSON-LD */}
       <FAQSection />
 
-      {/* 10. Final CTA Banner + Newsletter Signup */}
+      {/* 9. Final CTA Banner + Newsletter Signup */}
       <CTASection />
     </div>
   );

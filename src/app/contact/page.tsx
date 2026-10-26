@@ -26,37 +26,40 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     /*
-     * Full-page campus background using a plain <img> absolutely positioned
-     * inside the page wrapper. This bypasses body background-color and
-     * overflow-x:clip constraints that break fixed/sticky approaches.
+     * Full-page campus background fixed to viewport so it never scales or
+     * zooms to cover the 2400px scroll height.
      */
     <div
       className="relative min-h-screen text-[var(--text-primary)]"
       style={{ isolation: "isolate" }}
     >
-      {/* ── FULL-PAGE BACKGROUND IMAGE (absolutely positioned, full scroll height) ── */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/contact/campus-bg.jpg"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
-        style={{ zIndex: -2 }}
-      />
-      {/* Dark gradient overlay — lightened so campus image is clearly visible */}
+      {/* ── VIEWPORT-FIXED CAMPUS BACKGROUND (Prevents 3x zoom-in over full scroll height) ── */}
       <div
-        className="absolute inset-0 bg-gradient-to-br from-[#06080D]/65 via-[#0B0F18]/55 to-[#0E1420]/60 pointer-events-none select-none"
-        style={{ zIndex: -1 }}
-      />
-      <div
-        className="absolute inset-0 bg-gradient-to-t from-[#0C0A08]/35 via-transparent to-transparent pointer-events-none select-none"
-        style={{ zIndex: -1 }}
-      />
+        className="fixed inset-0 pointer-events-none select-none overflow-hidden"
+        style={{ zIndex: 0 }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/contact/campus-bg.jpg"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Dark gradient overlay — lightened so campus image is clearly visible */}
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-[#06080D]/65 via-[#0B0F18]/55 to-[#0E1420]/60 pointer-events-none select-none"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-[#0C0A08]/35 via-transparent to-transparent pointer-events-none select-none"
+        />
+      </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          1. HERO
-      ══════════════════════════════════════════════════════════════ */}
-      <section className="relative py-24 sm:py-36 border-b border-white/10">
+      {/* ── FOREGROUND CONTENT ── */}
+      <div className="relative" style={{ zIndex: 1 }}>
+        {/* ══════════════════════════════════════════════════════════════
+            1. HERO
+        ══════════════════════════════════════════════════════════════ */}
+        <section className="relative py-24 sm:py-36 border-b border-white/10">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-7">
@@ -285,5 +288,6 @@ export default function ContactPage() {
       {/* Bottom spacer */}
       <div className="h-16" />
     </div>
-  );
+  </div>
+);
 }
