@@ -115,7 +115,7 @@ export function ContactForm() {
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <User className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-            <span>Full Name *</span>
+            <span className="text-[var(--brand-terracotta)]">Full Name *</span>
           </label>
           <input
             type="text"
@@ -132,7 +132,7 @@ export function ContactForm() {
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <Mail className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-            <span>Email Address *</span>
+            <span className="text-[var(--brand-terracotta)]">Email Address *</span>
           </label>
           <input
             type="email"
@@ -151,7 +151,7 @@ export function ContactForm() {
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <Phone className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-            <span>Phone Number</span>
+            <span className="text-[var(--brand-terracotta)]">Phone Number</span>
           </label>
           <input
             type="tel"
@@ -167,7 +167,7 @@ export function ContactForm() {
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
             <Building className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-            <span>School / Institute / Org</span>
+            <span className="text-[var(--brand-terracotta)]">School / Institute / Org</span>
           </label>
           <input
             type="text"
@@ -183,7 +183,7 @@ export function ContactForm() {
       {/* Inquiry Type */}
       <div className="space-y-1.5">
         <label className="text-xs font-semibold text-[var(--text-primary)]">
-          Inquiry Purpose *
+          <span className="text-[var(--brand-terracotta)]"> Inquiry Purpose *</span>
         </label>
         <select
           name="inquiryType"
@@ -206,7 +206,7 @@ export function ContactForm() {
       <div className="space-y-1.5">
         <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
           <MessageSquare className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-          <span>How can we help you? *</span>
+          <span className="text-[var(--brand-terracotta)]">How can we help you? *</span>
         </label>
         <textarea
           required

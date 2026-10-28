@@ -41,7 +41,7 @@ import {
 } from "lucide-react";
 
 function subscribeReducedMotion(callback: () => void) {
-  if (typeof window === "undefined" || !window.matchMedia) return () => {};
+  if (typeof window === "undefined" || !window.matchMedia) return () => { };
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   mq.addEventListener("change", callback);
   return () => mq.removeEventListener("change", callback);
@@ -275,18 +275,6 @@ export function ScrollWorld() {
           onCanPlayThrough={() => setIsVideoReady(true)}
         />
 
-        {/* Loading Spinner until first video frame is ready */}
-        {!isVideoReady && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#080A0F]">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-[var(--brand-terracotta)] animate-spin" />
-              <span className="font-mono text-xs text-white/70 tracking-widest uppercase">
-                {isHi ? "सिनेमैटिक वीडियो लोड हो रहा है..." : "Loading Continuous Video Flight..."}
-              </span>
-            </div>
-          </div>
-        )}
-
         {/* Layer 2: Subtle Cinematic Scrim for Text Legibility (No visual obstruction) */}
         <div
           className="absolute inset-0 z-10 pointer-events-none"
@@ -342,11 +330,10 @@ export function ScrollWorld() {
                   key={sec.id}
                   type="button"
                   onClick={() => jumpToChapter(idx)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
-                    isActive
-                      ? "text-white shadow-lg font-semibold scale-105"
-                      : "text-white/60 hover:text-white hover:bg-white/10"
-                  }`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${isActive
+                    ? "text-white shadow-lg font-semibold scale-105"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                    }`}
                   style={{
                     backgroundColor: isActive ? sec.accent : "transparent",
                   }}
@@ -373,23 +360,12 @@ export function ScrollWorld() {
               {isPlayingContinuous ? (
                 <>
                   <Pause className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-                  <span className="hidden md:inline">Pause</span>
                 </>
               ) : (
                 <>
                   <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
-                  <span className="hidden md:inline">Continuous Loop</span>
                 </>
               )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIsMuted(!isMuted)}
-              className="p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/70 hover:text-white transition-all cursor-pointer"
-              aria-label={isMuted ? "Unmute audio" : "Mute audio"}
-            >
-              {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
             </button>
           </div>
         </header>
@@ -477,37 +453,6 @@ export function ScrollWorld() {
             </div>
           </div>
         </div>
-
-        {/* Layer 6: Floating Flight HUD Control Bar at Bottom */}
-        <aside
-          aria-label="Flight Time Scrubber"
-          className="absolute bottom-6 inset-x-0 z-30 flex justify-center px-4 pointer-events-auto"
-        >
-          <div className="flex items-center gap-3 px-4 py-2.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/15 shadow-2xl text-xs font-mono">
-            {/* Loop indicator */}
-            <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-              <RotateCcw className="w-3.5 h-3.5 animate-spin-slow" />
-              <span>Continuous Loop</span>
-            </span>
-
-            <span className="text-white/30">|</span>
-
-            {/* Time display */}
-            <span className="text-white/90 font-bold tracking-wider">
-              {Math.floor(currentTime)}s / {TOTAL_DURATION}s
-            </span>
-
-            <span className="hidden sm:inline text-white/30">|</span>
-
-            {/* Active section title */}
-            <span
-              className="hidden sm:inline font-sans font-semibold px-2 py-0.5 rounded-md"
-              style={{ color: currentSection.accent }}
-            >
-              {isHi ? currentSection.labelHi : currentSection.label}
-            </span>
-          </div>
-        </aside>
       </div>
 
       {/* Invisible scroll spacer track: gives page real scroll depth */}

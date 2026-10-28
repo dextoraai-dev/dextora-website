@@ -1,5 +1,5 @@
 "use client";
-
+import ReactMarkdown from "react-markdown";
 import React, { useState, useRef, useEffect } from "react";
 import { MessageSquare, X, Send, Sparkles, Bot, User, BookOpen, RotateCcw, ChevronDown, CheckCircle2 } from "lucide-react";
 
@@ -214,12 +214,21 @@ export function EduTutorChatbot() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 leading-relaxed whitespace-pre-line text-[13px] ${m.role === "user"
-                      ? "bg-[#E05A38] text-white rounded-br-xs shadow-sm"
-                      : "bg-white dark:bg-[#1A1E26] text-gray-800 dark:text-gray-200 border border-black/5 dark:border-white/5 rounded-bl-xs shadow-xs"
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 leading-relaxed text-[13px] ${m.role === "user"
+                    ? "bg-[#E05A38] text-white rounded-br-xs shadow-sm"
+                    : "bg-white dark:bg-[#1A1E26] text-gray-800 dark:text-gray-200 border border-black/5 dark:border-white/5 rounded-bl-xs shadow-xs"
                     }`}
                 >
-                  {m.content}
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                      strong: ({ children }) => (
+                        <strong className="font-bold">{children}</strong>
+                      ),
+                    }}
+                  >
+                    {m.content}
+                  </ReactMarkdown>
                 </div>
                 {m.role === "user" && (
                   <div className="w-7 h-7 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 flex items-center justify-center shrink-0 mt-0.5">
