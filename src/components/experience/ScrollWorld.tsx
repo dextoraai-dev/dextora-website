@@ -5,17 +5,17 @@
  *
  * 100% Pure Video · Zero Static Images · Unbroken Flight Loop
  *
- * Merged Video Flow:
- *   Dextora Hub (0-6s)
- *   → Flight Connector (6-9s)
- *   → Dextora Learn (9-15s)
- *   → Flight Connector (15-18s)
- *   → Dhyeya IAS (18-24s)
- *   → Flight Connector (24-27s)
- *   → Dextora CRM (27-33s)
- *   → Flight Connector (33-36s)
- *   → Behind the Scenes / Convergence (36-40.5s)
- *   → Seamless Sky Crossfade back into Dextora Hub (40.5-42s, loop!)
+ * Merged Video Flow (70s Continuous Unbroken Flight Loop):
+ *   Dextora Hub (0-6s, hold @ 3s)
+ *   → Campus Connector (6-16s)
+ *   → Dextora Learn (16-22s, hold @ 19s)
+ *   → Classroom Connector (22-32s)
+ *   → Dhyeya IAS (32-38s, hold @ 35s)
+ *   → Library Connector (38-48s)
+ *   → AI Tutor / Chatbot (48-54s, hold @ 51s)
+ *   → School Desk Connector (54-64s)
+ *   → Convergence / Finale (64-70s, hold @ 67s)
+ *   → Seamless Sky Loop back to Dextora Hub (70s -> 0s)
  */
 
 import React, {
@@ -27,17 +27,11 @@ import React, {
 } from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
-import { experienceData, ExperienceSection } from "@/data/experience";
+import { experienceData } from "@/data/experience";
 import {
   ArrowRight,
   ChevronRight,
   Compass,
-  Play,
-  Pause,
-  RotateCcw,
-  Volume2,
-  VolumeX,
-  Sparkles,
 } from "lucide-react";
 
 function subscribeReducedMotion(callback: () => void) {
@@ -72,15 +66,28 @@ export function ScrollWorld() {
   const rafIdRef = useRef<number | null>(null);
 
   const [activeSectionIdx, setActiveSectionIdx] = useState(0);
+  const activeSectionIdxRef = useRef(0);
+
   const [currentTime, setCurrentTime] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isPlayingContinuous, setIsPlayingContinuous] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const isPlayingContinuousRef = useRef(false);
+
   const [isMobile, setIsMobile] = useState(false);
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  // isVideoReady tracks whether the video has loaded enough to scrub;
+  // stored as a ref to avoid re-renders on every canplaythrough event.
+  const isVideoReadyRef = useRef(false);
 
   const sections = experienceData.sections;
-  const TOTAL_DURATION = experienceData.totalDuration || 42;
+  const TOTAL_DURATION = experienceData.totalDuration || 70;
+
+  // Track user click timestamps to ignore trackpad deflection noise
+  const lastClickTimeRef = useRef(0);
+
+  // Scrub targets for rAF interpolation
+  const targetTimeRef = useRef(0);
+  const currentTimeRef = useRef(0);
+  // Scroll progress [0..1] — kept as a ref since only rAF reads it; no re-render needed
+  const scrollProgressRef = useRef(0);
 
   // Responsive device detection
   useEffect(() => {
@@ -94,36 +101,33 @@ export function ScrollWorld() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Scrub targets for rAF interpolation
-  const targetTimeRef = useRef(0);
-  const currentTimeRef = useRef(0);
-  const isUserScrollingRef = useRef(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   // Jump to specific chapter hold time
   const jumpToChapter = useCallback(
     (index: number) => {
       const sec = sections[index];
       if (!sec) return;
       const t = sec.holdTime;
-      targetTimeRef.current = t;
 
-      // Also scroll window to matching position if container is present
+      targetTimeRef.current = t;
+      currentTimeRef.current = t;
+      setCurrentTime(t);
+
       if (containerRef.current) {
-        const top = containerRef.current.offsetTop;
+        const rect = containerRef.current.getBoundingClientRect();
+        const top = rect.top + (window.scrollY || window.pageYOffset);
         const totalH = containerRef.current.clientHeight - window.innerHeight;
         const scrollY = top + (t / TOTAL_DURATION) * Math.max(1, totalH);
         window.scrollTo({ top: scrollY, behavior: prefersReducedMotion ? "auto" : "smooth" });
       }
 
       if (videoRef.current) {
-        if (!isPlayingContinuous) {
-          videoRef.current.currentTime = t;
-        }
+        videoRef.current.currentTime = t;
       }
+
+      activeSectionIdxRef.current = index;
       setActiveSectionIdx(index);
     },
-    [sections, TOTAL_DURATION, isPlayingContinuous, prefersReducedMotion]
+    [sections, TOTAL_DURATION, prefersReducedMotion]
   );
 
   // Toggle continuous auto-play vs scroll scrubbing
@@ -131,45 +135,145 @@ export function ScrollWorld() {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isPlayingContinuous) {
-      video.pause();
+    lastClickTimeRef.current = Date.now();
+
+    if (isPlayingContinuousRef.current) {
+      // ── PAUSE ────────────────────────────────────────────────────────────
+      isPlayingContinuousRef.current = false;
       setIsPlayingContinuous(false);
+      video.pause();
+
+      targetTimeRef.current = video.currentTime;
+      currentTimeRef.current = video.currentTime;
+      setCurrentTime(video.currentTime);
+
+      // Sync window scrollbar to current video position
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const top = rect.top + (window.scrollY || window.pageYOffset);
+        const totalH = containerRef.current.clientHeight - window.innerHeight;
+        const scrollY = top + (video.currentTime / TOTAL_DURATION) * Math.max(1, totalH);
+        window.scrollTo({ top: scrollY, behavior: "auto" });
+      }
     } else {
-      video
-        .play()
-        .then(() => {
-          setIsPlayingContinuous(true);
-        })
-        .catch(() => {
-          // Fallback if browser requires interaction
-          video.muted = true;
-          video.play();
-          setIsPlayingContinuous(true);
+      // ── PLAY ─────────────────────────────────────────────────────────────
+      // Set ref synchronously BEFORE calling video.play() so rAF tick() sees
+      // the playing state immediately and never issues a manual seek while the
+      // browser is in the middle of starting playback.
+      isPlayingContinuousRef.current = true;
+      setIsPlayingContinuous(true);
+
+      // Ensure muted so all browsers grant instant autoplay on click
+      video.muted = true;
+      // Ensure loop is enabled at the element level as a belt-and-suspenders
+      // guard (the JSX `loop` prop sets the attribute at mount, but reinforce
+      // it here so a seek-to-end → browser-removes-loop scenario can't happen)
+      video.loop = true;
+
+      // If near or past the end of the video, reset to frame 0 before playing
+      if (video.currentTime >= TOTAL_DURATION - 0.5) {
+        video.currentTime = 0;
+        targetTimeRef.current = 0;
+        currentTimeRef.current = 0;
+        setCurrentTime(0);
+        activeSectionIdxRef.current = 0;
+        setActiveSectionIdx(0);
+      }
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // AbortError is thrown when play() is interrupted by a currentTime
+          // assignment. Since we never seek while isPlayingContinuousRef is
+          // true, this should not happen — but if it does, retry once.
+          console.warn("Video play() rejected:", err?.name, err?.message);
+          if (isPlayingContinuousRef.current) {
+            video.muted = true;
+            video.play().catch((retryErr) => {
+              console.error("Video play retry failed:", retryErr?.message);
+              isPlayingContinuousRef.current = false;
+              setIsPlayingContinuous(false);
+            });
+          }
         });
+      }
     }
-  }, [isPlayingContinuous]);
+  }, [TOTAL_DURATION]);
+
+  // Click anywhere on screen to play/pause the scrolling animation
+  const handleStageClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      // Do not trigger play/pause if user clicked on buttons, links, or inputs
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("button, a, input, textarea, select, [role='button']")) {
+        return;
+      }
+
+      togglePlayContinuous();
+    },
+    [togglePlayContinuous]
+  );
+
+  // Sync video HTML5 element events directly with React state.
+  // NOTE: We intentionally do NOT listen to the "pause" DOM event here.
+  // The browser fires "pause" for internal seeks, buffer stalls, and decoder
+  // housekeeping — listening to it would prematurely flip isPlayingContinuous
+  // to false every time a seek occurs while continuous play is active.
+  // Pause state is managed exclusively by togglePlayContinuous() and the
+  // wheel/touch gesture handlers below.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    // When the browser confirms playback started, ensure our ref agrees.
+    const handlePlay = () => {
+      if (!isPlayingContinuousRef.current) return; // we didn't trigger this
+      setIsPlayingContinuous(true);
+    };
+
+    // When the video reaches its natural end (loop attr may not fire on some
+    // browsers in all edge cases), manually restart from 0 so the world keeps
+    // flying without a black frame.
+    const handleEnded = () => {
+      if (!isPlayingContinuousRef.current) return;
+      video.currentTime = 0;
+      targetTimeRef.current = 0;
+      currentTimeRef.current = 0;
+      setCurrentTime(0);
+      activeSectionIdxRef.current = 0;
+      setActiveSectionIdx(0);
+      video.play().catch(() => {});
+    };
+
+    video.addEventListener("play", handlePlay);
+    video.addEventListener("ended", handleEnded);
+
+    return () => {
+      video.removeEventListener("play", handlePlay);
+      video.removeEventListener("ended", handleEnded);
+    };
+  }, []);
 
   // Main scroll listener: maps window scroll to continuous video time
   useEffect(() => {
-    if (isPlayingContinuous) return;
-
     const handleScroll = () => {
-      isUserScrollingRef.current = true;
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => {
-        isUserScrollingRef.current = false;
-      }, 150);
+      // While playing continuously, do not let window scroll events hijack video currentTime
+      if (isPlayingContinuousRef.current) return;
 
       const container = containerRef.current;
       if (!container) return;
 
-      const containerTop = container.offsetTop;
+      const rect = container.getBoundingClientRect();
       const windowY = window.scrollY || window.pageYOffset;
+      const containerTop = rect.top + windowY;
       const y = Math.max(0, windowY - containerTop);
       const totalH = container.clientHeight - window.innerHeight;
       const p = Math.max(0, Math.min(1, y / Math.max(1, totalH)));
 
-      setScrollProgress(p);
+      scrollProgressRef.current = p;
       targetTimeRef.current = p * TOTAL_DURATION;
     };
 
@@ -177,31 +281,94 @@ export function ScrollWorld() {
     handleScroll();
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
-  }, [isPlayingContinuous, TOTAL_DURATION]);
+  }, [TOTAL_DURATION]);
 
-  // High-performance rAF loop: smoothly interpolates video currentTime
+  // User gesture listener: pausing on real intentional wheel scroll or touch swipe
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (!isPlayingContinuousRef.current) return;
+
+      // Ignore trackpad clicks or resting finger noise within 400ms of click
+      if (Date.now() - lastClickTimeRef.current < 400) return;
+      if (Math.abs(e.deltaY) < 6 && Math.abs(e.deltaX) < 6) return;
+
+      // User intentionally scrolled -> pause continuous mode and yield to manual scrub
+      const video = videoRef.current;
+      if (video) {
+        video.pause();
+        targetTimeRef.current = video.currentTime;
+        currentTimeRef.current = video.currentTime;
+        setCurrentTime(video.currentTime);
+      }
+      isPlayingContinuousRef.current = false;
+      setIsPlayingContinuous(false);
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0]?.clientY || 0;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isPlayingContinuousRef.current) return;
+      if (Date.now() - lastClickTimeRef.current < 400) return;
+
+      const currentY = e.touches[0]?.clientY || 0;
+      if (Math.abs(currentY - touchStartY) < 15) return; // Ignore tap jitter
+
+      const video = videoRef.current;
+      if (video) {
+        video.pause();
+        targetTimeRef.current = video.currentTime;
+        currentTimeRef.current = video.currentTime;
+        setCurrentTime(video.currentTime);
+      }
+      isPlayingContinuousRef.current = false;
+      setIsPlayingContinuous(false);
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, []);
+
+  // High-performance rAF loop: smoothly updates or interpolates video currentTime
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const tick = () => {
-      if (isPlayingContinuous) {
-        // In continuous playback mode, update current time from video playback
+      if (isPlayingContinuousRef.current) {
+        // Continuous playback mode: read currentTime directly from native video playback.
+        // If the video somehow paused mid-flight (buffer stall, decoder hiccup), nudge
+        // it back to playing — but only if we are still in continuous mode.
+        if (video.paused && isPlayingContinuousRef.current) {
+          video.play().catch(() => {});
+        }
+
         const t = video.currentTime;
         setCurrentTime(t);
         currentTimeRef.current = t;
+        targetTimeRef.current = t;
+        scrollProgressRef.current = t / TOTAL_DURATION;
 
         // Compute active chapter from time
         const activeIdx = sections.findIndex(
           (s) => t >= s.startTime && t <= s.endTime
         );
-        if (activeIdx !== -1 && activeIdx !== activeSectionIdx) {
+        if (activeIdx !== -1 && activeIdx !== activeSectionIdxRef.current) {
+          activeSectionIdxRef.current = activeIdx;
           setActiveSectionIdx(activeIdx);
         }
       } else {
-        // In scroll scrub mode, lerp video.currentTime toward targetTime
+        // Scroll scrub mode: lerp video.currentTime toward targetTime
         const diff = targetTimeRef.current - currentTimeRef.current;
         if (Math.abs(diff) > 0.01) {
           currentTimeRef.current += diff * 0.22;
@@ -221,7 +388,8 @@ export function ScrollWorld() {
           for (let i = 0; i < sections.length; i++) {
             if (t >= sections[i].startTime) bestIdx = i;
           }
-          if (bestIdx !== activeSectionIdx) {
+          if (bestIdx !== activeSectionIdxRef.current) {
+            activeSectionIdxRef.current = bestIdx;
             setActiveSectionIdx(bestIdx);
           }
         }
@@ -234,7 +402,7 @@ export function ScrollWorld() {
     return () => {
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
-  }, [isPlayingContinuous, activeSectionIdx, sections, TOTAL_DURATION]);
+  }, [sections, TOTAL_DURATION]);
 
   // Video source selector
   const videoSrc = isMobile
@@ -242,12 +410,6 @@ export function ScrollWorld() {
     : experienceData.continuousLoopVideo;
 
   const currentSection = sections[activeSectionIdx] || sections[0];
-
-  // Overlay opacity math: copy fades in when camera settles inside each diorama
-  // and fades out during connector transitions
-  const isInsideDiorama =
-    currentTime >= currentSection.startTime + 0.3 &&
-    currentTime <= currentSection.endTime - 0.3;
 
   return (
     <div
@@ -258,8 +420,11 @@ export function ScrollWorld() {
         ["--sw-accent" as string]: currentSection.accent,
       }}
     >
-      {/* ── Sticky 100vw x 100dvh Pure Video Stage ───────────────────────────── */}
-      <div className="sticky top-0 w-full h-[100dvh] overflow-hidden flex items-center justify-center bg-black">
+      {/* ── Sticky 100vw x 100dvh Pure Video Stage (Click anywhere to play/pause) ───────────────────────────── */}
+      <div
+        onClick={handleStageClick}
+        className="sticky top-0 w-full h-[100dvh] overflow-hidden flex items-center justify-center bg-black cursor-pointer select-none"
+      >
         {/* Layer 1: Continuous HTML5 Video Player (Zero Still Images) */}
         <video
           ref={videoRef}
@@ -267,12 +432,17 @@ export function ScrollWorld() {
           src={videoSrc}
           className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none will-change-transform"
           playsInline
-          muted={isMuted}
+          muted
           loop
           autoPlay={false}
           preload="auto"
-          onLoadedData={() => setIsVideoReady(true)}
-          onCanPlayThrough={() => setIsVideoReady(true)}
+          onLoadedData={() => {
+            isVideoReadyRef.current = true;
+            if (videoRef.current && currentTimeRef.current > 0) {
+              videoRef.current.currentTime = currentTimeRef.current;
+            }
+          }}
+          onCanPlayThrough={() => { isVideoReadyRef.current = true; }}
         />
 
         {/* Layer 2: Subtle Cinematic Scrim for Text Legibility (No visual obstruction) */}
@@ -349,25 +519,8 @@ export function ScrollWorld() {
             })}
           </nav>
 
-          {/* Mode Controls: Auto-Loop Play/Pause + Mute */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={togglePlayContinuous}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white hover:bg-white/10 transition-all cursor-pointer font-mono text-xs font-semibold shadow-lg"
-              title={isPlayingContinuous ? "Pause Continuous Flight" : "Play Continuous Flight Loop"}
-            >
-              {isPlayingContinuous ? (
-                <>
-                  <Pause className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
-                </>
-              ) : (
-                <>
-                  <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
-                </>
-              )}
-            </button>
-          </div>
+          {/* Symmetrical spacer to keep chapters perfectly centered */}
+          <div className="w-28 hidden sm:block pointer-events-none" />
         </header>
 
         {/* Layer 5: Dynamic HUD Typography Overlays */}
@@ -376,9 +529,41 @@ export function ScrollWorld() {
             <div className="max-w-xl md:max-w-2xl transition-all duration-500 ease-out">
               {sections.map((sec, idx) => {
                 const isSelected = idx === activeSectionIdx;
-                // Calculate chapter opacity: fully visible when near holdTime, smoothly dissolves when flying away
-                const timeDiff = Math.abs(currentTime - sec.holdTime);
-                const opacity = isSelected && timeDiff < 2.5 ? Math.max(0, 1 - timeDiff / 2.2) : 0;
+                let opacity = 0;
+
+                if (isSelected) {
+                  if (idx === 0) {
+                    // 01 · Hub: fully visible at top of page (0 to holdTime), fades out as camera flies away
+                    if (currentTime <= sec.holdTime) {
+                      opacity = 1;
+                    } else {
+                      const diff = currentTime - sec.holdTime;
+                      opacity = Math.max(0, 1 - diff / 2.2);
+                    }
+                  } else if (idx === sections.length - 1) {
+                    // 05 · Convergence (Finale): fades in as camera enters scene, and remains
+                    // 100% visible on manual scroll so the user can easily read and click the CTAs!
+                    if (currentTime < sec.holdTime) {
+                      const diff = sec.holdTime - currentTime;
+                      opacity = Math.max(0, 1 - diff / 2.2);
+                    } else {
+                      if (isPlayingContinuous) {
+                        // Soft dissolve right before 70s continuous loop reset
+                        opacity =
+                          currentTime > sec.endTime - 0.8
+                            ? Math.max(0, 1 - (currentTime - (sec.endTime - 0.8)) / 0.7)
+                            : 1;
+                      } else {
+                        // Keep fully visible when scrolled to Convergence / bottom of section
+                        opacity = 1;
+                      }
+                    }
+                  } else {
+                    // Intermediate chapters: bell curve centered at holdTime
+                    const timeDiff = Math.abs(currentTime - sec.holdTime);
+                    opacity = timeDiff < 2.5 ? Math.max(0, 1 - timeDiff / 2.2) : 0;
+                  }
+                }
 
                 if (opacity <= 0.01) return null;
 
@@ -452,6 +637,18 @@ export function ScrollWorld() {
               })}
             </div>
           </div>
+        </div>
+
+        {/* Layer 6: Subtle Play / Pause Status Indicator Pill */}
+        <div className="absolute bottom-6 right-6 z-30 pointer-events-none flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[11px] font-mono text-white/80 shadow-xl transition-all">
+          <span
+            className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+              isPlayingContinuous
+                ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse"
+                : "bg-white/40"
+            }`}
+          />
+          <span>{isPlayingContinuous ? "Playing · Click to pause" : "Click anywhere to fly"}</span>
         </div>
       </div>
 
