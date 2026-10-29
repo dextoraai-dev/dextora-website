@@ -2,12 +2,17 @@
 
 import React from "react";
 import CountUpNumber from "../shared/CountUpNumber";
-import { siteConfig } from "@/data/site-config";
+import { siteConfig } from "@/config/site";
 import { StaggerContainer, StaggerItem } from "@/components/shared/ScrollAnimation";
 import { Users, FileQuestion, FileCheck, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function StatsStrip() {
+  // Guard: Hide entire section if feature flag is false or no stats exist
+  if (!siteConfig.features?.showStats || !siteConfig.stats?.length) {
+    return null;
+  }
+
   const statIcons = [Users, FileQuestion, FileCheck, CheckCircle];
 
   return (
@@ -30,6 +35,9 @@ export function StatsStrip() {
         <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-[#1D4A3E]">
           {siteConfig.stats.map((stat, idx) => {
             const Icon = statIcons[idx % statIcons.length];
+            const numericValue = parseFloat(stat.value.replace(/[^0-9.]/g, ""));
+            const suffix = stat.suffix || (stat.value.includes("+") ? "+" : stat.value.includes("%") ? "%" : "");
+
             return (
               <StaggerItem
                 key={idx}
@@ -44,12 +52,13 @@ export function StatsStrip() {
                   >
                     <Icon className="w-4 h-4" />
                   </motion.div>
-                  <span className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-[#F8F5EE]">
+                  <span className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-[#F8F5EE] flex items-center">
                     <CountUpNumber
-                      end={parseFloat(stat.value.replace(/[^0-9.]/g, ""))}
+                      end={numericValue}
                       decimals={stat.value.includes(".") ? 1 : 0}
                       className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-[#F8F5EE]"
                     />
+                    {suffix && <span>{suffix}</span>}
                   </span>
                 </div>
                 <p className="text-xs text-[#A3B8B2] group-hover:text-[#F8F5EE] transition-colors font-medium max-w-[200px]">

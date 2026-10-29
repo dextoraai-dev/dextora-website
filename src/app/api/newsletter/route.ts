@@ -4,6 +4,9 @@ import { sendNotificationEmail } from "@/lib/email-service";
 
 const NewsletterSchema = z.object({
   email: z.string().email("Invalid email address format"),
+  name: z.string().optional(),
+  interest: z.string().optional(),
+  source: z.string().optional(),
   _gotcha: z.string().optional(), // Honeypot
 });
 

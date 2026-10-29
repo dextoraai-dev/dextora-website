@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { testimonials } from "@/data/testimonials";
+import { siteConfig } from "@/config/site";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { FadeInUp, ScaleIn } from "@/components/shared/ScrollAnimation";
 import { Star, ChevronLeft, ChevronRight, Quote, MapPin } from "lucide-react";
@@ -11,14 +11,21 @@ export function TestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
 
+  // Guard: Hide entire section if feature flag is false or no testimonials exist
+  if (!siteConfig.features?.showTestimonials || !siteConfig.testimonials?.length) {
+    return null;
+  }
+
+  const items = siteConfig.testimonials;
+
   const handlePrev = () => {
     setDirection(-1);
-    setCurrentIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
     setDirection(1);
-    setCurrentIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === items.length - 1 ? 0 : prev + 1));
   };
 
   const handleSelect = (idx: number) => {
@@ -26,7 +33,7 @@ export function TestimonialsCarousel() {
     setCurrentIndex(idx);
   };
 
-  const current = testimonials[currentIndex];
+  const current = items[currentIndex];
 
   return (
     <section className="py-20 sm:py-28 bg-[var(--bg-base)] transition-colors relative overflow-hidden">
@@ -34,10 +41,10 @@ export function TestimonialsCarousel() {
         {/* Animated Heading */}
         <FadeInUp>
           <SectionHeading
-            badge="Voices from the Field"
+            badge="Learner Feedback"
             badgeVariant="terracotta"
             title="Trusted by Aspirants, Students, & Educators"
-            subtitle="Real stories from learners preparing for board exams and civil services across India."
+            subtitle="Verified experiences from learners preparing for board exams and civil services across India."
           />
         </FadeInUp>
 
@@ -62,7 +69,7 @@ export function TestimonialsCarousel() {
                       <Star key={i} className="w-4 h-4 fill-current" />
                     ))}
                     <span className="ml-2 text-xs font-semibold text-[var(--text-muted)]">
-                      Verified Feedback
+                      Verified Review
                     </span>
                   </div>
 
@@ -72,11 +79,10 @@ export function TestimonialsCarousel() {
 
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6 border-t border-[var(--border-subtle)]">
                     <div className="flex items-center gap-3.5">
-                      <img
-                        src={current.avatar}
-                        alt={current.name}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--brand-terracotta)]/40 shadow-xs"
-                      />
+                      {/* Initials Avatar - No Stock Photos */}
+                      <div className="w-12 h-12 rounded-full bg-[var(--brand-terracotta)]/15 text-[var(--brand-terracotta)] border-2 border-[var(--brand-terracotta)]/40 shadow-xs flex items-center justify-center font-bold text-sm tracking-wide">
+                        {current.initials}
+                      </div>
                       <div>
                         <div className="font-bold text-sm text-[var(--text-primary)]">
                           {current.name}
@@ -103,7 +109,7 @@ export function TestimonialsCarousel() {
                         <ChevronLeft className="w-5 h-5" />
                       </motion.button>
                       <span className="text-xs font-mono text-[var(--text-muted)] px-2">
-                        0{currentIndex + 1} / 0{testimonials.length}
+                        0{currentIndex + 1} / 0{items.length}
                       </span>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
@@ -123,7 +129,7 @@ export function TestimonialsCarousel() {
 
           {/* Product Pill Indicators */}
           <FadeInUp delay={0.2} className="flex justify-center gap-2 mt-6">
-            {testimonials.map((t, idx) => (
+            {items.map((t, idx) => (
               <motion.button
                 key={t.id}
                 whileHover={{ scale: 1.05 }}

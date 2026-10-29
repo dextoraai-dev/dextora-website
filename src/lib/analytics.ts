@@ -7,6 +7,7 @@ export type EventName =
   | "contact_form_submitted"
   | "careers_application_submitted"
   | "newsletter_subscribed"
+  | "pricing_waitlist_joined"
   | "language_toggled"
   | "theme_toggled";
 

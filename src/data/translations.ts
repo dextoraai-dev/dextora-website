@@ -7,6 +7,7 @@ export interface TranslationDictionary {
   };
   nav: {
     products: string;
+    pricing: string;
     about: string;
     vision: string;
     blog: string;
@@ -84,6 +85,7 @@ export const translations: Record<Locale, TranslationDictionary> = {
     },
     nav: {
       products: "Products",
+      pricing: "Pricing",
       about: "About",
       vision: "Vision",
       blog: "Blog",
@@ -165,6 +167,7 @@ export const translations: Record<Locale, TranslationDictionary> = {
     },
     nav: {
       products: "उत्पाद",
+      pricing: "मूल्य निर्धारण",
       about: "हमारे बारे में",
       vision: "दृष्टिकोण",
       blog: "ब्लॉग",

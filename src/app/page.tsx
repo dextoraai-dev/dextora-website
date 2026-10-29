@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 import { MasterCinematicWorld } from "@/components/home/MasterCinematicWorld";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { WhyDextora } from "@/components/home/WhyDextora";
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="w-full">
-      {/* 1. Unified Master Continuous Cinematic Flight World (Edu Student Journey + Product Ecosystem) */}
+      {/* 1. Unified Master Continuous Cinematic Flight World */}
       <MasterCinematicWorld />
 
       {/* 2. Product Showcase */}
@@ -34,14 +35,14 @@ export default function HomePage() {
       {/* 4. How It Works - 3-Step Cognitive Loop */}
       <HowItWorks />
 
-      {/* 5. Stats Strip */}
-      <StatsStrip />
+      {/* 5. Stats Strip (Conditional on features.showStats flag) */}
+      {siteConfig.features.showStats && <StatsStrip />}
 
       {/* 6. Latest From the Blog */}
       <LatestBlog />
 
-      {/* 7. Testimonials Carousel */}
-      <TestimonialsCarousel />
+      {/* 7. Testimonials Carousel (Conditional on features.showTestimonials flag) */}
+      {siteConfig.features.showTestimonials && <TestimonialsCarousel />}
 
       {/* 8. FAQ Accordion + FAQ JSON-LD */}
       <FAQSection />

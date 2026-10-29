@@ -6,6 +6,7 @@ import { products } from "@/data/products";
 import { siteConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
+import { AppStoreButtons } from "@/components/shared/AppStoreButtons";
 import {
   ArrowRight,
   ExternalLink,
@@ -107,6 +108,9 @@ export function Footer() {
                   {message}
                 </p>
               )}
+
+              {/* Conditional Mobile App Store Downloads */}
+              <AppStoreButtons className="pt-3" />
             </div>
           </div>
 
@@ -163,6 +167,11 @@ export function Footer() {
               <li>
                 <Link href="/about" className="hover:text-white transition-colors">
                   About Dextora
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="hover:text-white transition-colors">
+                  Pricing & Early Access
                 </Link>
               </li>
               <li>

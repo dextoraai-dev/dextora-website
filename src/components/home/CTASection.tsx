@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
+import { AppStoreButtons } from "@/components/shared/AppStoreButtons";
 import { FadeInUp, ScaleIn } from "@/components/shared/ScrollAnimation";
 import { ArrowRight, Sparkles, GraduationCap } from "lucide-react";
 import { motion } from "framer-motion";
@@ -89,6 +90,9 @@ export function CTASection() {
                     </Link>
                   </motion.div>
                 </div>
+
+                {/* Conditional App Store Download Badges */}
+                <AppStoreButtons className="pt-2" />
               </FadeInUp>
 
               {/* Right Column: Newsletter Subscription Box */}

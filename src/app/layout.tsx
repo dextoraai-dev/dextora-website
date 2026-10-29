@@ -9,6 +9,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { DextoraBar } from "@/components/layout/DextoraBar";
 import { EduTutorChatbot } from "@/components/shared/EduTutorChatbot";
+import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -138,6 +139,8 @@ export default function RootLayout({
             <Footer />
             {/* Interactive Dextora AI Education Tutor Chatbot */}
             <EduTutorChatbot />
+            {/* Conditional WhatsApp Floating Connect Button */}
+            <WhatsAppButton />
           </I18nProvider>
         </ThemeProvider>
       </body>
