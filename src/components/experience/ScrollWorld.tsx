@@ -475,9 +475,10 @@ export function ScrollWorld() {
           />
         </div>
 
-        {/* Layer 4: Interactive Chapter Waypoint Navigation Pills */}
-        <header className="absolute top-5 inset-x-0 z-30 flex items-center justify-between px-4 sm:px-8 pointer-events-auto">
-          {/* Brand Logo & Back to Home */}
+        {/* Layer 4: Brand Logo (top-left) + Vertical Chapter Nav (right side) */}
+
+        {/* Brand Logo & Back to Home */}
+        <div className="absolute top-5 left-4 sm:left-8 z-30 pointer-events-auto">
           <Link
             href="/"
             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white hover:border-white/30 transition-all cursor-pointer"
@@ -487,41 +488,36 @@ export function ScrollWorld() {
               Dextora World
             </span>
           </Link>
+        </div>
 
-          {/* Chapters Bar */}
-          <nav
-            aria-label="Experience Chapters"
-            className="flex items-center gap-1.5 p-1 rounded-full backdrop-blur-xl bg-black/45 border border-white/15 shadow-2xl max-w-full overflow-x-auto scrollbar-none"
-          >
-            {sections.map((sec, idx) => {
-              const isActive = idx === activeSectionIdx;
-              return (
-                <button
-                  key={sec.id}
-                  type="button"
-                  onClick={() => jumpToChapter(idx)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${isActive
-                    ? "text-white shadow-lg font-semibold scale-105"
+        {/* Right-side vertical chapter nav */}
+        <nav
+          aria-label="Experience Chapters"
+          className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-end gap-2 pointer-events-auto"
+        >
+          {sections.map((sec, idx) => {
+            const isActive = idx === activeSectionIdx;
+            return (
+              <button
+                key={sec.id}
+                type="button"
+                onClick={() => jumpToChapter(idx)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  isActive
+                    ? "text-white shadow-lg font-semibold"
                     : "text-white/60 hover:text-white hover:bg-white/10"
-                    }`}
-                  style={{
-                    backgroundColor: isActive ? sec.accent : "transparent",
-                  }}
-                >
-                  <span className="font-mono text-[10px] opacity-75">
-                    {`0${idx + 1}`}
-                  </span>
-                  <span className="hidden sm:inline">
-                    {isHi ? sec.labelHi : sec.label}
-                  </span>
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Symmetrical spacer to keep chapters perfectly centered */}
-          <div className="w-28 hidden sm:block pointer-events-none" />
-        </header>
+                }`}
+                style={{
+                  backgroundColor: isActive ? sec.accent : "transparent",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <span className="font-mono text-[10px] opacity-75">{`0${idx + 1}`}</span>
+                <span className="hidden sm:inline">{isHi ? sec.labelHi : sec.label}</span>
+              </button>
+            );
+          })}
+        </nav>
 
         {/* Layer 5: Dynamic HUD Typography Overlays */}
         <div className="absolute inset-0 z-20 pointer-events-none flex items-center max-md:items-end">

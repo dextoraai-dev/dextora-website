@@ -276,7 +276,7 @@ export const products: Product[] = [
       "Founders & Account Executives needing zero-delay lead handoffs",
     ],
     icon: "Kanban",
-    accentColor: "#00bb7f", // Emerald WhatsApp Green
+    accentColor: "#1E5E4B", // Dextora Forest Pine
     accentBg: "bg-emerald-500/10 dark:bg-emerald-500/15",
     accentBorder: "border-emerald-500/30 hover:border-emerald-500",
     stats: [
