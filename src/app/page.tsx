@@ -4,7 +4,6 @@ import { siteConfig } from "@/config/site";
 import { MasterCinematicWorld } from "@/components/home/MasterCinematicWorld";
 import { ProductShowcase } from "@/components/home/ProductShowcase";
 import { WhyDextora } from "@/components/home/WhyDextora";
-import { HowItWorks } from "@/components/home/HowItWorks";
 import { StatsStrip } from "@/components/home/StatsStrip";
 import { LatestBlog } from "@/components/home/LatestBlog";
 import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
@@ -32,22 +31,19 @@ export default function HomePage() {
       {/* 3. Why Dextora Pillars */}
       <WhyDextora />
 
-      {/* 4. How It Works - 3-Step Cognitive Loop */}
-      <HowItWorks />
-
-      {/* 5. Stats Strip (Conditional on features.showStats flag) */}
+      {/* 4. Stats Strip (Conditional on features.showStats flag) */}
       {siteConfig.features.showStats && <StatsStrip />}
 
-      {/* 6. Latest From the Blog */}
+      {/* 5. Latest From the Blog */}
       <LatestBlog />
 
-      {/* 7. Testimonials Carousel (Conditional on features.showTestimonials flag) */}
+      {/* 6. Testimonials Carousel (Conditional on features.showTestimonials flag) */}
       {siteConfig.features.showTestimonials && <TestimonialsCarousel />}
 
-      {/* 8. FAQ Accordion + FAQ JSON-LD */}
+      {/* 7. FAQ Accordion + FAQ JSON-LD */}
       <FAQSection />
 
-      {/* 9. Final CTA Banner + Newsletter Signup */}
+      {/* 8. Final CTA Banner + Newsletter Signup */}
       <CTASection />
     </div>
   );

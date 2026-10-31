@@ -170,11 +170,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-white transition-colors">
-                  Pricing & Early Access
-                </Link>
-              </li>
-              <li>
                 <Link href="/vision" className="hover:text-white transition-colors">
                   Vision & AI Philosophy
                 </Link>

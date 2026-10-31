@@ -303,7 +303,6 @@ export const siteConfig: SiteConfig = {
   ],
   navItems: [
     { label: "Products", href: "/products", hasDropdown: true },
-    { label: "Pricing", href: "/pricing" },
     { label: "About", href: "/about" },
     { label: "Vision", href: "/vision" },
     { label: "Blog", href: "/blog" },

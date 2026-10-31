@@ -210,15 +210,6 @@ export function Navbar() {
 
             {/* Standard Nav Links */}
             <Link
-              href="/pricing"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/pricing"
-                  ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
-            >
-              {t.nav.pricing}
-            </Link>
-            <Link
               href="/about"
               className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/about"
                   ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
@@ -331,13 +322,6 @@ export function Navbar() {
               className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
             >
               All Products Directory
-            </Link>
-            <Link
-              href="/pricing"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-[var(--bg-subtle)] text-[var(--text-primary)]"
-            >
-              {t.nav.pricing}
             </Link>
             <Link
               href="/about"
