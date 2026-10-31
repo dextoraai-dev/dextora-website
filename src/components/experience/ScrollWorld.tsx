@@ -31,7 +31,7 @@ import { experienceData } from "@/data/experience";
 import {
   ArrowRight,
   ChevronRight,
-  Compass,
+  ChevronDown,
 } from "lucide-react";
 
 function subscribeReducedMotion(callback: () => void) {
@@ -328,16 +328,41 @@ export function ScrollWorld() {
       setIsPlayingContinuous(false);
     };
 
+    // Keyboard controls for accessible flight navigation
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeTag = (document.activeElement?.tagName || "").toLowerCase();
+      if (activeTag === "input" || activeTag === "textarea" || activeTag === "select") return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        togglePlayContinuous();
+      } else if (e.code === "ArrowDown" || e.code === "PageDown") {
+        const next = Math.min(sections.length - 1, activeSectionIdxRef.current + 1);
+        if (next !== activeSectionIdxRef.current) {
+          e.preventDefault();
+          jumpToChapter(next);
+        }
+      } else if (e.code === "ArrowUp" || e.code === "PageUp") {
+        const prev = Math.max(0, activeSectionIdxRef.current - 1);
+        if (prev !== activeSectionIdxRef.current) {
+          e.preventDefault();
+          jumpToChapter(prev);
+        }
+      }
+    };
+
     window.addEventListener("wheel", handleWheel, { passive: true });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [jumpToChapter, sections.length, togglePlayContinuous]);
 
   // High-performance rAF loop: smoothly updates or interpolates video currentTime
   useEffect(() => {
@@ -477,18 +502,7 @@ export function ScrollWorld() {
 
         {/* Layer 4: Brand Logo (top-left) + Vertical Chapter Nav (right side) */}
 
-        {/* Brand Logo & Back to Home */}
-        <div className="absolute top-5 left-4 sm:left-8 z-30 pointer-events-auto">
-          <Link
-            href="/"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white hover:border-white/30 transition-all cursor-pointer"
-          >
-            <Compass className="w-4 h-4 text-[var(--brand-terracotta)] animate-spin-slow" />
-            <span className="font-semibold text-xs tracking-wider uppercase font-mono">
-              Dextora World
-            </span>
-          </Link>
-        </div>
+
 
         {/* Right-side vertical chapter nav */}
         <nav
@@ -605,6 +619,20 @@ export function ScrollWorld() {
                       ))}
                     </div>
 
+                    {/* Chapter 0 Quick Jump CTA */}
+                    {idx === 0 && !sec.cta && (
+                      <div className="flex flex-wrap items-center gap-3 pt-3">
+                        <a
+                          href="#products-showcase"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                          style={{ backgroundColor: sec.accent }}
+                        >
+                          <span>{isHi ? "उत्पाद देखें" : "Explore Products"}</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </a>
+                      </div>
+                    )}
+
                     {/* CTAs */}
                     {sec.cta && (
                       <div className="flex flex-wrap items-center gap-3 pt-3">
@@ -635,17 +663,36 @@ export function ScrollWorld() {
           </div>
         </div>
 
-        {/* Layer 6: Subtle Play / Pause Status Indicator Pill */}
-        <div className="absolute bottom-6 right-6 z-30 pointer-events-none flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[11px] font-mono text-white/80 shadow-xl transition-all">
+        {/* Scroll exploration hint at the bottom */}
+        {currentTime <= 1.8 && !isPlayingContinuous && (
+          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1 animate-bounce text-white/80 transition-opacity duration-300">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-white/80">Scroll to explore</span>
+            <ChevronDown className="w-3.5 h-3.5 text-[var(--brand-terracotta)]" />
+          </div>
+        )}
+
+        {/* Layer 6: Play / Pause Control Pill (Centered at bottom, interactive) */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlayContinuous();
+          }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/75 hover:bg-black/90 backdrop-blur-md border border-white/20 hover:border-white/40 text-xs font-mono text-white/90 shadow-2xl transition-all cursor-pointer group active:scale-95"
+          aria-label={isPlayingContinuous ? "Pause continuous flight" : "Start continuous flight"}
+        >
           <span
             className={`w-2 h-2 rounded-full transition-colors duration-300 ${
               isPlayingContinuous
                 ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse"
-                : "bg-white/40"
+                : "bg-white/40 group-hover:bg-white/70"
             }`}
           />
-          <span>{isPlayingContinuous ? "Playing · Click to pause" : "Click anywhere to fly"}</span>
-        </div>
+          <span>{isPlayingContinuous ? "Playing Flight · Click to pause" : "Click to Fly Through World"}</span>
+          <span className="hidden sm:inline-block text-[10px] text-white/50 px-1.5 py-0.5 rounded bg-white/10 ml-0.5">
+            Space
+          </span>
+        </button>
       </div>
 
       {/* Invisible scroll spacer track: gives page real scroll depth */}

@@ -10,6 +10,7 @@ import { Footer } from "@/components/layout/Footer";
 import { DextoraBar } from "@/components/layout/DextoraBar";
 import { EduTutorChatbot } from "@/components/shared/EduTutorChatbot";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
+import { BackToTop } from "@/components/shared/BackToTop";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -141,6 +142,8 @@ export default function RootLayout({
             <EduTutorChatbot />
             {/* Conditional WhatsApp Floating Connect Button */}
             <WhatsAppButton />
+            {/* Floating Back To Top button */}
+            <BackToTop />
           </I18nProvider>
         </ThemeProvider>
       </body>

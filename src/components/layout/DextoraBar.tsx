@@ -1,12 +1,19 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import { sharedSubdomainBarConfig } from "@/data/site-config";
 import { useI18n } from "@/lib/i18n";
 import { Sparkles, ExternalLink } from "lucide-react";
 
 export function DextoraBar() {
   const { t } = useI18n();
+  const pathname = usePathname();
+
+  // Hide on homepage so the 3D cinematic hero is 100% full-bleed from the top
+  if (pathname === "/") {
+    return null;
+  }
 
   return (
     <div className="bg-[#0E2922] text-[#E2DBD0] text-xs py-1.5 px-4 sm:px-6 border-b border-[#1A3F35] relative z-50">

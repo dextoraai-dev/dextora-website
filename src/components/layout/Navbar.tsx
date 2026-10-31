@@ -34,12 +34,13 @@ export function Navbar() {
     setMobileMenuOpen(false);
   }
 
-  // Scroll detection for navbar shadow/border
+  // Scroll detection for navbar blur / transparency
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -69,12 +70,29 @@ export function Navbar() {
     }
   };
 
+  const isHomePage = pathname === "/";
+  const isHeroTransparent = isHomePage && !isScrolled;
+
+  const navLinkClass = (isActive: boolean) => {
+    if (isHeroTransparent) {
+      return isActive
+        ? "text-[var(--brand-terracotta)] font-bold bg-white/15 px-3.5 py-2 rounded-lg text-sm transition-colors backdrop-blur-xs"
+        : "text-white/85 hover:text-white hover:bg-white/10 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors backdrop-blur-xs";
+    }
+    return isActive
+      ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)] px-3.5 py-2 rounded-lg text-sm transition-colors"
+      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)] px-3.5 py-2 rounded-lg text-sm font-medium transition-colors";
+  };
+
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled
-          ? "bg-[var(--bg-base)]/90 dark:bg-[#0C0E12]/90 backdrop-blur-md shadow-sm border-b border-[var(--border-subtle)]"
-          : "bg-[var(--bg-base)] dark:bg-[#0C0E12] border-b border-transparent"
-        }`}
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        isHeroTransparent
+          ? "-mb-20 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-b border-transparent pointer-events-auto"
+          : isScrolled
+          ? "bg-[var(--bg-surface)]/90 dark:bg-[#0C0E12]/90 backdrop-blur-md shadow-sm border-b border-[var(--border-subtle)]"
+          : "bg-[var(--bg-surface)] dark:bg-[#0C0E12] border-b border-transparent"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -97,10 +115,18 @@ export function Navbar() {
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-2xl font-bold tracking-tight text-[var(--text-primary)] leading-none">
+                <span
+                  className={`font-serif text-2xl font-bold tracking-tight leading-none transition-colors ${
+                    isHeroTransparent ? "text-white" : "text-[var(--text-primary)]"
+                  }`}
+                >
                   Dextora
                 </span>
-                <span className="text-[10px] tracking-wider text-[var(--text-muted)] uppercase font-semibold mt-0.5">
+                <span
+                  className={`text-[10px] tracking-wider uppercase font-semibold mt-0.5 transition-colors ${
+                    isHeroTransparent ? "text-white/70" : "text-[var(--text-muted)]"
+                  }`}
+                >
                   AI EdTech Hub
                 </span>
               </div>
@@ -116,15 +142,15 @@ export function Navbar() {
                 onClick={() => setProductsOpen(!productsOpen)}
                 onMouseEnter={() => setProductsOpen(true)}
                 aria-expanded={productsOpen}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname.startsWith("/products")
-                    ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                  }`}
+                className={`flex items-center gap-1.5 transition-colors cursor-pointer ${navLinkClass(
+                  pathname.startsWith("/products")
+                )}`}
               >
                 <span>{t.nav.products}</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${productsOpen ? "rotate-180 text-[var(--brand-terracotta)]" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    productsOpen ? "rotate-180 text-[var(--brand-terracotta)]" : ""
+                  }`}
                 />
               </button>
 
@@ -209,49 +235,19 @@ export function Navbar() {
             </div>
 
             {/* Standard Nav Links */}
-            <Link
-              href="/about"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/about"
-                  ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
-            >
+            <Link href="/about" className={navLinkClass(pathname === "/about")}>
               {t.nav.about}
             </Link>
-            <Link
-              href="/vision"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/vision"
-                  ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
-            >
+            <Link href="/vision" className={navLinkClass(pathname === "/vision")}>
               {t.nav.vision}
             </Link>
-            <Link
-              href="/blog"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname.startsWith("/blog")
-                  ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
-            >
+            <Link href="/blog" className={navLinkClass(pathname.startsWith("/blog"))}>
               {t.nav.blog}
             </Link>
-            <Link
-              href="/careers"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/careers"
-                  ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
-            >
+            <Link href="/careers" className={navLinkClass(pathname === "/careers")}>
               {t.nav.careers}
             </Link>
-            <Link
-              href="/contact"
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === "/contact"
-                  ? "text-[var(--brand-terracotta)] font-semibold bg-[var(--bg-subtle)]"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-                }`}
-            >
+            <Link href="/contact" className={navLinkClass(pathname === "/contact")}>
               {t.nav.contact}
             </Link>
           </nav>
@@ -261,7 +257,11 @@ export function Navbar() {
             <ThemeToggle />
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0E2922] text-[#F8F5EE] hover:bg-[#153D33] text-sm font-semibold shadow-sm transition-all duration-200 hover:shadow hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#0E2922]"
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all duration-200 hover:shadow hover:-translate-y-0.5 focus-visible:ring-2 ${
+                isHeroTransparent
+                  ? "bg-[#0E2922] text-[#F8F5EE] border border-white/20 hover:bg-[#153D33] focus-visible:ring-white/40"
+                  : "bg-[#0E2922] text-[#F8F5EE] hover:bg-[#153D33] focus-visible:ring-[#0E2922]"
+              }`}
             >
               <span>{t.nav.exploreProducts}</span>
               <ArrowRight className="w-4 h-4 text-[#E05A38]" />
@@ -275,7 +275,11 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               type="button"
               aria-label="Toggle mobile menu"
-              className="p-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)]"
+              className={`p-2 rounded-lg border transition-colors ${
+                isHeroTransparent
+                  ? "border-white/20 bg-black/40 text-white hover:bg-black/60"
+                  : "border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
+              }`}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
